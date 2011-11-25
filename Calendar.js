@@ -43,14 +43,15 @@ function createEmptyCalendar(){
 			var x = (i*7)+k+1-startCell; // Calculate current date from position in calendar
 			
 			/* if the date is invalid, the cell will be blank and the id will be "calendarcell" */
-			if (x > 31 || x < 1){
+			if (x > daysNum || x < 1){
 				x = "";
 				id = "";
 			} else {
 				var id = " id=\"calendarcell"+x+"\""; // if the date is valid, id is calendarcell"date"
 			}
 			
-			var sty = ((i+k)%2 == 1) ? " style=\"background-color:#f9f9f9\"" : ""; // "zebra-striped idea"
+			var sty = (k%2 == 0) ? " style=\"background-color:#f9f9f9\"" : ""; // "zebra-striped idea"
+			if (k==0 || k==6) sty = " style=\"background-color:#EEB4B4\"" // Saturday and Sunday are special :)
 			$("body tbody tr").last().append("<td" +id +sty +">"+x+"</td>");
 		}
 	}
