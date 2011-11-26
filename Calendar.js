@@ -1,15 +1,24 @@
 /* Calendar.js */
 $(document).ready(function(){
+	/* For IE Compatibility */
+	if (!Array.prototype.indexOf) {
+		Array.prototype.indexOf = function(obj, start) {
+		 for (var i = (start || 0), j = this.length; i < j; i++) {
+			 if (this[i] === obj) { return i; }
+		 }
+		 return -1;
+		}
+	}
 	/* GLOBALS: */
 	lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
-	monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-	daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
+	monthNames = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+	daysInMonth = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
 	monthName = "February"; // What month is it?
 	monthNum = monthNames.indexOf(monthName);
 	year = 2011;
 	startCell = new Date(year, monthNum, 1).getDay(); // Which day of the week is the first day of the month? 0 is Sunday.
 	
-	$("#monthName").html(monthName);
+	$("#monthNameHeader").html(monthName);
 	
 	createEmptyCalendar();
 	
@@ -35,12 +44,12 @@ $(document).ready(function(){
 		if ($(this).attr("id") != "calendarcell"){
 			if (!($(this).attr("class")) || $(this).attr("class").indexOf("colorCell") == -1){
 				
-				var date = $(this).attr("id").substring(12); // ex. id is calendarcell7, date is 7
+				var date = parseInt($(this).attr("id").substring(12)); // ex. id is calendarcell7, date is 7
 			
 				/* find which day of the week corresponds using the table headers */
 				var day = $($("#CalendarTable th")[((date-1+startCell)%7) + 1]).text(); 
 				
-				var week = Math.floor((parseInt(date)+startCell)/7);
+				var week = Math.floor((date+startCell)/7);
 								
 				var weekColor = (week%2 == 0) ? "Maroon" : "Gray";
 				
@@ -83,8 +92,8 @@ function getDaysInMonth(month,year){
 }
 
 function setDarkColor(color){
-	var lightColorsArray = ["","background-color:#f9f9f9","background-color:#EEB4B4"];
-	var darkColorsArray = ["background-color:#f5f5f5","background-color:#f5f5f5","background-color:#BB8888"];
+	var lightColorsArray = new Array("","background-color:#f9f9f9","background-color:#EEB4B4");
+	var darkColorsArray = new Array("background-color:#f5f5f5","background-color:#f5f5f5","background-color:#BB8888");
 	var x = lightColorsArray.indexOf(color);
 	return darkColorsArray[x];
 }
