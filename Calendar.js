@@ -11,19 +11,20 @@ $(document).ready(function(){
 		console.log("you suck, internet explorer");
 	}
 	
+	var year = 2011;
 	var monthNames = new Array("January","February","March","April","May","June","July","August","September","October","November","December");	
 	var monthName = "February"; // What month is it?
+	var daysInMonth = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+	var monthNum = monthNames.indexOf(monthName);
+	var startCell = new Date(year, monthNum, 1).getDay(); // Which day of the week is the first day of the month? 0 is Sunday.
+	var daysNum = getDaysInMonth(monthNum, year, daysInMonth); // returns daysInMonth[monthNum] unless it's a leap year
 	
 	/* GLOBALS: */
 	lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
-	daysInMonth = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
-	monthNum = monthNames.indexOf(monthName);
-	year = 2011;
-	startCell = new Date(year, monthNum, 1).getDay(); // Which day of the week is the first day of the month? 0 is Sunday.
 	
-	$("#monthNameHeader").html(monthName);
+	$("#monthNameHeader").html(monthName); // Title the calendar
 	
-	createEmptyCalendar();
+	createEmptyCalendar(daysNum, startCell);
 	
 	/* Quiz, Test, and Essay using Bootstrap alert messages */
 	$("#calendarcell15").append('<h4 class="alert-message warning">QUIZ</h4>');
@@ -74,8 +75,9 @@ $(document).ready(function(){
 	
 });
 
-function createEmptyCalendar(){
-	var daysNum = getDaysInMonth(monthNum,year); // number of days in the month
+function createEmptyCalendar(daysNum, startCell){
+	// daysNum = number of days in the month. See declaration at top of Calendar.js
+	// startCell = the first day of the month. See declaration at top of Calendar.js
 	var rowsNum = (daysNum+startCell)/7; // number of rows needed
 	for (var i = 0; i < rowsNum; i++){ // week loop (4, 5 or 6)
 		$("body tbody").append("<tr></tr>"); // New Row
@@ -98,7 +100,7 @@ function createEmptyCalendar(){
 }
 
 // Returns the number of days in the month in a given year (January=0)
-function getDaysInMonth(month,year){
+function getDaysInMonth(month,year,daysInMonth){
 	if ((month==1)&&(year%4==0)&&((year%100!=0)||(year%400==0))){
 		return 29;
 	}else{
