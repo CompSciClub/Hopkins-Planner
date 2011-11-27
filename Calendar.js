@@ -3,17 +3,20 @@ $(document).ready(function(){
 	/* For IE Compatibility */
 	if (!Array.prototype.indexOf) {
 		Array.prototype.indexOf = function(obj, start) {
-		 for (var i = (start || 0), j = this.length; i < j; i++) {
-			 if (this[i] === obj) { return i; }
-		 }
-		 return -1;
+			for (var i = (start || 0), j = this.length; i < j; i++) {
+				if (this[i] === obj) { return i; }
+			}
+			return -1;
 		}
+		console.log("you suck, internet explorer");
 	}
+	
+	var monthNames = new Array("January","February","March","April","May","June","July","August","September","October","November","December");	
+	var monthName = "February"; // What month is it?
+	
 	/* GLOBALS: */
 	lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
-	monthNames = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 	daysInMonth = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
-	monthName = "February"; // What month is it?
 	monthNum = monthNames.indexOf(monthName);
 	year = 2011;
 	startCell = new Date(year, monthNum, 1).getDay(); // Which day of the week is the first day of the month? 0 is Sunday.
@@ -22,21 +25,32 @@ $(document).ready(function(){
 	
 	createEmptyCalendar();
 	
+	/* Quiz, Test, and Essay using Bootstrap alert messages */
 	$("#calendarcell15").append('<h4 class="alert-message warning">QUIZ</h4>');
 	$("#calendarcell25").append('<h4 class="alert-message error">TEST</h4>');
 	$("#calendarcell28").append('<h4 class="alert-message info">ESSAY</h4>');
+	
+	// for (var i = 1; i < 29; i++){
+		// $("#calendarcell"+i+"").append('<h4 class="alert-message error">TEST</h4>');
+	// }
 	
 	/* EVENT HANDLERS: */
 	$("#CalendarTable td").hover(
 		/* mouseenter */
 		function(){
-			//if ((this.attr("class")) && (this.attr("class").substring())
-			lastCalendarStyle = ($(this).attr("style")) ? $(this).attr("style") : "" ;
-			$(this).attr("style",setDarkColor(lastCalendarStyle));
+			/* This 'if' is to stop anything from happining when mouseover the empty cells
+			 * if this is ugly, just remove this if and the mouseleave if.*/
+			if ($(this).attr("id") != "calendarcell"){
+				//if ((this.attr("class")) && (this.attr("class").substring())
+				lastCalendarStyle = ($(this).attr("style")) ? $(this).attr("style") : "" ;
+				$(this).attr("style",setDarkColor(lastCalendarStyle));
+			}
 		} ,
 		/* mouseleave */
 		function(){
-			$(this).attr("style", lastCalendarStyle);
+			if ($(this).attr("id") != "calendarcell"){
+				$(this).attr("style", lastCalendarStyle);
+			}
 		}
 	); // end td hover
 	
@@ -57,6 +71,7 @@ $(document).ready(function(){
 			}
 		}
 	}); // end td click
+	
 });
 
 function createEmptyCalendar(){
@@ -71,7 +86,7 @@ function createEmptyCalendar(){
 			/* if the date is invalid, the cell will be blank and the id will be "calendarcell" */
 			if (x > daysNum || x < 1){
 				x = "";
-				id = "";
+				id = " id=\"calendarcell\"";
 			} else {
 				var id = " id=\"calendarcell"+x+"\""; // if the date is valid, id is calendarcell"date"
 			}

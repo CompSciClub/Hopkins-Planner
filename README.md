@@ -7,4 +7,4 @@ of their assignments.
 
 -------
 
-Severes1.github.com/Hopkins-Planner is Matt's testing site
+[Severes1.github.com/Hopkins-Planner](http://severes1.github.com/Hopkins-Planner/) is Matt's testing site
