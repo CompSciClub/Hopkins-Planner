@@ -68,7 +68,7 @@ $(document).ready(function(){
 								
 				var weekColor = (week%2 == 0) ? "Maroon" : "Gray";
 				
-				alert("This is " +weekColor +" " +day +", the " +date +"th.");
+				//alert("This is " +weekColor +" " +day +", the " +date +"th.");
 			}
 		}
 	}); // end td click
