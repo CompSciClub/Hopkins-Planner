@@ -1,6 +1,6 @@
 // for now all routes go in here. We will probbably break them up at some point
 
-var excrypto = require("excrypto");
+var ezcrypto = require("ezcrypto");
 
 /*
  * GET home page.
