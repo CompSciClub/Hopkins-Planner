@@ -8,3 +8,6 @@
 #CalendarTable td.Fblock{background-color: #65926A;}
 #CalendarTable td.Gblock{background-color: #FB90B5;}
 #CalendarTable td.Hblock{background-color: #956777;}
+.container{
+  width: auto !important;
+}

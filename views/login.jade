@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .container
+    h2 Login
+    form(method="post", action="/login")
+      fieldset
+        p
+          label(for="email") Email:
+          input(type="text", name="email")
+        p
+          label(for="password") Password:
+          input(type="password")
+        input(type="hidden", name="redirect", value="/weekly")
+        input(type="submit", value="Login")
+
+     h2 Create Account
+     form(method="post", action="/createAccount")
+       fieldset
+         p
+           label(for="email") Email:
+           input(type="text", name="email")
+         p
+           label(for="password") Password:
+           input(type="password")
+         input(type="hidden", name="redirect", value="/login")
+         input(type="submit", value="Create")
