@@ -6,6 +6,6 @@
       "express": "2.5.1"
     , "jade": ">= 0.0.1"
     , "mongoose": ">=2.4.0"
-    , "hashlib": ">=1.0.1"
+    , "ezcrypto": ">=0.0.3"
   }
 }

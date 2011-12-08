@@ -10,8 +10,21 @@ exports.User = new Schema({
   user_id   : ObjectId
 });
 
+exports.Event = new Schema({
+  type: String,
+  name: String,
+  day: String,
+  month: String,
+  year: String,
+  block: Number,
+  description: String,
+  owner: String,
+  event_id: ObjectId
+});
+
 // Setup Database models
-User = mongoose.model("User", exports.User);
+User  = mongoose.model("User", exports.User);
+Event = mongoose.model("Event", exports.Event); 
 
 function validatePresenceOf(value){
   return value && value.length;

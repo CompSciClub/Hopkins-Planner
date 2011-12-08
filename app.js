@@ -9,6 +9,7 @@ var express  = require('express')
   , schemas  = require("./schemas");
 
 var app = module.exports = express.createServer();
+console.log(process.env.MONGOLAB_URI || "mongodb://localhost/calender");
 mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/calendar");
 
 // Configuration

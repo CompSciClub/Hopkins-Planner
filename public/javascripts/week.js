@@ -41,7 +41,7 @@ $(document).ready(function(){
 		}
 	); // end td hover
 	$("#CalendarTable td").click(function(){
-		var tdClass = $(this).attr("class");
+		/*var tdClass = $(this).attr("class");
 		$("#colorInput").click(); // triggers JSColor
 		console.log(jscolor.picker);
 		$(jscolor.picker.box).mousedown(function(e){
@@ -49,7 +49,15 @@ $(document).ready(function(){
 				var tdColor = $("#colorInput").css('background-color').toLowerCase();
 				changeColor(tdClass, tdColor);
 			});
-		});
+		});*/
+
+    // create a new event
+    // This will be a nice cool popup where you add in event details but right now it's just gonna submit a request
+    console.log(this);
+    $.ajax({
+
+    });
+
 		// jscolor.picker.owner.hidePicker();
 	}); // end td click
 	
