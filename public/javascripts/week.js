@@ -41,6 +41,9 @@ $(document).ready(function(){
 		}
 	); // end td hover
 	$("#CalendarTable td").click(function(){
+    console.log(this);
+    if ($(this).attr("class") == "event_input")
+      return;
 		/*var tdClass = $(this).attr("class");
 		$("#colorInput").click(); // triggers JSColor
 		console.log(jscolor.picker);
@@ -53,10 +56,12 @@ $(document).ready(function(){
 
     // create a new event
     // This will be a nice cool popup where you add in event details but right now it's just gonna submit a request
-    console.log(this);
-    $.ajax({
-
+    var input = $('<div class="alert-message info event_container" style="height:30px"><input class="event_input" type="text"></div>');
+    input.click(function(e){
+      e.stopPropagation();
     });
+    $(this).append(input);
+    input.children()[0].focus();
 
 		// jscolor.picker.owner.hidePicker();
 	}); // end td click
@@ -72,10 +77,10 @@ function createEmptyWeek(weekColor){
 	var weekStructure = getWeekStructure(weekColor);
 	
 	for( var i = 0; i < 6; i++ ){
-		$("#CalendarTable tbody").append("<tr></tr>"); // New Row
+		$("#calendarContainer ").append("<div class='row'></div>"); // New Row
 		for (var k = 0; k < 5; k++){
 			var tdClass = weekStructure[k][i] + "block";
-			$("#CalendarTable tbody tr").last().append("<td class=\""+tdClass +"\">"+tdClass+"</td>");
+			$("#calendarContainer .row").last().append("<div class=\"span3 "+tdClass +"\">"+tdClass+"</div>");
 		}
 	}
 }
