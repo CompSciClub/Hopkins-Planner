@@ -10,20 +10,41 @@ block styles
 
 block content
   .container.
-    <input type="hidden" id="colorInput" class="color {styleElement:'colorInput', pickerClosable:true}" value="ffffff" />
-    <table id="CalendarTable" class="bordered-table" style="">
-      <tbody>
-        <style type="text/css">
-          th{height:10; width:100}
-          td{height:100; width:100}
-        </style>
-        <tr>
-          <th>Monday</th>
-          <th>Tuesday</th>
-          <th>Wednesday</th>
-          <th>Thursday</th>
-          <th>Friday</th>
-          <th>Weekend</th>
-        </tr>
-      </tbody>
-    </table>
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="index.jade">Hopkins Planner</a>
+          <ul class="nav secondary-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle">Login</a>
+              <ul class="dropdown-menu">
+                <li>Username: <input id="user" type="text" name="user"></li>
+                <li>Password: <input id="pass" type="password" name="pass"></li>
+                <li><input type="submit" id="Log In" value="Log In"></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <input type="hidden" id="colorInput" class="color {styleElement:'colorInput', pickerClosable:true}" value="ffffff" />
+      <br />
+      <br />
+      <center><table id="CalendarTable" class="bordered-table" style="width:100% !important"></center>
+        <tbody>
+          <style type="text/css">
+          td{height:90px; width:150px}
+          </style>
+          <tr>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
