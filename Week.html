@@ -9,26 +9,51 @@
 		<script src="Week.js"></script>
 		<!--<script src="Week_Menu.js"></script>-->
 		<<script src="jscolor/jscolor.js"></script>
+		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
 		<link rel="stylesheet" href="Week.css">
 	</head>
 	
 	<body>
-		<input type="hidden" id="colorInput" class="color {styleElement:'colorInput', pickerClosable:true}" value="ffffff" />
-		<table id="CalendarTable" class="bordered-table" style="width:75% !important">
-			<tbody>
-				<style type="text/css">
-					th{height:10; width:100}
-					td{height:100; width:100}
-				</style>
-				<tr>
-					<th>Monday</th>
-					<th>Tuesday</th>
-					<th>Wednesday</th>
-					<th>Thursday</th>
-					<th>Friday</th>
-					<th>Weekend</th>
-				</tr>
-			</tbody>
-		</table>
+	      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="container-fluid">
+            <a class="brand" href="index.jade">Hopkins Planner</a>
+            <ul class="nav secondary-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle">Login</a>
+                <ul class="dropdown-menu">
+                  <li>Username: <input id="user" type="text" name="user"></li>
+                  <li>Password: <input id="pass" type="password" name="pass"></li>
+                  <li><input type="submit" id="Log In" value="Log In"></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+	   
+		<div class="content">
+			<input type="hidden" id="colorInput" class="color {styleElement:'colorInput', pickerClosable:true}" value="ffffff" />
+			<br />
+			<br />
+			<center><table id="CalendarTable" class="bordered-table" style="width:100% !important"></center>
+		
+				<tbody>
+					<style type="text/css">
+						th{height:10; width:150}
+						td{height:90; width:150}
+					</style>
+					<tr>
+						<th>Monday</th>
+						<th>Tuesday</th>
+						<th>Wednesday</th>
+						<th>Thursday</th>
+						<th>Friday</th>
+						<th>Saturday</th>
+						<th>Sunday</th>
+					</tr>
+				</tbody>
+			</table>
+			</div>
 	</body>
 </html>
