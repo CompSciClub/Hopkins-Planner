@@ -58,17 +58,13 @@ $(document).ready(function(){
 	$("#CalendarTable td").click(function(){
 		if ($(this).attr("id") != "calendarcell"){
 			if (!($(this).attr("class")) || $(this).attr("class").indexOf("colorCell") == -1){
-				
-				var date = parseInt($(this).attr("id").substring(12)); // ex. id is calendarcell7, date is 7
-			
-				/* find which day of the week corresponds using the table headers */
-				var day = $($("#CalendarTable th")[((date-1+startCell)%7) + 1]).text(); 
-				
-				var week = Math.floor((date+startCell)/7);
-								
-				var weekColor = (week%2 == 0) ? "Maroon" : "Gray";
-				
-				//alert("This is " +weekColor +" " +day +", the " +date +"th.");
+				// var date = parseInt($(this).attr("id").substring(12)); // ex. id is calendarcell7, date is 7
+				// /* find which day of the week corresponds using the table headers */
+				// var day = $($("#CalendarTable th")[((date-1+startCell)%7) + 1]).text(); 
+				// var week = Math.floor((date+startCell)/7);
+				// var weekColor = (week%2 == 0) ? "Maroon" : "Gray";
+				// //alert("This is " +weekColor +" " +day +", the " +date +"th.");
+				window.location = "Week.html";
 			}
 		}
 	}); // end td click

@@ -53,6 +53,9 @@ $(document).ready(function(){
 		// jscolor.picker.owner.hidePicker();
 	}); // end td click
 	
+	$("#returnToCalendar").click(function(){
+		window.location = "Calendar.html";
+	});
 });
 
 function changeColor(input, color){
