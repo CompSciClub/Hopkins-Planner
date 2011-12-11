@@ -53,9 +53,6 @@ $(document).ready(function(){
 		// jscolor.picker.owner.hidePicker();
 	}); // end td click
 	
-	$("#returnToCalendar").click(function(){
-		window.location = "Calendar.html";
-	});
 });
 
 function changeColor(input, color){
@@ -68,7 +65,7 @@ function createEmptyWeek(weekColor){
 	
 	for( var i = 0; i < 6; i++ ){
 		$("#CalendarTable tbody").append("<tr></tr>"); // New Row
-		for (var k = 0; k < 5; k++){
+		for (var k = 0; k <= 6; k++){
 			var tdClass = weekStructure[k][i] + "block";
 			$("#CalendarTable tbody tr").last().append("<td class=\""+tdClass +"\">"+tdClass+"</td>");
 		}
@@ -77,17 +74,21 @@ function createEmptyWeek(weekColor){
 
 function getWeekStructure(weekColor){
 	var maroonWeek = new Array();
-		maroonWeek[0] = new Array('A','C','D','E','F','G');
-		maroonWeek[1] = new Array('B','C','D','F','G','H');
-		maroonWeek[2] = new Array('A','B','E','F','activity','');
-		maroonWeek[3] = new Array('A','C','D','E','G','H');
-		maroonWeek[4] = new Array('B','A','C','F','G','H');
+		maroonWeek[0] = new Array('A-','C-','D-','E-','F-','G-');
+		maroonWeek[1] = new Array('B-','C-','D-','F-','G-','H-');
+		maroonWeek[2] = new Array('A-','B-','E-','F-','activity-','');
+		maroonWeek[3] = new Array('A-','C-','D-','E-','G-','H-');
+		maroonWeek[4] = new Array('B-','A-','C-','F-','G-','H-');
+		maroonWeek[5] = new Array('No School-','','','','','');
+		maroonWeek[6] = new Array('No School-','','','','','');
 	var grayWeek = new Array();
-		grayWeek[0] = new Array('A','C','D','E','F','H');
-		grayWeek[1] = new Array('B','C','D','E','G','H');
-		grayWeek[2] = new Array('A','B','E','F','activity','');
-		grayWeek[3] = new Array('B','C','D','E','G','H');
-		grayWeek[4] = new Array('B','A','D','F','G','H');
+		grayWeek[0] = new Array('A-','C-','D-','E-','F-','H-');
+		grayWeek[1] = new Array('B-','C-','D-','E-','G-','H-');
+		grayWeek[2] = new Array('A-','B-','E-','F-','activity','');
+		grayWeek[3] = new Array('B-','C-','D-','E-','G-','H-');
+		grayWeek[4] = new Array('B-','A-','D-','F-','G-','H-');
+		grayWeek[5] = new Array('No School-','','','','','');
+		grayWeek[6] = new Array('No School-','','','','','');
 		
 	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek.slice(0);
 }
