@@ -1,35 +1,25 @@
 /* Week.css */
 
-#calendarContainer{
-  width:100%;
-}
-
-#calendarContainer .row{
-  min-height: 40px;
-  margin: 5px;
-}
-
-#calendarContainer .row div{
-  height: 100%;
-  min-height:40px;
-}
-
-#calendarContainer .row .Ablock{background-color: #998E69;}
-#calendarContainer .row .Bblock{background-color: #F977A5;}
-#calendarContainer .row .Cblock{background-color: #75F585;}
-#calendarContainer .row .Dblock{background-color: #FFE37A;}
-#calendarContainer .row .Eblock{background-color: #A59AF4;}
-#calendarContainer .row .Fblock{background-color: #65926A;}
-#calendarContainer .row .Gblock{background-color: #FB90B5;}
-#calendarContainer .row .Hblock{background-color: #956777;}
-
+#CalendarTable td.Ablock{background-color: #998E69;}
+#CalendarTable td.Bblock{background-color: #F977A5;}
+#CalendarTable td.Cblock{background-color: #75F585;}
+#CalendarTable td.Dblock{background-color: #FFE37A;}
+#CalendarTable td.Eblock{background-color: #A59AF4;}
+#CalendarTable td.Fblock{background-color: #65926A;}
+#CalendarTable td.Gblock{background-color: #FB90B5;}
+#CalendarTable td.Hblock{background-color: #956777;}
 .container{
   width: auto !important;
 }
-
-.event_input{
+td{
+font-family:"Times New Roman",Times,serif;
 }
 
-.event_container{
-  width: 177px;
-}
+#CalendarTable td.A-block{background-color: #998E69;}
+#CalendarTable td.B-block{background-color: #F977A5;}
+#CalendarTable td.C-block{background-color: #75F585;}
+#CalendarTable td.D-block{background-color: #FFE37A;}
+#CalendarTable td.E-block{background-color: #A59AF4;}
+#CalendarTable td.F-block{background-color: #65926A;}
+#CalendarTable td.G-block{background-color: #FB90B5;}
+#CalendarTable td.H-block{background-color: #956777;}
