@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+	<head>
+	<script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+	<style type="text/css">
+      body {
+        padding-top: 60px;
+		}
+	  
+	  .form-stacked{
+		padding-left: 0px;
+		}
+
+		.sidebar .clearfix label{
+		text-align: center;
+		}
+
+		.form-stacked div.clearfix.error{
+		padding-left: 5px;
+		}
+
+		.sidebar{
+		position: fixed;
+		}
+
+    </style>
+	</head>
+	<body>
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="/">Hopkins Planner</a>
+          <p class="pull-right">Logged in as <a href="#">username</a></p>
+        </div>
+      </div>
+    </div>
+	
+     <div class="container-fluid">
+				<div class="sidebar">
+          <center><h1>Submit A Match</h1></center>
+          <span id="errors"></span>
+          <form class="form-stacked" onSubmit="return false;">
+            <div class="clearfix" id="winnerContainer"><label for='winner'>Winner's Email:</label><input type="text" id="winner" name="winner"></div>
+            <div class='clearfix' id="winnerPassContainer"><label for="winnerAuth">Winner's Password:</label> <input type="password" id="winnerAuth" name="winnerAuth"></div>
+            <div class='clearfix' id="loserContainer"><label for="loser">Loser's Email: </label><input type="text" id="loser" name="loser"></div>
+            <div class="clearfix" id="loserPassContainer"><label for="loserAuth">Loser's Password: </label><input type="password" id="loserAuth" name="loserAuth"></div>
+            <center><input type="submit" class="success btn" id="enterMatch" value="Enter Match"></center>
+          </form>
+        </div>
+      <div class="content">
+        <!-- Main hero unit for a primary marketing message or call to action -->
+        <div class="hero-unit">
+          <h1>Good Day!</h1>
+          <p>Need an account? Click on the button below!</p>
+		  <p><a class="btn primary large">Sign Up</a></p>
+        </div>
+
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="span6">
+            <h2>School Event</h2>
+            <p>There was an assembly and people died.</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+          </div>
+          <div class="span5">
+            <h2>School Event</h2>
+             <p>Jason Teplitz Had a Baby</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+         </div>
+          <div class="span5">
+            <h2>School Event</h2>
+            <p>Massive outbrake of protesters for the game "Skyrim". Protesters say the game is offensive to Dragons.</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="span6">
+            <h2>School Event</h2>
+            <p>Facebook is re-banned after an experiment involving monkeys.</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+          </div>
+          <div class="span5">
+            <h2>School Event</h2>
+             <p>Computer science club gets banned for offensive "forking Action".</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+         </div>
+          <div class="span5">
+            <h2>School Event</h2>
+            <p>Git dumped after "not being able to commit".</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+          </div>
+        </div>
+
+        <footer>
+          <p>&copy; Computer Science 2011</p>
+        </footer>
+      </div>
+    </div>
+
+      
+	</body>
+</html>

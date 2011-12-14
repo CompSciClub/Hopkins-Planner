@@ -5,10 +5,46 @@ html
     link(rel='stylesheet', href='http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css')
     script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js")
     script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
+	script(type="text/javascript", src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")
+	script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
+	<style type="text/css">
+      body {
+        padding-top: 60px;
+      }
+    </style>
+	
     block scripts
+	
+	script(type='text/javascript')
+	$(document).ready(function(){
+	
+
+  $(".topbar .dropdown-toggle").click(function(event){
+    $(".secondary-nav .dropdown").toggleClass("open");
+    console.log("click", $(".secondary-nav .dropdown"));
+  });
+}
 
     block styles
       
   body
     block content
+	 .container.
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="index.jade">Hopkins Planner</a>
+          <ul class="nav secondary-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle">Login</a>
+              <ul class="dropdown-menu">
+                <li>Username: <input id="user" type="text" name="user"></li>
+                <li>Password: <input id="pass" type="password" name="pass"></li>
+                <li><input type="submit" id="Log In" value="Log In"></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
       
