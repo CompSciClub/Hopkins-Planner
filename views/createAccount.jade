@@ -1,0 +1,25 @@
+extends layout
+
+block scripts
+  script(type="text/javascript", src="javascripts/sha.js")
+  script(type="text/javascript", src="javascripts/index.js")
+
+block content
+  .container
+    .content
+       h1 Create Account
+       form(method="post", action="/createAccount", onSubmit="return createAccount()")
+         fieldset
+          .clearfix 
+             label(for="email") Email
+             .input
+               input(type="text", name="email")
+          .clearfix 
+             label(for="password") Password
+             .input
+               input(id="password_input", name="password", type="password")
+           .clearfix
+             label(for="name") Name
+             .input
+               input(name="name", type="text")
+           input.btn.success(type="submit", value="Create")

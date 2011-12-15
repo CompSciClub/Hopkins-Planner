@@ -7,11 +7,8 @@ var Crypto = require("ezcrypto").Crypto;
  */
 
 exports.index = function(req, res){
-  if (!isLoggedIn(req)){
-    exports.loginPage(req, res);
-  }else{
-    exports.weekly(req, res);
-  }
+  res.render("index", {title: "Hopkins Planner", loggedIn: req.session.valid,
+                       flash: req.flash()});
 };
 
 /*
@@ -19,7 +16,9 @@ exports.index = function(req, res){
  */
 
 exports.monthly = function(req, res){
-  res.render("calendar", {title: "Monthly Planner"});
+  req.flash("error", "hey");
+  req.flash("emailError", "error");
+  res.render("calendar", {title: "Monthly Planner", loggedIn: req.session.valid});
 };
 
 /*
@@ -27,15 +26,15 @@ exports.monthly = function(req, res){
  */
 
 exports.weekly = function(req, res){
-  res.render("week", {title: "Weekly Planner"});
+  res.render("week", {title: "Weekly Planner", loggedIn: req.session.valid});
 }
 
 /*
- * Simple Login page, will probbably rarely be used as our index should eventually have a login feature
+ * GET /signup
  */
 
-exports.loginPage = function(req, res){
-  res.render("login", {title: "Login"});
+exports.createAccount = function(req, res){
+  res.render("createAccount", {title: "Login", loggedIn: req.session.valid});
 }
 
 /*
@@ -47,7 +46,8 @@ exports.createUser = function(req, res){
   var user  = new User({
     email: req.body.email,
     password: password,
-    salt: salt
+    salt: salt,
+    name: req.body.name
   });
   user.save(function(err){
     if (err){
@@ -58,7 +58,7 @@ exports.createUser = function(req, res){
         code: 101
       }, res);
     }else{
-      res.redirect(req.body.redirect || "back");
+      res.redirect(req.body.redirect || "/");
     }
   })
 };
@@ -70,14 +70,25 @@ exports.login = function(req, res){
   email = req.body.email;
   console.log(email);
   User.find({email: email}, function(err, users){
-    console.log("got user");
     user = users[0];
-    if (Crypto.SHA256(req.body.password + user.salt)){
+
+    if (users.length == 0){
+      req.flash("error", "Invalid email");
+      req.flash("emailError", "error");
+      res.redirect("back");
+      return;
+    }
+
+    if (Crypto.SHA256(req.body.password + user.salt) == user.password){
       validateUser(req, user.user_id);
+      req.session.displayName = user.name;
       res.redirect(req.body.redirect || "back");
+    }else{
+      req.flash("error", "Invalid password");
+      req.flash("passError", "error");
+      res.redirect("back");
     }
   });
-  console.log("sent query");
 }
 
 /*

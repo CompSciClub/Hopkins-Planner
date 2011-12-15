@@ -7,6 +7,7 @@ exports.User = new Schema({
   email     : {type: String, validate: [validateEmail, 'an email is required'], index: { unique: true }},
   password  : {type: String, validate: [validatePresenceOf, 'a password is required']},
   salt: {type: String},
+  name: String,
   user_id   : ObjectId
 });
 
