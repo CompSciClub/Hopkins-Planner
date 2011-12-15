@@ -34,7 +34,8 @@ exports.weekly = function(req, res){
  */
 
 exports.createAccount = function(req, res){
-  res.render("createAccount", {title: "Login", loggedIn: req.session.valid});
+  res.render("createAccount", {title: "Login", loggedIn: req.session.valid, 
+                               flash: req.flash()});
 }
 
 /*
@@ -51,12 +52,21 @@ exports.createUser = function(req, res){
   });
   user.save(function(err){
     if (err){
-      console.log(err);
-      error({
-        Status: 400,
-        msg: err.message,
-        code: 101
-      }, res);
+      if (err.type == undefined){ // this is a bad way to check for this
+        req.flash("error", "That email is already being used");
+        req.flash("errorEmail", "error");
+        res.redirect("back");
+        return;
+      }
+      console.log(err.errors, err);
+      if (err.errors.email){
+        req.flash("error", "Please try again with a valid email address");
+        req.flash("errorEmail", "error");
+      }else if (err.errors.password){
+        req.flash("error", "Password can not be empty");
+        req.flash("errorPass", "error");
+      }
+      res.redirect("back");
     }else{
       res.redirect(req.body.redirect || "/");
     }

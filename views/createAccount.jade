@@ -8,16 +8,21 @@ block content
   .container
     .content
        h1 Create Account
-       form(method="post", action="/createAccount", onSubmit="return createAccount()")
+       span#errors
+         if (flash.error)
+            div.class(data-alert="error", class="fade in alert-message error")
+              a(class="close", href="#") x
+              p #{flash.error}
+       form(method="post", action="/createAccount", onSubmit="return login()")
          fieldset
-          .clearfix 
+          .clearfix(class="#{flash.errorEmail}")
              label(for="email") Email
              .input
-               input(type="text", name="email")
-          .clearfix 
+               input(type="text", id="email_input", name="email", class="")
+          .clearfix(class="#{flash.errorPass}")
              label(for="password") Password
              .input
-               input(id="password_input", name="password", type="password")
+               input(id="password_input", name="password", type="password", class="")
            .clearfix
              label(for="name") Name
              .input
