@@ -48,6 +48,7 @@ app.get("/signup", routes.createAccount);
 
 app.post("/createAccount", routes.createUser);
 app.post("/login", routes.login);
+app.post("/event", routes.createEvent);
 
 
 app.listen(process.env.PORT || 3000);
