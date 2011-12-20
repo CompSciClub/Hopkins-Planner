@@ -8,9 +8,9 @@
 		<script type="text/javascript" src="bootstrap-alerts.js"></script>
 		<script src="Week.js"></script>
 		<!--<script src="Week_Menu.js"></script>-->
-		<<script src="jscolor/jscolor.js"></script>
 		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-		<link rel="stylesheet" href="Week.css">
+		<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
+		<link rel="stylesheet" href="Week.css" />
 	</head>
 	
 	<body>
@@ -31,7 +31,24 @@
 				</div>
 			</div>
 		</div>
-		 
+		
+		<div id="modal-from-dom" class="modal hide fade">
+            <div class="modal-header">
+              <a href="#" class="close">&times;</a>
+              <h3>Modal Heading</h3>
+            </div>
+            <div class="modal-body">
+
+			  <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn primary">Primary</a>
+              <a href="#" class="btn secondary">Secondary</a>
+            </div>
+        </div>
+
+		<button class="btn danger" data-keyboard="true" data-backdrop="true" data-controls-modal="modal-from-dom">Launch Modal</button>
+		
 		<div class="content">
 			<input type="hidden" id="colorInput" class="color {styleElement:'colorInput', pickerClosable:true}" value="ffffff" />
 			<br />
