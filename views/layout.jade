@@ -1,0 +1,32 @@
+!!!
+html
+  head
+    title= title
+    link(rel='stylesheet', href='http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css')
+    script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js")
+
+    block scripts
+      script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
+
+    block styles
+      link(rel="stylesheet", href="stylesheets/style.css")
+      
+  body
+    block header
+      .topbar
+        .topbar-inner
+          .container-fluid
+            a.brand(href="/") Hopkins Planner
+            if loggedIn
+              p.pull-right Logged in as #{user.name}, 
+                a(href="/logout") Logout
+    .container-fluid
+      block sidebar
+
+      block content
+
+    block footer
+      footer.
+        <p>&copy; Computer Science 2011</p>
+        </div>
+        </div>

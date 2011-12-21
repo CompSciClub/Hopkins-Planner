@@ -1,0 +1,27 @@
+extends layout
+block scripts
+  script(type="text/javascript", src="javascripts/Calendar.js")
+
+block content
+  div.
+    <center><h2 id="monthNameHeader"></h2></center>
+    <table id="CalendarTable" class="bordered-table">
+      <tbody>
+        <style type="text/css">
+          th{height:10; width:100}
+          td{height:100; width:100}
+          .colorCellMaroon{background-color:#800000}
+          .colorCellGray{background-color:#808080}
+        </style>
+        <tr>
+          <th style="width:5% !important;">Week</th>
+          <th>Sunday</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+        </tr>
+      </tbody>
+    </table>

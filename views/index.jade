@@ -1,0 +1,82 @@
+extends layout
+
+block scripts
+  if loggedIn
+    include week/header
+  else
+    script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
+    script(type="text/javascript", src="javascripts/sha.js")
+    script(type="text/javascript", src="javascripts/index.js")
+
+block sidebar
+  if !loggedIn
+    .sidebar
+      .well
+        center
+          h1 Login
+         span#errors
+           if (flash.error)
+              div.class(data-alert="error", class="fade in alert-message error")
+                a(class="close", href="#") x
+                p #{flash.error}
+
+        form.form-stacked(action="/login", method="POST", id="loginForm", onsubmit="return login()").
+          <div class="clearfix #{flash.emailError}" id="winnerContainer"><label for='email'>Email:</label><input id="email_input" type="text" name="email"></div>
+          <div class='clearfix #{flash.passError}' id="winnerPassContainer"><label for="winnerAuth">Password:</label> <input id="password_input" type="password"  name="password"></div>
+           <center><input type="submit" class="success btn" id="enterMatch" value="Login"></center>
+  else
+    .sidebar
+      .well
+        h3 Important Events
+          p Important events for this week will go here
+          p And here
+          p And here
+          p You get the idea
+
+block content
+  if !loggedIn
+    .content.
+      <div class="hero-unit">
+        <h1>Good Day!</h1>
+        <p>Need an account? Click on the button below!</p>
+        <p><a href="/signup" class="btn primary large">Sign Up</a></p>
+      </div>
+
+      <div class="row">
+        <div class="span6">
+          <h2>School Event</h2>
+          <p>There was an assembly and people died.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span5">
+          <h2>School Event</h2>
+           <p>Jason Teplitz Had a Baby</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+       </div>
+        <div class="span5">
+          <h2>School Event</h2>
+          <p>Massive outbrake of protesters for the game "Skyrim". Protesters say the game is offensive to Dragons.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="span6">
+          <h2>School Event</h2>
+          <p>Facebook is re-banned after an experiment involving monkeys.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span5">
+          <h2>School Event</h2>
+           <p>Computer science club gets banned for offensive "forking Action".</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+       </div>
+        <div class="span5">
+          <h2>School Event</h2>
+          <p>Git dumped after "not being able to commit".</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+  else
+    include week/body

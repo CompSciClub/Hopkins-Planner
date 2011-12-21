@@ -1,0 +1,30 @@
+extends layout
+
+block scripts
+  script(type="text/javascript", src="javascripts/sha.js")
+  script(type="text/javascript", src="javascripts/index.js")
+
+block content
+  .container
+    .content
+       h1 Create Account
+       span#errors
+         if (flash.error)
+            div.class(data-alert="error", class="fade in alert-message error")
+              a(class="close", href="#") x
+              p #{flash.error}
+       form(method="post", action="/createAccount", onSubmit="return login()")
+         fieldset
+          .clearfix(class="#{flash.errorEmail}")
+             label(for="email") Email
+             .input
+               input(type="text", id="email_input", name="email", class="")
+          .clearfix(class="#{flash.errorPass}")
+             label(for="password") Password
+             .input
+               input(id="password_input", name="password", type="password", class="")
+           .clearfix
+             label(for="name") Name
+             .input
+               input(name="name", type="text")
+           input.btn.success(type="submit", value="Create")
