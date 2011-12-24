@@ -1,34 +1,72 @@
-<!-- Calendar Experiment -->
-<html>
-	<head>
-		<title>Calendar Experiment</title>
-		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
-		<script type="text/javascript" src="bootstrap-alerts.js"></script>
-		<script src="Calendar.js"></script>
-	</head>
-	
-	<body>
-		<center><h2 id="monthNameHeader"></h2></center>
-		<table id="CalendarTable" class="bordered-table">
-			<tbody>
-				<style type="text/css">
-					th{height:10; width:100}
-					td{height:100; width:100}
-					.colorCellMaroon{background-color:#800000}
-					.colorCellGray{background-color:#808080}
-				</style>
-				<tr>
-					<th style="width:5% !important;">Week</th>
-					<th>Sunday</th>
-					<th>Monday</th>
-					<th>Tuesday</th>
-					<th>Wednesday</th>
-					<th>Thursday</th>
-					<th>Friday</th>
-					<th>Saturday</th>
-				</tr>
-			</tbody>
-		</table>
-	</body>
-</html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Hopkins Planner</title><link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css"/><script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script><script type="text/javascript" src="bootstrap-alerts.js"></script>
+<script src="week.js"></script>
+<link rel="stylesheet" href="week.css">
+<link rel="stylesheet" href="style.css"/>
+<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
+</head><body><div class="topbar"><div class="topbar-inner"><div class="container-fluid"><a href="/" class="brand">Hopkins Planner</a><p class="pull-right">Logged in as test13, <a href="/logout">Logout</a></p></div></div></div><div class="container-fluid"><div class="sidebar"><div class="well"><h3>Important Events<p>Important events for this week will go here</p><p>And here</p><p>And here</p><p>You get the idea</p></h3></div></div><div class="content">
+<br />
+<br />
+<center><table id="CalendarTable" class="bordered-table" style="width:100% !important"></center>
+  <tbody>
+    <style type="text/css">
+    td{height:90px; width:150px}
+    </style>
+    <tr>
+      <th>Monday</th>
+      <th>Tuesday</th>
+      <th>Wednesday</th>
+      <th>Thursday</th>
+      <th>Friday</th>
+      <th>Saturday</th>
+      <th>Sunday</th>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<!-- Modal Content -->
+	<div id="eventCreatorModal" class="modal hide fade">
+		<div class="modal-header">
+			<a href="#" class="close">&times;</a>
+			<h3>New Event</h3>
+		</div>
+		<div class="modal-body">
+			<form>
+				<input id="eventNameInput" class="xlarge" type="text" value="Event Name" />
+				<br />
+				<br />
+				<div id="eventCreatorModal-DateSelector" class="inline-inputs">
+					<input class="small" type="text" value="" />
+					<input class="mini" type="text" value="" />
+					to
+					<input class="small" type="text" value="" />
+					<input class="mini" type="text" value="" />
+				</div>
+				<br />
+				<table><tr>
+					<td width="50%">
+						<select name="normalSelect" id="blockSelect">
+							
+						</select>
+						<br />
+						<br />
+						<textarea id="modalDescriptionBox">Description here</textarea>
+					</td>
+					<td>
+						<p><input name="modalRadio1" type="radio" /> Options</p>
+						<p><input name="modalRadio1" type="radio" /> and</p>
+						<p><input name="modalRadio1" type="radio" /> Stuff</p>
+					</td>
+				</tr></table>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<input id="saveButton" type="submit" class="btn primary" value="Save" />
+			<input id="cancelButton" type="submit" class="btn secondary" value="Cancel" />
+		</div>
+	</div>
+	<!-- End Modal Content -->
+	<footer><p>&copy; Computer Science 2011</p>
+</div>
+</div>
+</footer>
+</body></html>
