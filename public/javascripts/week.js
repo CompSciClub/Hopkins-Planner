@@ -84,6 +84,12 @@ $(document).ready(function(){
 		if (thisClass.indexOf('block')!=0){
 			$("#blockSelect").val(thisClass[0]+' block');
 		}
+		
+		/* Set other default values */
+		$("#eventNameInput").val("Event Name");
+		$("#modalDescriptionBox").val("Description here");
+
+		
 		/* Launch the Modal */
 		$("#eventCreatorModal").modal({
 			keyboard: true,
@@ -91,9 +97,11 @@ $(document).ready(function(){
 			show: true
 		});
 		
-		/* Once the modal is loaded, focus on the "Event name" box */
+		/* Once the modal is loaded, focus on the "Event name" box and select it */
 		$('#eventCreatorModal').bind('shown', function () {
 			$("#eventNameInput").focus();
+			$("#eventNameInput").select();
+
 		});
 		$("#cancelButton").click(function(){
 			$("#eventCreatorModal").modal('hide');
