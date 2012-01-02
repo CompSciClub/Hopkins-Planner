@@ -3,11 +3,15 @@ extends layout
 block scripts
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   <script src="javascripts/week.js"></script>
+<<<<<<< HEAD
   <script src="plugins/jscolor/jscolor.js"></script>
+=======
+>>>>>>> 0fd27c1c7ab02d5663c55508a87f33310df336c4
 
 block styles
   <link rel="stylesheet" href="stylesheets/week.css">
 
+<<<<<<< HEAD
 block sidebar
   .sidebar
     .well
@@ -36,3 +40,44 @@ block content
             tr
             each block in day 
               td(class="#{block}block") #{block} 
+=======
+block content
+  .container.
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="index.jade">Hopkins Planner</a>
+          <ul class="nav secondary-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle">Login</a>
+              <ul class="dropdown-menu">
+                <li>Username: <input id="user" type="text" name="user"></li>
+                <li>Password: <input id="pass" type="password" name="pass"></li>
+                <li><input type="submit" id="Log In" value="Log In"></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <br />
+      <br />
+      <center><table id="CalendarTable" class="bordered-table" style="width:100% !important"></center>
+        <tbody>
+          <style type="text/css">
+          td{height:90px; width:150px}
+          </style>
+          <tr>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+>>>>>>> 0fd27c1c7ab02d5663c55508a87f33310df336c4

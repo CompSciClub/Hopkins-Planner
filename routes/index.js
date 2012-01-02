@@ -7,6 +7,7 @@ var Crypto = require("ezcrypto").Crypto;
  */
 
 exports.index = function(req, res){
+<<<<<<< HEAD
   if (!req.session.valid){
     res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
@@ -38,6 +39,12 @@ function getWeekStructure(weekColor){
 	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
 }
 
+=======
+  res.render("index", {title: "Hopkins Planner", loggedIn: req.session.valid,
+                       flash: req.flash()});
+};
+
+>>>>>>> 0fd27c1c7ab02d5663c55508a87f33310df336c4
 /*
  * GET monthly calendar page.
  */
