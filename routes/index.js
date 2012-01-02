@@ -37,9 +37,6 @@ function getWeekStructure(weekColor){
 		
 	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
 }
-  res.render("index", {title: "Hopkins Planner", loggedIn: req.session.valid,
-                       flash: req.flash()});
-};
 
 /*
  * GET monthly calendar page.
