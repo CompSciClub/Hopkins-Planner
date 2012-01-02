@@ -79,7 +79,7 @@ function createEmptyWeek(weekColor){
     $("#CalendarTable tbody").append("<tr></tr>"); // New Row
     for (var k = 0; k <= 6; k++){
       var tdClass = weekStructure[k][i] + "block";
-      $("#CalendarTable tbody tr").last().append("<td class=\""+tdClass +"\">"+tdClass+"</td>");
+      //$("#CalendarTable tbody tr").last().append("<td class=\""+tdClass +"\">"+tdClass+"</td>");
     }
   }
 }

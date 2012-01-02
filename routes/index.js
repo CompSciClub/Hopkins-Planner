@@ -7,9 +7,36 @@ var Crypto = require("ezcrypto").Crypto;
  */
 
 exports.index = function(req, res){
-  res.render("index", {title: "Hopkins Planner", loggedIn: req.session.valid,
+  if (!req.session.valid){
+    res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
+  }else{
+    console.log(getWeekStructure("gray"));
+    res.render("week", {title: "Hopkins Week", loggedIn: true, flash: req.flash(),
+                        week: getWeekStructure("gray")});
+  }
 };
+
+function getWeekStructure(weekColor){
+	var maroonWeek = new Array();
+		maroonWeek[0] = new Array('A-','C-','D-','E-','F-','G-');
+		maroonWeek[1] = new Array('B-','C-','D-','F-','G-','H-');
+		maroonWeek[2] = new Array('A-','B-','E-','F-','activity-','');
+		maroonWeek[3] = new Array('A-','C-','D-','E-','G-','H-');
+		maroonWeek[4] = new Array('B-','A-','C-','F-','G-','H-');
+		maroonWeek[5] = new Array('No School-','','','','','');
+		maroonWeek[6] = new Array('No School-','','','','','');
+	var grayWeek = [
+    ['A-', 'B-', 'A-', 'B-', 'B-', "No School-", "No School-"],
+    ["C-", "C-", "B-", "C-", "A-", "", ""],
+    ["D-", "D-", "E-", "D-", "D-", "", ""],
+    ["E-", "E-", "F-", "E-", "F-", "", ""],
+    ["F-", "G-", "activity", "G-", "G-", "", ""],
+    ["H-", "H-", "", "H-", "H-", "", ""]
+  ];
+		
+	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
+}
 
 /*
  * GET monthly calendar page.
