@@ -10,8 +10,8 @@ var express  = require('express')
 
 
 var app = module.exports = express.createServer();
-console.log(process.env.MONGOLAB_URI || "mongodb://localhost/calender");
-mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/calendar");
+console.log(process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calender");
+mongoose.connect(process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar");
 
 // Configuration
 
@@ -22,7 +22,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: process.env.secret || "Pick a secret if not on Heroku" }));
+  app.use(express.session({ secret: process.env.secret || "The computer science club will rise again... and reclaim B204" }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });

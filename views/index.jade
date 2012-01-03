@@ -17,7 +17,7 @@ block sidebar
               p #{flash.error}
 
       form.form-stacked(action="/login", method="POST", id="loginForm", onsubmit="return login()").
-        <div class="clearfix #{flash.emailError}" id="winnerContainer"><label for='email'>Email:</label><input id="email_input" type="text" name="email"></div>
+        <div class="clearfix #{flash.emailError}" id="winnerContainer"><label for='email'>Email:</label><input id="email_input" type="text" name="email" value="#{flash.email}"></div>
         <div class='clearfix #{flash.passError}' id="winnerPassContainer"><label for="winnerAuth">Password:</label> <input id="password_input" type="password"  name="password"></div>
          <center><input type="submit" class="success btn" id="enterMatch" value="Login"></center>
 

@@ -17,34 +17,12 @@ exports.index = function(req, res){
   }
 };
 
-function getWeekStructure(weekColor){
-	var maroonWeek = new Array();
-		maroonWeek[0] = new Array('A-','C-','D-','E-','F-','G-');
-		maroonWeek[1] = new Array('B-','C-','D-','F-','G-','H-');
-		maroonWeek[2] = new Array('A-','B-','E-','F-','activity-','');
-		maroonWeek[3] = new Array('A-','C-','D-','E-','G-','H-');
-		maroonWeek[4] = new Array('B-','A-','C-','F-','G-','H-');
-		maroonWeek[5] = new Array('No School-','','','','','');
-		maroonWeek[6] = new Array('No School-','','','','','');
-	var grayWeek = [
-    ['A-', 'B-', 'A-', 'B-', 'B-', "No School-", "No School-"],
-    ["C-", "C-", "B-", "C-", "A-", "", ""],
-    ["D-", "D-", "E-", "D-", "D-", "", ""],
-    ["E-", "E-", "F-", "E-", "F-", "", ""],
-    ["F-", "G-", "activity", "G-", "G-", "", ""],
-    ["H-", "H-", "", "H-", "H-", "", ""]
-  ];
-		
-	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
-}
 
 /*
  * GET monthly calendar page.
  */
 
 exports.monthly = function(req, res){
-  req.flash("error", "hey");
-  req.flash("emailError", "error");
   res.render("calendar", {title: "Monthly Planner", loggedIn: req.session.valid});
 };
 
@@ -123,6 +101,7 @@ exports.login = function(req, res){
     }else{
       req.flash("error", "Invalid password");
       req.flash("passError", "error");
+      req.flash("email", user.email);
       res.redirect("back");
     }
   });
@@ -144,6 +123,7 @@ exports.login = function(req, res){
   * POST /event
   */
   exports.createEvent = function(req, res){
+    console.log(req.params, req.body);
     var newEvent = new Event({
       type: "individual", // for now there is only support for individual student events
       name: req.body.name,
@@ -188,8 +168,29 @@ function createSalt(){
   var string = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for( var i=0; i < 3; i++ )
-      string += possible.charAt(Math.floor(Math.random() * possible.length));
-
+  for( var i=0; i < 3; i++ ){
+    string += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
   return Crypto.SHA256(string);
+}
+
+function getWeekStructure(weekColor){
+	var maroonWeek = new Array();
+		maroonWeek[0] = new Array('A','C','D','E','F','G');
+		maroonWeek[1] = new Array('B','C','D','F','G','H');
+		maroonWeek[2] = new Array('A','B','E','F','activity','');
+		maroonWeek[3] = new Array('A','C','D','E','G','H');
+		maroonWeek[4] = new Array('B','A','C','F','G','H');
+		maroonWeek[5] = new Array('No School','','','','','');
+		maroonWeek[6] = new Array('No School','','','','','');
+	var grayWeek = [
+    ['A', 'B', 'A', 'B', 'B', "No School", "No School"],
+    ["C", "C", "B", "C", "A", "", ""],
+    ["D", "D", "E", "D", "D", "", ""],
+    ["E", "E", "F", "E", "F", "", ""],
+    ["F", "G", "activity", "G", "G", "", ""],
+    ["H", "H", "", "H", "H", "", ""]
+  ];
+		
+	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
 }
