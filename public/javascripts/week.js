@@ -55,27 +55,25 @@ $(document).ready(function(){
   ); // end td hover
   $("#CalendarTable td").click(function(){
     // create a new event
+    var block = $(this).attr('class')[0]; // figure out which block the event is
     /** Modal Stuff */
 
-    /* Date stuff...may or may not be unnecessary */
-    var date           = new Date();
+    // get the date and information
+    var date = new Date(monday + (getChildIndex(this) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
         eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
         eventDate.node = this; // store the current element so we can put the event box in later
-    var dateString     = eventDate.string; 
 
-    var time1 = getCurrentTimeString(date);
-    date.setHours(date.getHours() + 1);
-    var time2 = getCurrentTimeString(date);
-    $("#eventCreatorModal-DateSelector .small").val(dateString);
-    $("#eventCreatorModal-DateSelector .mini:first").val(time1);
-    $("#eventCreatorModal-DateSelector .mini:last").val(time2);
+    // inject the date 
+    // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
+    $(".eventBlock").html(block + " block");
+    $(".eventDate").html(eventDate.string);
 
     /* Populate the block selector */
     var options = new Array("A block","B block",
                 "C block","D block",
                 "E block","F block",
                 "G block","H block",
-                "activity","lunch","after school");
+                "Activity period","Lunch","After school");
 
     $("#blockSelect").html(''); // clear the list
     for (var i = 0; i < options.length; i++){
@@ -83,11 +81,9 @@ $(document).ready(function(){
     }
 
     /* Set the block selector to the current block */
-    var thisClass = $(this).attr('class');
-    if (thisClass.indexOf('block')!=0){
-      $("#blockSelect").val(thisClass[0]+' block');
-    }
-    eventDate.block = blockNumbers[thisClass[0]]; // convert block to number and add block info to the eventDate object
+    $("#blockSelect").val(block +' block');
+    eventDate.block = blockNumbers[block]; // convert block to number and add block info to the eventDate object
+
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
       keyboard: true,
@@ -102,34 +98,37 @@ $(document).ready(function(){
   */
   /* Once the modal is loaded, focus on the "Event name" box */
   $('#eventCreatorModal').bind('shown', function () {
-    $("#eventNameInput").focus();
+    $("#eventNameInput").focus().select();
   });
   $("#cancelButton").click(function(){
     closeDialog();
+  });
+  $("#blockSelect").change(function(){
+    $(".eventBlock").html($(this).val()); // change the block in the time string when they select a new block
   });
   $("#saveButton").click(createEvent);
 
   // if the input box has default text, select all of it to easily replace sample text
   $("input[value=\"Event Name\"], textarea").click(function(){
+    console.log("focus");
     if (($(this).attr('id')=="modalDescriptionBox" && $(this).val()=="Description here") || ($(this).attr('id')=="eventNameInput" && $(this).val()=="Event Name")){
       $(this).select();
     }
   });
 });
 
-// Creates a new event form info in modal
+// Creates a new event from info in modal
 function createEvent(){
-  // first create the event object
-  var newEvent = eventDate;
-  newEvent.name  = $("#eventNameInput").val();
+  // grab the current eventDate object which we will extend
+  var newEvent         = eventDate;
+  newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
+
 
   // now add the element to the UI
   // TODO re-style these event boxes
   $(eventDate.node).append('<div class="alert-message info" style="height:30"><h4>' + newEvent.name + '</h4></div>');
-  closeDialog();
-  console.log(newEvent);
-
+  
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
   $.ajax({
@@ -141,6 +140,8 @@ function createEvent(){
       error(err);
     }
   });
+  closeDialog();
+  console.log(newEvent);
 }
 
 // closes and resets the modal dialog
@@ -200,4 +201,14 @@ function getCurrentTimeString(dateObject){
   } else {
     return ((dateObject.getHours()%12==0)?12:dateObject.getHours()%12) + dateObject.toTimeString().slice(2,5)+"pm";
   }
+}
+
+// function to find the index of a child element
+function getChildIndex(child){
+  var cnt = 0;
+  while(child.previousSibling){
+    cnt++;
+    child = child.previousSibling
+  }
+  return cnt;
 }

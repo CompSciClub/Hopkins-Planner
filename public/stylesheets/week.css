@@ -8,9 +8,25 @@
 #CalendarTable td.Fblock{background-color: #65926A;}
 #CalendarTable td.Gblock{background-color: #FB90B5;}
 #CalendarTable td.Hblock{background-color: #956777;}
+
 .container{
   width: auto !important;
 }
+
 td{
 font-family:"Times New Roman",Times,serif;
+}
+
+#eventDate{
+  position: relative;
+  top: 3px;
+}
+
+.modal-header{
+  padding-bottom: 10px;
+}
+
+#modalDescriptionBox{
+  max-height: 200px;
+  max-width: 250px;
 }

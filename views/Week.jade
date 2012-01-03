@@ -1,6 +1,8 @@
 extends layout
 
 block scripts
+  script(type="text/javascript")
+    var monday = #{date};
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   <script src="javascripts/week.js"></script>
   <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
@@ -19,8 +21,6 @@ block sidebar
 
 block content
   .content
-    br
-    br
     center
       table(id="CalendarTable", class="bordered-table", style="width:100% !important")
         tbody
@@ -39,36 +39,29 @@ block content
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
         <a href="#" class="close">&times;</a>
-        <h3>New Event</h3>
+        <h3>
+          <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
+          <br />
+          <small id="eventDate"><span class="eventBlock"></span> on <span class="eventDate"></span></small>
       </div>
       <div class="modal-body">
         <form>
-          <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
-          <br />
-          <br />
-          <div id="eventCreatorModal-DateSelector" class="inline-inputs">
-            <input class="small" type="text" value="">
-            <input class="mini" type="text" value="">
-            to
-            <input class="small" type="text" value="">
-            <input class="mini" type="text" value="">
-          </div>
-          <br />
-          <table><tr>
-            <td width="50%">
-              <select name="normalSelect" id="blockSelect">
-                
-              </select>
-              <br />
-              <br />
-              <textarea id="modalDescriptionBox">Description here</textarea>
-            </td>
-            <td>
-              <p><input name="modalRadio1" type="radio"> Options</p>
-              <p><input name="modalRadio1" type="radio"> and</p>
-              <p><input name="modalRadio1" type="radio"> Stuff</p>
-            </td>
-          </tr></table>
+          <table>
+            <tr>
+              <td class="noBorder" width="50%">
+                <select name="normalSelect" id="blockSelect">
+                </select>
+                <br />
+                <br />
+                <textarea id="modalDescriptionBox">Description here</textarea>
+              </td>
+              <td class="noBorder">
+                <p><input name="modalRadio1" type="radio"> Options</p>
+                <p><input name="modalRadio1" type="radio"> and</p>
+                <p><input name="modalRadio1" type="radio"> Stuff</p>
+              </td>
+            </tr>
+          </table>
         </form>
       </div>
       <div class="modal-footer">
