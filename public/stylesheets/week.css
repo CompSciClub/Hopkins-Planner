@@ -12,7 +12,7 @@
   width: auto !important;
 }
 td{
-font-family:"Times New Roman",Times,serif;
+font-family:"Lucida Console",monospace;
 }
 
 #CalendarTable td.A-block{background-color: #998E69;}
