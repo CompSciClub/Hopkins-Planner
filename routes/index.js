@@ -7,17 +7,26 @@ var Crypto = require("ezcrypto").Crypto;
  */
 
 exports.index = function(req, res){
-  res.render("index", {title: "Hopkins Planner", loggedIn: req.session.valid,
+  if (!req.session.valid){
+    res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
+  }else{
+    var date = new Date(new Date().getTime() + new Date().getTimezoneOffset() - (5 * 60 * 60 * 1000)); // get an EST date object
+    date = new Date(date.getTime() - (date.getDay() - 1) * 24 * 60 * 60 * 1000);
+
+    //TODO use the date to pick gray or maroon
+    console.log(getWeekStructure("gray"));
+    res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+                        week: getWeekStructure("maroon")});
+  }
 };
+
 
 /*
  * GET monthly calendar page.
  */
 
 exports.monthly = function(req, res){
-  req.flash("error", "hey");
-  req.flash("emailError", "error");
   res.render("calendar", {title: "Monthly Planner", loggedIn: req.session.valid});
 };
 
@@ -96,6 +105,7 @@ exports.login = function(req, res){
     }else{
       req.flash("error", "Invalid password");
       req.flash("passError", "error");
+      req.flash("email", user.email);
       res.redirect("back");
     }
   });
@@ -117,6 +127,7 @@ exports.login = function(req, res){
   * POST /event
   */
   exports.createEvent = function(req, res){
+    console.log(req.params, req.body);
     var newEvent = new Event({
       type: "individual", // for now there is only support for individual student events
       name: req.body.name,
@@ -161,8 +172,29 @@ function createSalt(){
   var string = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for( var i=0; i < 3; i++ )
-      string += possible.charAt(Math.floor(Math.random() * possible.length));
-
+  for( var i=0; i < 3; i++ ){
+    string += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
   return Crypto.SHA256(string);
+}
+
+function getWeekStructure(weekColor){
+  var maroonWeek = [
+    ["A", "B", "A", "A", "B", "No school", "No School"],
+    ["C", "C", "B", "C", "A", "", ""],
+    ["D", "D", "E", "D", "C", "", ""],
+    ["E", "F", "F", "E", "F", "", ""],
+    ["F", "G", "activity", "G", "G", '', ''],
+    ["G", "H", "", "H", "H", "", ""]
+  ];
+	var grayWeek = [
+    ['A', 'B', 'A', 'B', 'B', "No School", "No School"],
+    ["C", "C", "B", "C", "A", "", ""],
+    ["D", "D", "E", "D", "D", "", ""],
+    ["E", "E", "F", "E", "F", "", ""],
+    ["F", "G", "activity", "G", "G", "", ""],
+    ["H", "H", "", "H", "H", "", ""]
+  ];
+		
+	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
 }
