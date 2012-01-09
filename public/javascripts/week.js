@@ -2,19 +2,6 @@
 
 var eventDate; // Date info for the event currently being created
 
-var blockNumbers = {
-  A: 0,
-  B: 1,
-  C: 2,
-  D: 3,
-  E: 4,
-  F: 5,
-  G: 6,
-  H: 7,
-  activity: 8,
-  "No School": 9
-}
-
 $(document).ready(function(){
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {
@@ -59,8 +46,10 @@ $(document).ready(function(){
     /** Modal Stuff */
 
     // get the date and information
+    console.log(getChildIndex(this));
     var date = new Date(monday + (getChildIndex(this) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
         eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
+        eventDate.day  = (date.getDay() - 1) % 7;
         eventDate.node = this; // store the current element so we can put the event box in later
 
     // inject the date 
@@ -82,7 +71,7 @@ $(document).ready(function(){
 
     /* Set the block selector to the current block */
     $("#blockSelect").val(block +' block');
-    eventDate.block = blockNumbers[block]; // convert block to number and add block info to the eventDate object
+    eventDate.block = block; // convert block to number and add block info to the eventDate object
 
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
@@ -121,7 +110,6 @@ $(document).ready(function(){
 function createEvent(){
   // grab the current eventDate object which we will extend
   var newEvent         = eventDate;
-  console.log(eventDate);
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
 

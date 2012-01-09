@@ -12,21 +12,30 @@ exports.index = function(req, res){
                        flash: req.flash()});
   }else{
     var date = new Date(); // get the current date
-    date = new Date(date.getTime() - (date.getDay() - 1) * 24 * 60 * 60 * 1000); // convert to monday
+    date = new Date(date.getTime() - ((date.getDay() - 1) % 7) * 24 * 60 * 60 * 1000); // convert to monday
 
     // set it to to the beginning of monday EST
     date.setUTCHours(5); 
     date.setUTCMinutes(0);
     date.setUTCSeconds(0);
     date.setUTCMilliseconds(0);
-    console.log(req.session.userId, date.getTime(), date.getTime() + 604800000);
+    console.log(req.session.userId, date.getDate(), date.getTime(), date.getTime() + 604800000);
 
-    // get every evewnt for the current user in this week
+    // get every event for the current user in this week
     Event.find({owner: req.session.userId, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
-      console.log(err, events);
+      var eventsObj = {};
+      for (var i = 0; i < events.length; i++){
+        if (!eventsObj[events[i].day])
+          eventsObj[events[i].day] = {};
+
+        if (!eventsObj[events[i].day][events[i].block])
+            eventsObj[events[i].day][events[i].block] =[];
+
+        eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
+      }
       //TODO use the date to pick gray or maroon
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("maroon"), events: events});
+                          week: getWeekStructure("gray"), events: eventsObj});
     });
 
   }
@@ -147,6 +156,7 @@ exports.createEvent = function(req, res){
     type: "individual", // for now there is only support for individual student events
     name: req.body.name,
     timestamp: req.body.timestamp,
+    day: req.body.day,
     block: req.body.block,
     description: req.body.description,
     owner: req.session.userId
