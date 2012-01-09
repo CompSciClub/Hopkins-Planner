@@ -14,9 +14,7 @@ exports.User = new Schema({
 exports.Event = new Schema({
   type: String,
   name: String,
-  day: String,
-  month: String,
-  year: String,
+  timestamp: Number,
   block: Number,
   description: String,
   owner: String,

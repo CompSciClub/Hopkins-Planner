@@ -121,6 +121,7 @@ $(document).ready(function(){
 function createEvent(){
   // grab the current eventDate object which we will extend
   var newEvent         = eventDate;
+  console.log(eventDate);
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
 
@@ -187,6 +188,7 @@ function getCurrentDateString(dateObject){
     month: month,
     day: date,
     year: year,
+    timestamp: dateObject.getTime()
   }
 }
 

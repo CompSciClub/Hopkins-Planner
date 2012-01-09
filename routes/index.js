@@ -11,13 +11,24 @@ exports.index = function(req, res){
     res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
   }else{
-    var date = new Date(new Date().getTime() + new Date().getTimezoneOffset() - (5 * 60 * 60 * 1000)); // get an EST date object
-    date = new Date(date.getTime() - (date.getDay() - 1) * 24 * 60 * 60 * 1000);
+    var date = new Date(); // get the current date
+    date = new Date(date.getTime() - (date.getDay() - 1) * 24 * 60 * 60 * 1000); // convert to monday
 
-    //TODO use the date to pick gray or maroon
-    console.log(getWeekStructure("gray"));
-    res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                        week: getWeekStructure("maroon")});
+    // set it to to the beginning of monday EST
+    date.setUTCHours(5); 
+    date.setUTCMinutes(0);
+    date.setUTCSeconds(0);
+    date.setUTCMilliseconds(0);
+    console.log(req.session.userId, date.getTime(), date.getTime() + 604800000);
+
+    // get every evewnt for the current user in this week
+    Event.find({owner: req.session.userId, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
+      console.log(err, events);
+      //TODO use the date to pick gray or maroon
+      res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+                          week: getWeekStructure("maroon"), events: events});
+    });
+
   }
 };
 
@@ -99,7 +110,7 @@ exports.login = function(req, res){
     }
 
     if (Crypto.SHA256(req.body.password + user.salt) == user.password){
-      validateUser(req, user.user_id);
+      validateUser(req, user._id);
       req.session.displayName = user.name;
       res.redirect(req.body.redirect || "back");
     }else{
@@ -126,27 +137,29 @@ exports.login = function(req, res){
  /*
   * POST /event
   */
-  exports.createEvent = function(req, res){
-    console.log(req.params, req.body);
-    var newEvent = new Event({
-      type: "individual", // for now there is only support for individual student events
-      name: req.body.name,
-      day: req.body.day,
-      month: req.body.month,
-      year: req.body.year,
-      block: req.body.block,
-      description: req.body.description,
-      owner: req.session.userId
-    });
-    newEvent.save(function(error){
-      res.writeHead(200, {"Content-Type": "application/json"});
-      if (!error){
-        res.end(JSON.stringify({error: 0, msg: "Event added"}));
-      }else{
-        res.end(JSON.stringify({error: 101, msg: error}));
-      }
-    });
+exports.createEvent = function(req, res){
+  if (!req.session.valid){
+    res.writeHead(401, {"error": 401, msg: "You must be logged in to add an event"});
+    req.flash("error", "You must login first");
+    return;
   }
+  var newEvent = new Event({
+    type: "individual", // for now there is only support for individual student events
+    name: req.body.name,
+    timestamp: req.body.timestamp,
+    block: req.body.block,
+    description: req.body.description,
+    owner: req.session.userId
+  });
+  newEvent.save(function(error){
+    res.writeHead(200, {"Content-Type": "application/json"});
+    if (!error){
+      res.end(JSON.stringify({error: 0, msg: "Event added"}));
+    }else{
+      res.end(JSON.stringify({error: 101, msg: error}));
+    }
+  });
+}
 
 
 // User releated functions we may want to move these to another file
@@ -155,6 +168,7 @@ function validateUser(req, id){
   }) // I'm not sure that we want or need this */
 
   req.session.valid = 1;
+  console.log(id);
   req.session.userId = id; 
 }
 
