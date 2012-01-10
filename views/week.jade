@@ -3,6 +3,7 @@ extends layout
 block scripts
   script(type="text/javascript")
     var monday = #{date};
+    var events = JSON.parse(decodeURIComponent("!{encodeURIComponent(JSON.stringify(events))}"));
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   <script src="javascripts/week.js"></script>
   <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
