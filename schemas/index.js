@@ -18,7 +18,7 @@ exports.Event = new Schema({
   day: Number, // number from 0 - 6 indicating day of week (Monday is 0)
   block: String,
   description: String,
-  owner: String,
+  owner: ObjectId,
   event_id: ObjectId
 });
 
