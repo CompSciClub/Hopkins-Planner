@@ -147,11 +147,9 @@ exports.login = function(req, res){
   * POST /event
   */
 exports.createEvent = function(req, res){
-  if (!req.session.valid){
-    res.writeHead(401, {"error": 401, msg: "You must be logged in to add an event"});
-    req.flash("error", "You must login first");
+  if (!isLoggedIn(req, res))
     return;
-  }
+  
   var newEvent = new Event({
     type: "individual", // for now there is only support for individual student events
     name: req.body.name,
@@ -171,6 +169,50 @@ exports.createEvent = function(req, res){
   });
 }
 
+exports.deleteEvent = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+
+  Event.findOne({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
+    if (e == null || err){
+      res.writeHead(400, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({error: 400, msg: err}));
+      return;
+    }
+
+    e.remove();
+    res.writeHead(200, {"Content-Type": "application/json"});
+    res.end(JSON.stringify({error: 0, msg: "Event deleted succesfully"}));
+  });
+};
+
+exports.modifyEvent = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+
+  Event.findOne({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
+    if (e == null || err){
+      res.writeHead(400, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({error: 400, msg: err}));
+      return;
+    }
+
+    e.name        = req.body.name          || e.name;
+    e.timestamp   = req.body.timestamp     || e.timestamp;
+    e.day         = req.body.day           || e.day;
+    e.block       = req.body.block         || e.block;
+    e.description = req.body.description   || e.description;
+    e.save(function(error){
+      if (!error){
+        res.end(JSON.stringify({error: 0, msg: "Event modified"}));
+      }else{
+        res.writeHead(400, {"Content-Type": "application/json"});
+        res.end(JSON.stringify({error: 400, msg: error}));
+      }
+    });
+  });
+}
+
 
 // User releated functions we may want to move these to another file
 function validateUser(req, id){
@@ -186,10 +228,14 @@ function logout(req){
   req.session.destroy();
 }
 
-function isLoggedIn(req){
-  if (req.session.valid)
-    return true;
-  return false;
+function isLoggedIn(req, res){
+  if (!req.session.valid){
+    res.writeHead(401, {"error": 401, msg: "You must be logged in to add an event"});
+    req.flash("error", "You must login first");
+    res.end();
+    return false;
+  }
+  return true;
 }
 
 function createSalt(){

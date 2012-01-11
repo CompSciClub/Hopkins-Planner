@@ -47,7 +47,11 @@ app.get("/signup", routes.createAccount);
 
 app.post("/createAccount", routes.createUser);
 app.post("/login", routes.login);
+
+// events
 app.post("/event", routes.createEvent);
+app.post("/event/:eventId", routes.modifyEvent);
+app.delete("/event/:eventId", routes.deleteEvent);
 
 
 app.listen(process.env.PORT || 3000);
