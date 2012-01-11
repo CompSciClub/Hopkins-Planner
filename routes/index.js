@@ -173,14 +173,13 @@ exports.deleteEvent = function(req, res){
   if (!isLoggedIn(req, res))
     return;
 
-  Event.findOne({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
+  Event.remove({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
     if (e == null || err){
       res.writeHead(400, {"Content-Type": "application/json"});
       res.end(JSON.stringify({error: 400, msg: err}));
       return;
     }
 
-    e.remove();
     res.writeHead(200, {"Content-Type": "application/json"});
     res.end(JSON.stringify({error: 0, msg: "Event deleted succesfully"}));
   });
