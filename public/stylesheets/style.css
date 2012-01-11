@@ -33,3 +33,7 @@ a {
 .noBorder{
   border: none !important;
 }
+
+.left {
+  float:left;
+}
