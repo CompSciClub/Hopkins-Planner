@@ -7,17 +7,46 @@ var Crypto = require("ezcrypto").Crypto;
  */
 
 exports.index = function(req, res){
-  res.render("index", {title: "Hopkins Planner", loggedIn: req.session.valid,
+  if (!req.session.valid){
+    res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
+  }else{
+    var date = new Date(); // get the current date
+    date = new Date(date.getTime() - ((date.getDay() - 1) % 7) * 24 * 60 * 60 * 1000); // convert to monday
+
+    // set it to to the beginning of monday EST
+    date.setUTCHours(5); 
+    date.setUTCMinutes(0);
+    date.setUTCSeconds(0);
+    date.setUTCMilliseconds(0);
+    console.log(req.session.userId, date.getDate(), date.getTime(), date.getTime() + 604800000);
+
+    // get every event for the current user in this week
+    Event.find({owner: req.session.userId, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
+      var eventsObj = {};
+      for (var i = 0; i < events.length; i++){
+        if (!eventsObj[events[i].day])
+          eventsObj[events[i].day] = {};
+
+        if (!eventsObj[events[i].day][events[i].block])
+            eventsObj[events[i].day][events[i].block] =[];
+
+        eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
+      }
+      //TODO use the date to pick gray or maroon
+      res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+                          week: getWeekStructure("gray"), events: eventsObj});
+    });
+
+  }
 };
+
 
 /*
  * GET monthly calendar page.
  */
 
 exports.monthly = function(req, res){
-  req.flash("error", "hey");
-  req.flash("emailError", "error");
   res.render("calendar", {title: "Monthly Planner", loggedIn: req.session.valid});
 };
 
@@ -90,12 +119,13 @@ exports.login = function(req, res){
     }
 
     if (Crypto.SHA256(req.body.password + user.salt) == user.password){
-      validateUser(req, user.user_id);
+      validateUser(req, user._id);
       req.session.displayName = user.name;
       res.redirect(req.body.redirect || "back");
     }else{
       req.flash("error", "Invalid password");
       req.flash("passError", "error");
+      req.flash("email", user.email);
       res.redirect("back");
     }
   });
@@ -116,26 +146,72 @@ exports.login = function(req, res){
  /*
   * POST /event
   */
-  exports.createEvent = function(req, res){
-    var newEvent = new Event({
-      type: "individual", // for now there is only support for individual student events
-      name: req.body.name,
-      day: req.body.day,
-      month: req.body.month,
-      year: req.body.year,
-      block: req.body.block,
-      description: req.body.description,
-      owner: req.session.userId
-    });
-    newEvent.save(function(error){
-      res.writeHead(200, {"Content-Type": "application/json"});
+exports.createEvent = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+  
+  var newEvent = new Event({
+    type: "individual", // for now there is only support for individual student events
+    name: req.body.name,
+    timestamp: req.body.timestamp,
+    day: req.body.day,
+    block: req.body.block,
+    description: req.body.description,
+    owner: req.session.userId
+  });
+  newEvent.save(function(error){
+    res.writeHead(200, {"Content-Type": "application/json"});
+    if (!error){
+      res.end(JSON.stringify({error: 0, msg: "Event added"}));
+    }else{
+      res.end(JSON.stringify({error: 101, msg: error}));
+    }
+  });
+}
+
+exports.deleteEvent = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+
+  Event.findOne({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
+    if (e == null || err){
+      res.writeHead(400, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({error: 400, msg: err}));
+      return;
+    }
+
+    e.remove();
+    res.writeHead(200, {"Content-Type": "application/json"});
+    res.end(JSON.stringify({error: 0, msg: "Event deleted succesfully"}));
+  });
+};
+
+exports.modifyEvent = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+
+  Event.findOne({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
+    if (e == null || err){
+      res.writeHead(400, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({error: 400, msg: err}));
+      return;
+    }
+
+    e.name        = req.body.name          || e.name;
+    e.timestamp   = req.body.timestamp     || e.timestamp;
+    e.day         = req.body.day           || e.day;
+    e.block       = req.body.block         || e.block;
+    e.description = req.body.description   || e.description;
+    e.save(function(error){
       if (!error){
-        res.end(JSON.stringify({error: 0, msg: "Event added"}));
+        res.end(JSON.stringify({error: 0, msg: "Event modified"}));
       }else{
-        res.end(JSON.stringify({error: 101, msg: error}));
+        res.writeHead(400, {"Content-Type": "application/json"});
+        res.end(JSON.stringify({error: 400, msg: error}));
       }
     });
-  }
+  });
+}
 
 
 // User releated functions we may want to move these to another file
@@ -144,6 +220,7 @@ function validateUser(req, id){
   }) // I'm not sure that we want or need this */
 
   req.session.valid = 1;
+  console.log(id);
   req.session.userId = id; 
 }
 
@@ -151,18 +228,43 @@ function logout(req){
   req.session.destroy();
 }
 
-function isLoggedIn(req){
-  if (req.session.valid)
-    return true;
-  return false;
+function isLoggedIn(req, res){
+  if (!req.session.valid){
+    res.writeHead(401, {"error": 401, msg: "You must be logged in to add an event"});
+    req.flash("error", "You must login first");
+    res.end();
+    return false;
+  }
+  return true;
 }
 
 function createSalt(){
   var string = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for( var i=0; i < 3; i++ )
-      string += possible.charAt(Math.floor(Math.random() * possible.length));
-
+  for( var i=0; i < 3; i++ ){
+    string += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
   return Crypto.SHA256(string);
+}
+
+function getWeekStructure(weekColor){
+  var maroonWeek = [
+    ["A", "B", "A", "A", "B", "No school", "No School"],
+    ["C", "C", "B", "C", "A", "", ""],
+    ["D", "D", "E", "D", "C", "", ""],
+    ["E", "F", "F", "E", "F", "", ""],
+    ["F", "G", "activity", "G", "G", '', ''],
+    ["G", "H", "", "H", "H", "", ""]
+  ];
+	var grayWeek = [
+    ['A', 'B', 'A', 'B', 'B', "No School", "No School"],
+    ["C", "C", "B", "C", "A", "", ""],
+    ["D", "D", "E", "D", "D", "", ""],
+    ["E", "E", "F", "E", "F", "", ""],
+    ["F", "G", "activity", "G", "G", "", ""],
+    ["H", "H", "", "H", "H", "", ""]
+  ];
+		
+	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
 }

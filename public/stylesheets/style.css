@@ -24,3 +24,12 @@ a {
 .sidebar .clearfix input{
   width: 170px;
 }
+
+/* FIx for input boxes breaking alignment with clearfix.error */
+.form-stacked div.clearfix.error{
+  padding-left: 10px;
+}
+
+.noBorder{
+  border: none !important;
+}
