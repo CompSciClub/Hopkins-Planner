@@ -14,10 +14,9 @@ exports.User = new Schema({
 exports.Event = new Schema({
   type: String,
   name: String,
-  day: String,
-  month: String,
-  year: String,
-  block: Number,
+  timestamp: Number,
+  day: Number, // number from 0 - 6 indicating day of week (Monday is 0)
+  block: String,
   description: String,
   owner: String,
   event_id: ObjectId

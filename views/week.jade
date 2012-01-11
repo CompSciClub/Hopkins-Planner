@@ -3,6 +3,7 @@ extends layout
 block scripts
   script(type="text/javascript")
     var monday = #{date};
+    var events = JSON.parse(decodeURIComponent("!{encodeURIComponent(JSON.stringify(events))}"));
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   <script src="javascripts/week.js"></script>
   <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
@@ -32,10 +33,15 @@ block content
             th Wednesday
             th Thursday
             th Friday
-          each day in week
+          each period in week
             tr
-            each block in day 
+            each block, day in period
               td(class="#{block}block") #{block} Block
+                if (events[day] && events[day][block])
+                  each eventObj in events[day][block]
+                    .alert-message.info(eventId = eventObj._id, style="height:30")
+                      h4
+                        #{eventObj.name}
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
         <a href="#" class="close">&times;</a>
