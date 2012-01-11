@@ -26,6 +26,7 @@ exports.Event = new Schema({
 exports.Class = new Schema({
   name: String,
   teacher: String,
+  block: String,
   events: [String],
   students: [String],
   class_id: ObjectId

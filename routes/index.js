@@ -77,8 +77,10 @@ exports.createUser = function(req, res){
     email: req.body.email,
     password: password,
     salt: salt,
-    name: req.body.name
+    name: req.body.name,
+    is_teacher: (req.body.is_teacher == "on") ? true : false
   });
+
   user.save(function(err){
     if (err){
       if (err.type == undefined){ // this is a bad way to check for this
