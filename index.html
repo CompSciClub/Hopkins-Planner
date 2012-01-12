@@ -1,68 +1,227 @@
-<!-- ModalTest.html -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html>
-<head>
-	<title>ModalTest</title>
-	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
-	<script type="text/javascript" src="bootstrap-alerts.js"></script>
-	<script src="ModalTest.js"></script>
-	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
-	<link rel="stylesheet" href="style.css">
-	<link rel="stylesheet" href="week.css">
-	<link rel="stylesheet" href="ModalTest.css">
 
+  <title>Hopkins Week</title>
+  <link rel="stylesheet" href=
+  "http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" type="text/css" />
+  <script type="text/javascript" src=
+  "https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js">
+</script>
+  <script type="text/javascript">
+//<![CDATA[
+  var monday = 1326085200000;
+  var events = JSON.parse(decodeURIComponent("%7B%220%22%3A%7B%22A%22%3A%5B%7B%22_id%22%3A%224f0bb03af3e2670100000002%22%2C%22type%22%3A%22individual%22%2C%22name%22%3A%22Testthingy%22%2C%22timestamp%22%3A1326085200000%2C%22day%22%3A0%2C%22block%22%3A%22A%22%2C%22description%22%3A%22Description%20here%22%2C%22owner%22%3A%224f049000b3edd00100000004%22%7D%5D%7D%7D"));
+  //]]>
+  </script>
+  <script type="text/javascript" src="bootstrap-alerts.js">
+</script>
+  <script src="week.js" type="text/javascript">
+</script>
+  <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js" type=
+  "text/javascript">
+</script>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+  <link rel="stylesheet" href="week.css" type="text/css" />
+  <style type="text/css">
+/*<![CDATA[*/
+  td{height:90px; width:150px}
+  /*]]>*/
+  </style>
 </head>
-<body style="padding:10px">
-	<input id="loadButton" type="submit" class="btn danger" value="Load Modal" />
 
-<!-- Modal Content -->
-	<div id="eventCreatorModal" class="modal hide fade">
-		<div class="modal-header">
-			<a href="#" class="close">&times;</a>
-			<h3>New Event</h3>
-		</div>
-		<div class="modal-body">
-			<form>
-				<input id="eventNameInput" class="xlarge" type="text" value="Event Name" />
-				<br />
-				<br />
-				<div id="eventCreatorModal-DateSelector" class="inline-inputs">
-					<table class="noMargin" ><tr>
-						<td><select class="small monthSelect" id="startMonthSelect"></select>
-						<input id="startDateInput" class="dateInput mini" type="text" maxlength="2"></input>
-						<select class="small yearSelect" id="startYearSelect">
-						</select></td>
-						<td>to</td>
-						<td><select class="small monthSelect" id="endMonthSelect"></select>
-						<input id="endDateInput" class="dateInput mini" type="text" maxlength="2"></input>
-						<select class="small yearSelect" id="endYearSelect">
-						</select></td></tr>
-					</table>
-					<table class="noMargin" ><td class="noBorder" ><center><input id="startTimeInput" type="text" class="small timeInput" /></center></td>
-					<td class="noBorder" ><center><input id="startTimeInput" type="text" class="small timeInput" /></td></center></table>
-				</div>
-				<br />
-				<table><tr>
-					<td width="50%">
-						<select name="normalSelect" id="blockSelect">						</select>
-						<br />
-						<br />
-						<textarea id="modalDescriptionBox">Description here</textarea>
-					</td>
-					<td>
-						<p><input name="modalRadio1" type="radio" /> Options</p>
-						<p><input name="modalRadio1" type="radio" /> and</p>
-						<p><input name="modalRadio1" type="radio" /> Stuff</p>
-					</td>
-				</tr></table>
-			</form>
-		</div>
-		<div class="modal-footer">
-			<input id="saveButton" type="submit" class="btn primary" value="Save" />
-			<input id="cancelButton" type="submit" class="btn secondary" value="Cancel" />
-		</div>
-	</div>
-	<!-- End Modal Content -->
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="container-fluid">
+        <a href="/" class="brand">Hopkins Planner</a>
+
+        <p class="pull-right">Logged in as test13, <a href="/logout">Logout</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="sidebar">
+      <div class="well">
+        <h3>Important Events</h3>
+
+        <p>Important events for this week will go here</p>
+
+        <p>And here</p>
+
+        <p>And here</p>
+
+        <p>You get the idea</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <center>
+        <table id="CalendarTable" style="width:100% !important" class="bordered-table">
+          <tbody>
+            <tr>
+              <th>Monday</th>
+
+              <th>Tuesday</th>
+
+              <th>Wednesday</th>
+
+              <th>Thursday</th>
+
+              <th>Friday</th>
+            </tr>
+
+            <tr>
+              <td class="Ablock">
+                A Block
+
+                <div eventid="4f0bb03af3e2670100000002" style="height:30" class=
+                "event">
+                  <h4>QUIZ</h4>
+                </div>
+              </td>
+
+              <td class="Bblock">B Block</td>
+
+              <td class="Ablock">A Block</td>
+
+              <td class="Bblock">B Block</td>
+
+              <td class="Bblock">B Block</td>
+
+              <td class="No Schoolblock">No School Block</td>
+
+              <td class="No Schoolblock">No School Block</td>
+            </tr>
+
+            <tr>
+              <td class="Cblock">C Block</td>
+
+              <td class="Cblock">C Block</td>
+
+              <td class="Bblock">B Block</td>
+
+              <td class="Cblock">C Block</td>
+
+              <td class="Ablock">A Block</td>
+
+              <td class="block">Block</td>
+
+              <td class="block">Block</td>
+            </tr>
+
+            <tr>
+              <td class="Dblock">D Block</td>
+
+              <td class="Dblock">D Block</td>
+
+              <td class="Eblock">E Block</td>
+
+              <td class="Dblock">D Block</td>
+
+              <td class="Dblock">D Block</td>
+
+              <td class="block">Block</td>
+
+              <td class="block">Block</td>
+            </tr>
+
+            <tr>
+              <td class="Eblock">E Block</td>
+
+              <td class="Eblock">E Block</td>
+
+              <td class="Fblock">F Block</td>
+
+              <td class="Eblock">E Block</td>
+
+              <td class="Fblock">F Block</td>
+
+              <td class="block">Block</td>
+
+              <td class="block">Block</td>
+            </tr>
+
+
+            <tr>
+              <td class="Fblock">F Block</td>
+
+              <td class="Gblock">G Block</td>
+
+              <td class="activityblock">activity Block</td>
+
+              <td class="Gblock">G Block</td>
+
+              <td class="Gblock">G Block</td>
+
+              <td class="block">Block</td>
+
+              <td class="block">Block</td>
+            </tr>
+
+            <tr>
+              <td class="Hblock">H Block</td>
+
+              <td class="Hblock">H Block</td>
+
+              <td class="block">Block</td>
+
+              <td class="Hblock">H Block</td>
+
+              <td class="Hblock">H Block</td>
+
+              <td class="block">Block</td>
+
+              <td class="block">Block</td>
+            </tr>
+          </tbody>
+        </table>
+      </center>
+
+      <div id="eventCreatorModal" class="modal hide fade">
+        <div class="modal-header">
+          <a href="#" class="close">&times;</a>
+
+          <h3><input id="eventNameInput" class="xlarge" type="text" value=
+          "Event Name" /><br />
+          <small id="eventDate"> on</small></h3>
+
+          <div class="modal-body"></div>
+
+          <form>
+            <table>
+              <tr>
+                <td class="noBorder" width="50%"><select name="normalSelect" id=
+                "blockSelect">
+                  </select><br />
+                <br />
+                <textarea id="modalDescriptionBox">
+Description here
+</textarea></td>
+
+                <td class="noBorder">
+                  <p><input name="modalRadio1" type="radio" /> Options</p>
+
+                  <p><input name="modalRadio1" type="radio" /> and</p>
+
+                  <p><input name="modalRadio1" type="radio" /> Stuff</p>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <input id="saveButton" type="submit" class="btn primary" value=
+          "Save" /><input id="cancelButton" type="submit" class="btn secondary" value=
+          "Cancel" />
+        </div>
+      </div>
+    </div><!-- End Modal Content -->
+  </div>
+
+  <p>&copy; Computer Science 2011</p>
 </body>
 </html>
