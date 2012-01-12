@@ -24,11 +24,11 @@ exports.Event = new Schema({
 });
 
 exports.Class = new Schema({
-  name: String,
+  name: {type: String, index: { unique: true }},
   teacher: String,
   block: String,
   events: [String],
-  students: [String],
+  students: [String], //todo: how to make each student unique?
   class_id: ObjectId
 });
 

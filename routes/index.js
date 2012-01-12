@@ -140,6 +140,76 @@ exports.login = function(req, res){
    logout(req);
    res.redirect(req.body.redirect || "back");
  }
+ 
+/*
+ * Classes
+ */
+
+/*
+ * POST /createClass
+ */
+exports.createClass = function(req, res) {
+  User.find({email: req.body.teacher}, function(err, users) {
+    if(users.length == 0) {
+      req.flash("error", "Invalid teacher email");
+      req.flash("emailError", "error");
+      res.redirect("back");
+      return;
+    }
+    
+    var teacher = users[0];
+    if(!teacher.is_teacher) {
+      req.flash("error", "Email is not a teacher's email");
+      req.flash("emailError", "error");
+      res.redirect("back");
+      return;
+    }
+    
+    //todo: add authentication
+    
+    var _class = new Class({
+      name: req.body.name,
+      teacher: teacher._id.toString(),
+      block: req.body.block,
+      events: [],
+      students: []
+    });
+    
+    _class.save(function(err) {
+      if(err != null)
+        console.log(err);
+    });
+    
+    res.redirect("back");
+  });
+}
+
+exports.addStudent = function(req, res) {
+  console.log("got here");
+  Class.find({name: req.body.name}, function(err, classes) {
+    console.log(classes);
+    if(classes.length == 0) {
+      req.flash("error", "Could not find class");
+      res.redirect("back");
+      return;
+    }
+    
+    var _class = classes[0];
+    User.find({email: req.body.email}, function(err, users) {
+      console.log(users);
+      if(users.length == 0) {
+        req.flash("error", "could not find user");
+        res.redirect("back");
+        return;
+      }
+      
+      var student = users[0];
+      _class.students.push(student._id.toString());
+      _class.save();
+      res.redirect("back");
+    });
+  });
+}
 
  /*
   * Event Requests
