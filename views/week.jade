@@ -39,7 +39,7 @@ block content
               td(class="#{block}block") #{block} Block
                 if (events[day] && events[day][block])
                   each eventObj in events[day][block]
-                    .alert-message.info(eventId = eventObj._id, style="height:30")
+                    .event(eventId = eventObj._id, style="height:30")
                       h4
                         #{eventObj.name}
     #eventCreatorModal.modal.hide.fade.

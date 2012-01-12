@@ -3,115 +3,6 @@
 var eventDate; // Date info for the event currently being created
 
 $(document).ready(function(){
-<<<<<<< HEAD
-	/* For IE Compatibility */
-	if (!Array.prototype.indexOf) {
-		Array.prototype.indexOf = function(obj, start) {
-			for (var i = (start || 0), j = this.length; i < j; i++) {
-				if (this[i] === obj) { return i; }
-			}
-			return -1;
-		}
-		console.log("you suck, internet explorer");
-	}
-	
-	/* GLOBALS: */
-	lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
-	
-	createEmptyWeek("gray");
-	
-	var randNum = Math.floor(Math.random()*3);
-	$($(".Eblock")[randNum]).append('<div class="alert-message info" style="height:30"><h4>QUIZ</h4></div>');
-
-	
-	/* EVENT HANDLERS: */
-	$("#CalendarTable td").hover(
-		/* mouseenter */
-		function(){
-			/* This 'if' is to stop anything from happining when mouseover the empty cells
-			 * if this is ugly, just remove this if and the mouseleave if.*/
-			if ($(this).attr("id") != "calendarcell"){
-				//if ((this.attr("class")) && (this.attr("class").substring())
-				lastCalendarStyle = ($(this).attr("style")) ? $(this).attr("style") : "" ;
-				$(this).attr("style",setDarkColor(lastCalendarStyle));
-			}
-		} ,
-		/* mouseleave */
-		function(){
-			if ($(this).attr("id") != "calendarcell"){
-				$(this).attr("style", lastCalendarStyle);
-			}
-		}
-	); // end td hover
-	$("#CalendarTable td").click(function(){
-		// create a new event
-		// This will be a nice cool popup where you add in event details but right now it's just gonna submit a request
-		// var input = $('<div class="alert-message info event_container" style="height:30px"><input class="event_input" type="text"></div>');
-		// input.click(function(e){
-			// e.stopPropagation();
-		// });
-		// $(this).append(input);
-		// input.children()[0].focus();
-		/** Modal Stuff */
-			// if the input box has default text, select all of it to easily replace sample text
-		$("input[value=\"Event Name\"], textarea").click(function(){
-			if (($(this).attr('id')=="modalDescriptionBox" && $(this).val()=="Description here") || ($(this).attr('id')=="eventNameInput" && $(this).val()=="Event Name")){
-				$(this).select();
-			}
-		});
-		
-		/* Date stuff...may or may not be unnecessary */
-		var date = new Date();
-		var dateString = getCurrentDateString(date);
-		var time1 = getCurrentTimeString(date);
-		date.setHours(date.getHours() + 1);
-		var time2 = getCurrentTimeString(date);
-		$("#eventCreatorModal-DateSelector .small").val(dateString);
-		$("#eventCreatorModal-DateSelector .mini:first").val(time1);
-		$("#eventCreatorModal-DateSelector .mini:last").val(time2);
-		
-		/* Populate the block selector */
-		var options = new Array("A block","B block",
-								"C block","D block",
-								"E block","F block",
-								"G block","H block",
-								"activity","lunch","after school");
-		
-		$("#blockSelect").html(''); // clear the list
-		for (var i = 0; i < options.length; i++){
-			$("#blockSelect").append("<option>"+options[i]+"</option>");// add options
-		}
-		
-		/* Set the block selector to the current block */
-		var thisClass = $(this).attr('class');
-		if (thisClass.indexOf('block')!=0){
-			$("#blockSelect").val(thisClass[0]+' block');
-		}
-		
-		/* Set other default values */
-		$("#eventNameInput").val("Event Name");
-		$("#modalDescriptionBox").val("Description here");
-
-		
-		/* Launch the Modal */
-		$("#eventCreatorModal").modal({
-			keyboard: true,
-			backdrop: true,
-			show: true
-		});
-		
-		/* Once the modal is loaded, focus on the "Event name" box and select it */
-		$('#eventCreatorModal').bind('shown', function () {
-			$("#eventNameInput").focus();
-			$("#eventNameInput").select();
-
-		});
-		$("#cancelButton").click(function(){
-			$("#eventCreatorModal").modal('hide');
-		});
-	}); // end td click
-	
-=======
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(obj, start) {
@@ -125,10 +16,6 @@ $(document).ready(function(){
 
   /* GLOBALS: */
   lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
-
-  var randNum = Math.floor(Math.random()*3);
-  $($(".Eblock")[randNum]).append('<div class="alert-message info" style="height:30"><h4>QUIZ</h4></div>');
-
 
   /* EVENT HANDLERS: */
   $("#CalendarTable td").hover(
@@ -213,7 +100,6 @@ $(document).ready(function(){
       $(this).select();
     }
   });
->>>>>>> parent/master
 });
 
 // Creates a new event from info in modal
@@ -226,7 +112,7 @@ function createEvent(){
 
   // now add the element to the UI
   // TODO re-style these event boxes
-  $(eventDate.node).append('<div class="alert-message info" style="height:20"><h4>' + newEvent.name + '</h4></div>');
+  $(eventDate.node).append('<div class="event" style="height:20"><h4>' + newEvent.name + '</h4></div>');
   
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
