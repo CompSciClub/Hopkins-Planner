@@ -3,3 +3,12 @@
   margin-left: auto !important;
   margin-right: auto;
 }
+
+.btns{
+  width: 165px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  top: -30px;
+}
+
