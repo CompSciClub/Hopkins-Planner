@@ -37,3 +37,12 @@ a {
 .left {
   float:left;
 }
+
+.hero-unit{
+  height:135px;
+}
+
+#signUp_btn{
+  margin-top:60px;
+  margin-left:40px;
+}
