@@ -39,15 +39,20 @@ a {
 }
 
 .hero-unit{
-  height:100px;
   background-color: transparent;
   margin-left: auto;
   margin-right: auto;
   width: 600px;
+  padding-top: 10px;
+  padding-bottom: 0;
 }
 
 #signUp_btn{
   margin-top:0px;
 }
 
-
+.heroImage{
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
