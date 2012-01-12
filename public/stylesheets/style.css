@@ -39,10 +39,15 @@ a {
 }
 
 .hero-unit{
-  height:135px;
+  height:100px;
+  background-color: transparent;
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
 }
 
 #signUp_btn{
-  margin-top:60px;
-  margin-left:40px;
+  margin-top:40px;
 }
+
+
