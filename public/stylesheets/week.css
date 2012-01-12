@@ -27,11 +27,3 @@ font-family:"Lucida Console",monospace;
   top: 3px;
 }
 
-.modal-header{
-  padding-bottom: 10px;
-}
-
-#modalDescriptionBox{
-  max-height: 200px;
-  max-width: 250px;
-}

@@ -7,8 +7,7 @@ block scripts
   script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
   script(type="text/javascript", src="javascripts/sha.js")
   script(type="text/javascript", src="javascripts/index.js")
-
-        
+  script(type="text/javascript", src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js")
 
 block content
   .content.
@@ -17,8 +16,8 @@ block content
         <img src="images/hop2.png" width="500px" height="169px" />
       </p>
       <p class="btns">
-        <a id="signUp_btn" href="/signup" class="btn primary large">Sign Up</a>
-        <a class="btn success large" id="login" href="#">Login</a>
+        <a id="signUp_btn" class="btn primary large">Sign Up</a>
+        <a class="btn success large" id="login_btn" >Login</a>
       </p>
     </div>
 
@@ -58,3 +57,42 @@ block content
         <p>Git dumped after "not being able to commit".</p>
         <p><a class="btn" href="#">View details &raquo;</a></p>
       </div>
+    <!-- Modals -->
+
+    <div id="loginModal" class="modal small hide fade">
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Login</a>
+      </div>
+      <div class="modal-body">
+        <form action="/login" method="POST" id="loginForm" onsubmit="return login()" class="form-stacked">
+          <div class="clearfix ">
+            <label for="email">Email:</label><input id="email_input" type="text" name="email" value="">
+          </div>
+          <div class="clearfix ">
+            <label for="winnerAuth">Password:</label> <input id="password_input" type="password" name="password">
+          </div>
+         <center><input type="submit" class="success btn" value="Login"></center>
+       </form>
+      </div>
+    </div>
+
+    <div id="accountModal" class="modal small hide fade">
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Create Account</a>
+      </div>
+      <div class="modal-body">
+        <form action="/createAccount" method="POST"  onsubmit="return login()" class="form-stacked">
+          <div class="clearfix ">
+            <label for="email">Email:</label><input id="email_input" type="text" name="email" value="">
+          </div>
+          <div class="clearfix ">
+            <label for="password">Password:</label> <input id="password_input" type="password" name="password">
+          </div>
+          <div class="clearfix">
+            <label for="name">Name:</label> <input name="name" type="text">
+         <center><input type="submit" class="success btn" id="createAccount_btn" value="Create"></center>
+       </form>
+      </div>
+    </div>

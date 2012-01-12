@@ -56,3 +56,20 @@ a {
   margin-left: auto;
   margin-right: auto;
 }
+.modal-header{
+  padding-bottom: 10px;
+}
+
+#modalDescriptionBox{
+  max-height: 200px;
+  max-width: 250px;
+}
+
+.modal.small{
+  width: 250px;
+  left: 60%; /* HACK and a bad one at that */
+}
+
+#createAccount_btn{
+  margin-top: 10px;
+}
