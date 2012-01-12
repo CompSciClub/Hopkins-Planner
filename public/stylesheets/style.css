@@ -33,3 +33,21 @@ a {
 .noBorder{
   border: none !important;
 }
+
+.left {
+  float:left;
+}
+
+.hero-unit{
+  height:100px;
+  background-color: transparent;
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+}
+
+#signUp_btn{
+  margin-top:0px;
+}
+
+
