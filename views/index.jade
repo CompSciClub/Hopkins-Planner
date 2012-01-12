@@ -8,29 +8,16 @@ block scripts
   script(type="text/javascript", src="javascripts/sha.js")
   script(type="text/javascript", src="javascripts/index.js")
 
-block sidebar
-  .sidebar
-    .well
-      center
-        h1 Login
-       span#errors
-         if (flash.error)
-            div.class(data-alert="error", class="fade in alert-message error")
-              a(class="close", href="#") x
-              p #{flash.error}
-
-      form.form-stacked(action="/login", method="POST", id="loginForm", onsubmit="return login()").
-        <div class="clearfix #{flash.emailError}" id="winnerContainer"><label for='email'>Email:</label><input id="email_input" type="text" name="email" value="#{flash.email}"></div>
-        <div class='clearfix #{flash.passError}' id="winnerPassContainer"><label for="winnerAuth">Password:</label> <input id="password_input" type="password"  name="password"></div>
-         <center><input type="submit" class="success btn" id="enterMatch" value="Login"></center>
+        
 
 block content
   .content.
     <div class="hero-unit">
       <p>
-      <img src="images/Hop2.png" width="500px" class="left" height="169px" />
-      <a id="signUp_btn" href="/signup" class="btn primary large">Sign Up</a>
+      <img src="images/Hop2.png" width="500px" height="169px" />
       </p>
+      <a id="signUp_btn" href="/signup" class="btn primary large">Sign Up</a>
+      <a class="btn success large" id="login" href="#">Login</a>
     </div>
 
     <div class="row">
