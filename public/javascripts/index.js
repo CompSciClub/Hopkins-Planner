@@ -19,7 +19,7 @@ $(document).ready(function(){
 });
 
 function login(){
-  var email = $("#email_input"), pass = $("#password_input"),
+  var email = $(".email_input"), pass = $(".password_input"),
       errors = [], errorElements = [];
 
   if (email.val() == ""){
