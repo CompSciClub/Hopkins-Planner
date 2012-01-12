@@ -11,6 +11,7 @@ exports.index = function(req, res){
     res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
   }else{
+    console.log("user", req.session.userId);
     var date = new Date(); // get the current date
     date = new Date(date.getTime() - ((date.getDay() - 1) % 7) * 24 * 60 * 60 * 1000); // convert to monday
 
@@ -19,7 +20,6 @@ exports.index = function(req, res){
     date.setUTCMinutes(0);
     date.setUTCSeconds(0);
     date.setUTCMilliseconds(0);
-    console.log(req.session.userId, date.getDate(), date.getTime(), date.getTime() + 604800000);
 
     // get every event for the current user in this week
     Event.find({owner: req.session.userId, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
@@ -35,7 +35,7 @@ exports.index = function(req, res){
       }
       //TODO use the date to pick gray or maroon
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("gray"), events: eventsObj});
+                          week: getWeekStructure("gray"), events: eventsObj, name: req.session.displayName});
     });
 
   }
@@ -97,6 +97,9 @@ exports.createUser = function(req, res){
       }
       res.redirect("back");
     }else{
+      req.session.valid       = true;
+      req.session.userId      = user._id;
+      req.session.displayName = user.name;
       res.redirect(req.body.redirect || "/");
     }
   })
@@ -219,7 +222,6 @@ function validateUser(req, id){
   }) // I'm not sure that we want or need this */
 
   req.session.valid = 1;
-  console.log(id);
   req.session.userId = id; 
 }
 

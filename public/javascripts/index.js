@@ -1,3 +1,23 @@
+$(document).ready(function(){
+
+  $("#login_btn").click(function(){
+    $("#loginModal").modal({
+      keyboard: true,
+      backdrop: true,
+      show: true
+    });
+  });
+
+  $("#signUp_btn").click(function(){
+    $("#accountModal").modal({
+      keyboard: true,
+      backdrop: true,
+      show: true
+    });
+  });
+
+});
+
 function login(){
   var email = $("#email_input"), pass = $("#password_input"),
       errors = [], errorElements = [];
@@ -32,3 +52,4 @@ function error(msgs, elements){
     elements[i].parent().addClass("error");
   }
 }
+
