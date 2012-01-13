@@ -9,6 +9,7 @@ exports.User = new Schema({
   salt: {type: String},
   name: String,
   is_teacher: Boolean,
+  classes: [String],
   user_id   : ObjectId
 });
 

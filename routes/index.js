@@ -22,20 +22,29 @@ exports.index = function(req, res){
     console.log(req.session.userId, date.getDate(), date.getTime(), date.getTime() + 604800000);
 
     // get every event for the current user in this week
-    Event.find({owner: req.session.userId, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
-      var eventsObj = {};
-      for (var i = 0; i < events.length; i++){
-        if (!eventsObj[events[i].day])
-          eventsObj[events[i].day] = {};
+    User.find({_id: req.session.userId}, function(err, users) {
+      var user = users[0];
+      var eventOwners = [req.session.userId];
+      for(var i = 0; i < user.classes.length; i++) {
+        eventOwners.push(user.classes[i].toString());
+      }
+      
+      Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
+        console.log(events);
+        var eventsObj = {};
+        for (var i = 0; i < events.length; i++){
+          if (!eventsObj[events[i].day])
+            eventsObj[events[i].day] = {};
 
-        if (!eventsObj[events[i].day][events[i].block])
+          if (!eventsObj[events[i].day][events[i].block])
             eventsObj[events[i].day][events[i].block] =[];
 
-        eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
-      }
-      //TODO use the date to pick gray or maroon
-      res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+          eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
+        }
+        //TODO use the date to pick gray or maroon
+        res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
                           week: getWeekStructure("gray"), events: eventsObj});
+      });
     });
 
   }
@@ -78,7 +87,8 @@ exports.createUser = function(req, res){
     password: password,
     salt: salt,
     name: req.body.name,
-    is_teacher: (req.body.is_teacher == "on") ? true : false
+    is_teacher: (req.body.is_teacher == "on") ? true : false,
+    classes: []
   });
 
   user.save(function(err){
@@ -180,6 +190,9 @@ exports.createClass = function(req, res) {
         console.log(err);
     });
     
+    teacher.classes.push(_class._id);
+    teacher.save();
+    
     res.redirect("back");
   });
 }
@@ -204,6 +217,8 @@ exports.addStudent = function(req, res) {
       var student = users[0];
       _class.students.push(student._id.toString());
       _class.save();
+      student.classes.push(_class._id.toString());
+      student.save();
       res.redirect("back");
     });
   });
