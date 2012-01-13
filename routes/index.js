@@ -185,7 +185,6 @@ exports.createClass = function(req, res) {
 }
 
 exports.addStudent = function(req, res) {
-  console.log("got here");
   Class.find({name: req.body.name}, function(err, classes) {
     console.log(classes);
     if(classes.length == 0) {
@@ -196,7 +195,6 @@ exports.addStudent = function(req, res) {
     
     var _class = classes[0];
     User.find({email: req.body.email}, function(err, users) {
-      console.log(users);
       if(users.length == 0) {
         req.flash("error", "could not find user");
         res.redirect("back");
@@ -224,23 +222,46 @@ exports.createEvent = function(req, res){
     req.flash("error", "You must login first");
     return;
   }
-  var newEvent = new Event({
-    type: "individual", // for now there is only support for individual student events
-    name: req.body.name,
-    timestamp: req.body.timestamp,
-    day: req.body.day,
-    block: req.body.block,
-    description: req.body.description,
-    owner: req.session.userId
-  });
-  newEvent.save(function(error){
-    res.writeHead(200, {"Content-Type": "application/json"});
-    if (!error){
-      res.end(JSON.stringify({error: 0, msg: "Event added"}));
-    }else{
-      res.end(JSON.stringify({error: 101, msg: error}));
-    }
-  });
+  
+  var addEvent = function(type, owner) {
+    var newEvent = new Event({
+      type: type,
+      name: req.body.name,
+      timestamp: req.body.timestamp,
+      day: req.body.day,
+      block: req.body.block,
+      description: req.body.description,
+      owner: owner
+    });
+    newEvent.save(function(error){
+      res.writeHead(200, {"Content-Type": "application/json"});
+      if (!error){
+        res.end(JSON.stringify({error: 0, msg: "Event added"}));
+      }else{
+        res.end(JSON.stringify({error: 101, msg: error}));
+      }
+    });
+    
+    return newEvent;
+  }
+  
+  if(req.body.class_name) {
+    Class.find({name: req.body.class_name}, function(err, classes) {
+      if(classes.length == 0) {
+        res.writeHead(200, {"Content-Type": "application/json"});
+        res.end(JSON.stringify({error: 101, msg: "Could not find class"}));
+        return;
+      }
+      
+      var _class = classes[0];
+      var id = addEvent("class", _class._id)._id;
+      _class.events.push(id.toString());
+      _class.save();
+    });
+  } else {
+    addEvent("individual", req.session.userId);
+  }
+      
 }
 
 
