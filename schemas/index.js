@@ -8,6 +8,8 @@ exports.User = new Schema({
   password  : {type: String, validate: [validatePresenceOf, 'a password is required']},
   salt: {type: String},
   name: String,
+  is_teacher: Boolean,
+  classes: [String],
   user_id   : ObjectId
 });
 
@@ -22,9 +24,19 @@ exports.Event = new Schema({
   event_id: ObjectId
 });
 
+exports.Class = new Schema({
+  name: {type: String, index: { unique: true }},
+  teacher: String,
+  block: String,
+  events: [String],
+  students: [String], //todo: how to make each student unique?
+  class_id: ObjectId
+});
+
 // Setup Database models
 User  = mongoose.model("User", exports.User);
-Event = mongoose.model("Event", exports.Event); 
+Event = mongoose.model("Event", exports.Event);
+Class = mongoose.model("Class", exports.Class);
 
 function validatePresenceOf(value){
   return value && value.length;
