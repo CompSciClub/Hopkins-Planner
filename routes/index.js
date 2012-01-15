@@ -237,8 +237,6 @@ exports.addStudent = function(req, res) {
 exports.createEvent = function(req, res){
   if (!isLoggedIn(req, res))
     return;
-<<<<<<< HEAD
-  }
   
   var addEvent = function(type, owner) {
     var newEvent = new Event({
@@ -278,27 +276,6 @@ exports.createEvent = function(req, res){
   } else {
     addEvent("individual", req.session.userId);
   }
-      
-=======
-  
-  var newEvent = new Event({
-    type: "individual", // for now there is only support for individual student events
-    name: req.body.name,
-    timestamp: req.body.timestamp,
-    day: req.body.day,
-    block: req.body.block,
-    description: req.body.description,
-    owner: req.session.userId
-  });
-  newEvent.save(function(error){
-    res.writeHead(200, {"Content-Type": "application/json"});
-    if (!error){
-      res.end(JSON.stringify({error: 0, msg: "Event added"}));
-    }else{
-      res.end(JSON.stringify({error: 101, msg: error}));
-    }
-  });
->>>>>>> 79792e7a0190c64e2701e605d70a8753bee37f2d
 }
 
 exports.deleteEvent = function(req, res){
