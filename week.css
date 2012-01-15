@@ -9,20 +9,16 @@
 #CalendarTable td.Gblock{background-color: #A43DF8;}
 #CalendarTable td.Hblock{background-color: #F43CF9;}
 
-/*.event{
-	height:25px;
-	width:80px;
-	padding-top:0px
-}*/
-
-.event h4 {}
+.event{
+	width:100%;
+}
 
 .container{
   width: auto !important;
 }
 
 td{
-	font-family:"Lucida Console",monospace;
+font-family:"Lucida Console",monospace;
 }
 
 #eventDate{
@@ -32,6 +28,11 @@ td{
 
 .modal-header{
   padding-bottom: 10px;
+}
+
+.event{
+	margin-bottom:7px;
+	text-transform:none; !important
 }
 
 #modalDescriptionBox{

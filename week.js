@@ -11,7 +11,7 @@ $(document).ready(function(){
       }
       return -1;
     }
-    console.log("you suck, internet explorer");
+    //console.log("you suck, internet explorer");
   }
 
   /* GLOBALS: */
@@ -42,7 +42,7 @@ $(document).ready(function(){
     /** Modal Stuff */
 
     // get the date and information
-    console.log(getChildIndex(this));
+    //console.log(getChildIndex(this));
     var date = new Date(monday + (getChildIndex(this) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
         eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
         eventDate.day  = (date.getDay() - 1) % 7;
@@ -69,6 +69,8 @@ $(document).ready(function(){
     $("#blockSelect").val(block +' block');
     eventDate.block = block; // convert block to number and add block info to the eventDate object
 
+	populateOptions();
+	
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
       keyboard: true,
@@ -95,12 +97,20 @@ $(document).ready(function(){
 
   // if the input box has default text, select all of it to easily replace sample text
   $("input[value=\"Event Name\"], textarea").click(function(){
-    console.log("focus");
+    //console.log("focus");
     if (($(this).attr('id')=="modalDescriptionBox" && $(this).val()=="Description here") || ($(this).attr('id')=="eventNameInput" && $(this).val()=="Event Name")){
       $(this).select();
     }
   });
 });
+
+function populateOptions(){
+	var bootClasses = ["label success","label important","label notice"];
+	$("#options").html('');
+	for (var i = 0; i < 3; i++){
+		$("#options").append('<div class="options '+ bootClasses[i] +'" style="" >'+ '<input class="options" name="modalRadio1" type="radio" />   ' + $("#eventNameInput").val() +'</div> <br />');
+	}
+}
 
 // Creates a new event from info in modal
 function createEvent(){
@@ -108,11 +118,21 @@ function createEvent(){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
+  newEvent.bootClass   = "label success";
 
+  var radios = $('input[name=modalRadio1]:radio'); 
+  for (var i = 0; i < radios.length; i++){
+	if (radios[i].checked){
+	  var bootClasses = ["label success","label important","label notice"];
+	  newEvent.bootClass = bootClasses[i];
+	}
+  }
+  
 
   // now add the element to the UI
   // TODO re-style these event boxes
-  $(eventDate.node).append('<div class="alert-message info event" style="height:20"><h4>' + newEvent.name + '</h4></div>');
+
+  $(eventDate.node).append('<div class="event '+ newEvent.bootClass +'" style="">'+ newEvent.name +'</div>');
   
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
@@ -121,12 +141,12 @@ function createEvent(){
     type: "POST",
     data: newEvent,
     failure: function(err){
-      console.log(err);
+      //console.log(err);
       error(err);
     }
   });
   closeDialog();
-  console.log(newEvent);
+  //console.log(newEvent);
 }
 
 // closes and resets the modal dialog
