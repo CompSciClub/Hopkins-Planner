@@ -1,32 +1,24 @@
 extends layout
 
+block styles
+  link(rel="stylesheet", href="stylesheets/index.css")
+
 block scripts
   script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
   script(type="text/javascript", src="javascripts/sha.js")
   script(type="text/javascript", src="javascripts/index.js")
-
-block sidebar
-  .sidebar
-    .well
-      center
-        h1 Login
-       span#errors
-         if (flash.error)
-            div.class(data-alert="error", class="fade in alert-message error")
-              a(class="close", href="#") x
-              p #{flash.error}
-
-      form.form-stacked(action="/login", method="POST", id="loginForm", onsubmit="return login()").
-        <div class="clearfix #{flash.emailError}" id="winnerContainer"><label for='email'>Email:</label><input id="email_input" type="text" name="email" value="#{flash.email}"></div>
-        <div class='clearfix #{flash.passError}' id="winnerPassContainer"><label for="winnerAuth">Password:</label> <input id="password_input" type="password"  name="password"></div>
-         <center><input type="submit" class="success btn" id="enterMatch" value="Login"></center>
+  script(type="text/javascript", src="javascripts/bootstrap-modal.js")
 
 block content
   .content.
     <div class="hero-unit">
-      <h1>Good Day!</h1>
-      <p>Need an account? Click on the button below!</p>
-      <p><a href="/signup" class="btn primary large">Sign Up</a></p>
+      <p class="heroImage">
+        <img src="images/hop2.png" width="500px" height="169px" />
+      </p>
+      <p class="btns">
+        <a id="signUp_btn" class="btn primary large">Sign Up</a>
+        <a class="btn success large" id="login_btn" >Login</a>
+      </p>
     </div>
 
     <div class="row">
@@ -36,9 +28,9 @@ block content
         <p><a class="btn" href="#">View details &raquo;</a></p>
       </div>
       <div class="span5">
-        <h2>School Event</h2>
-         <p>Jason Teplitz Had a Baby</p>
-        <p><a class="btn" href="#">View details &raquo;</a></p>
+        <h2>Flag Day</h2>
+         <p>Every year Hopkins celebrates Flag Day, an opportunity to showcase our school’s ethnic diversity.</p>
+        <p><a class="btn" href="http://www.hopkins.edu/podium/default.aspx?t=204&nid=751541">View details &raquo;</a></p>
      </div>
       <div class="span5">
         <h2>School Event</h2>
@@ -65,3 +57,42 @@ block content
         <p>Git dumped after "not being able to commit".</p>
         <p><a class="btn" href="#">View details &raquo;</a></p>
       </div>
+    <!-- Modals -->
+
+    <div id="loginModal" class="modal small hide fade">
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Login</a>
+      </div>
+      <div class="modal-body">
+        <form action="/login" method="POST" id="loginForm" onsubmit="return login(0)" class="form-stacked">
+          <div class="clearfix ">
+            <label for="email">Email:</label><input class="email_input" type="text" name="email" value="">
+          </div>
+          <div class="clearfix ">
+            <label for="winnerAuth">Password:</label> <input class="password_input" type="password" name="password">
+          </div>
+         <center><input type="submit" class="success btn" value="Login"></center>
+       </form>
+      </div>
+    </div>
+
+    <div id="accountModal" class="modal small hide fade">
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Create Account</a>
+      </div>
+      <div class="modal-body">
+        <form action="/createAccount" method="POST"  onsubmit="return login(1)" class="form-stacked">
+          <div class="clearfix ">
+            <label for="email">Email:</label><input class="craeteEmail_input" type="text" name="email" value="">
+          </div>
+          <div class="clearfix ">
+            <label for="password">Password:</label> <input class="CreatePassword_input" type="password" name="password">
+          </div>
+          <div class="clearfix">
+            <label for="name">Name:</label> <input name="name" type="text">
+         <center><input type="submit" class="success btn" id="createAccount_btn" value="Create"></center>
+       </form>
+      </div>
+    </div>

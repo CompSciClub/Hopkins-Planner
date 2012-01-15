@@ -1,6 +1,30 @@
-function login(){
-  var email = $("#email_input"), pass = $("#password_input"),
-      errors = [], errorElements = [];
+$(document).ready(function(){
+
+  $("#login_btn").click(function(){
+    $("#loginModal").modal({
+      keyboard: true,
+      backdrop: true,
+      show: true
+    });
+  });
+
+  $("#signUp_btn").click(function(){
+    $("#accountModal").modal({
+      keyboard: true,
+      backdrop: true,
+      show: true
+    });
+  });
+
+});
+
+function login(type){
+  if(type == 0)
+    var email = $(".email_input"), pass = $(".password_input");
+  else
+    var email = $(".createEmail_input"), pass = $(".createPassword_input");
+
+  var errors = [], errorElements = [];
 
   if (email.val() == ""){
     errors.push("You must enter an email");
@@ -32,3 +56,4 @@ function error(msgs, elements){
     elements[i].parent().addClass("error");
   }
 }
+

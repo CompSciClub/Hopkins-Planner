@@ -11,6 +11,7 @@ exports.index = function(req, res){
     res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
   }else{
+    console.log("user", req.session.userId);
     var date = new Date(); // get the current date
     date = new Date(date.getTime() - ((date.getDay() - 1) % 7) * 24 * 60 * 60 * 1000); // convert to monday
 
@@ -19,7 +20,6 @@ exports.index = function(req, res){
     date.setUTCMinutes(0);
     date.setUTCSeconds(0);
     date.setUTCMilliseconds(0);
-    console.log(req.session.userId, date.getDate(), date.getTime(), date.getTime() + 604800000);
 
     // get every event for the current user in this week
     User.find({_id: req.session.userId}, function(err, users) {
@@ -43,7 +43,7 @@ exports.index = function(req, res){
         }
         //TODO use the date to pick gray or maroon
         res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("gray"), events: eventsObj});
+                          week: getWeekStructure("gray"), events: eventsObj, name: req.session.displayName});
       });
     });
 
@@ -109,6 +109,9 @@ exports.createUser = function(req, res){
       }
       res.redirect("back");
     }else{
+      req.session.valid       = true;
+      req.session.userId      = user._id;
+      req.session.displayName = user.name;
       res.redirect(req.body.redirect || "/");
     }
   })
@@ -232,10 +235,9 @@ exports.addStudent = function(req, res) {
   * POST /event
   */
 exports.createEvent = function(req, res){
-  if (!req.session.valid){
-    res.writeHead(401, {"error": 401, msg: "You must be logged in to add an event"});
-    req.flash("error", "You must login first");
+  if (!isLoggedIn(req, res))
     return;
+<<<<<<< HEAD
   }
   
   var addEvent = function(type, owner) {
@@ -277,6 +279,69 @@ exports.createEvent = function(req, res){
     addEvent("individual", req.session.userId);
   }
       
+=======
+  
+  var newEvent = new Event({
+    type: "individual", // for now there is only support for individual student events
+    name: req.body.name,
+    timestamp: req.body.timestamp,
+    day: req.body.day,
+    block: req.body.block,
+    description: req.body.description,
+    owner: req.session.userId
+  });
+  newEvent.save(function(error){
+    res.writeHead(200, {"Content-Type": "application/json"});
+    if (!error){
+      res.end(JSON.stringify({error: 0, msg: "Event added"}));
+    }else{
+      res.end(JSON.stringify({error: 101, msg: error}));
+    }
+  });
+>>>>>>> 79792e7a0190c64e2701e605d70a8753bee37f2d
+}
+
+exports.deleteEvent = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+
+  Event.remove({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
+    if (e == null || err){
+      res.writeHead(400, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({error: 400, msg: err}));
+      return;
+    }
+
+    res.writeHead(200, {"Content-Type": "application/json"});
+    res.end(JSON.stringify({error: 0, msg: "Event deleted succesfully"}));
+  });
+};
+
+exports.modifyEvent = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+
+  Event.findOne({owner: req.session.userId, _id: req.params.eventId}, function(err, e){
+    if (e == null || err){
+      res.writeHead(400, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({error: 400, msg: err}));
+      return;
+    }
+
+    e.name        = req.body.name          || e.name;
+    e.timestamp   = req.body.timestamp     || e.timestamp;
+    e.day         = req.body.day           || e.day;
+    e.block       = req.body.block         || e.block;
+    e.description = req.body.description   || e.description;
+    e.save(function(error){
+      if (!error){
+        res.end(JSON.stringify({error: 0, msg: "Event modified"}));
+      }else{
+        res.writeHead(400, {"Content-Type": "application/json"});
+        res.end(JSON.stringify({error: 400, msg: error}));
+      }
+    });
+  });
 }
 
 
@@ -286,7 +351,6 @@ function validateUser(req, id){
   }) // I'm not sure that we want or need this */
 
   req.session.valid = 1;
-  console.log(id);
   req.session.userId = id; 
 }
 
@@ -294,10 +358,14 @@ function logout(req){
   req.session.destroy();
 }
 
-function isLoggedIn(req){
-  if (req.session.valid)
-    return true;
-  return false;
+function isLoggedIn(req, res){
+  if (!req.session.valid){
+    res.writeHead(401, {"error": 401, msg: "You must be logged in to add an event"});
+    req.flash("error", "You must login first");
+    res.end();
+    return false;
+  }
+  return true;
 }
 
 function createSalt(){
