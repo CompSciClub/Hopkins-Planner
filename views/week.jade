@@ -40,9 +40,9 @@ block content
             tr
             each block, day in period
               td(class="#{block}block") #{block} Block
-                if (events[day + 1] && events[day + 1][block])
-                  - console.log("event", events[day + 1][block]);
-                  each eventObj in events[day + 1][block]
+                if (events[day] && events[day][block])
+                  - console.log("event", events[day][block]);
+                  each eventObj in events[day][block]
                     .alert-message.info.event(eventId = eventObj._id, style="height:20", rel="popover", data-content="#{eventObj.description}", data-original-title="#{eventObj.name}")
                       h4
                         #{eventObj.name}

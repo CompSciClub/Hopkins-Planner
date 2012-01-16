@@ -115,7 +115,8 @@ function createEvent(){
 
   // now add the element to the UI
   // TODO re-style these event boxes
-  $(eventDate.node).append('<div class="alert-message info" style="height:20"><h4>' + newEvent.name + '</h4></div>');
+ $(eventDate.node).append('<div class="alert-message info event" style="height:20" data-rel="popup" data-original-title="' + newEvent.name + '"data-content="' + newEvent.description +'"><h4>' + newEvent.name + '</h4></div>');
+ $(".event").popover();
   
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
