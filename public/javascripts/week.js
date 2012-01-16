@@ -17,10 +17,6 @@ $(document).ready(function(){
   /* GLOBALS: */
   lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
 
-  var randNum = Math.floor(Math.random()*3);
-  $($(".Eblock")[randNum]).append('<div class="alert-message info" style="height:30"><h4>QUIZ</h4></div>');
-
-
   /* EVENT HANDLERS: */
   $("#CalendarTable td").hover(
     /* mouseenter */
@@ -104,6 +100,9 @@ $(document).ready(function(){
       $(this).select();
     }
   });
+
+  // event popovers
+  $(".event").popover();
 });
 
 // Creates a new event from info in modal
