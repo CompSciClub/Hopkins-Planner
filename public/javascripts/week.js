@@ -102,7 +102,7 @@ $(document).ready(function(){
   });
 
   // event popovers
-  $(".event").popover();
+  $(".event").popover({html: true});
 });
 
 // Creates a new event from info in modal
@@ -115,8 +115,8 @@ function createEvent(){
 
   // now add the element to the UI
   // TODO re-style these event boxes
- $(eventDate.node).append('<div class="alert-message info event" style="height:20" data-rel="popup" data-original-title="' + newEvent.name + '"data-content="' + newEvent.description +'"><h4>' + newEvent.name + '</h4></div>');
- $(".event").popover();
+ $(eventDate.node).append('<div class="alert-message info event" style="height:20" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><h4>' + newEvent.name + '</h4></div>');
+ $(".event").popover({html: true});
   
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
@@ -201,4 +201,12 @@ function getChildIndex(child){
     child = child.previousSibling
   }
   return cnt;
+}
+function escapeHtml(unsafe) {
+  return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 }

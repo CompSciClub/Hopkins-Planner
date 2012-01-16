@@ -14,6 +14,7 @@ block styles
   <link rel="stylesheet" href="stylesheets/week.css">
 
 block sidebar
+  - escapeHtml("test");
   .sidebar
     .well
       h3 Important Events
@@ -36,7 +37,6 @@ block content
             th Thursday
             th Friday
           each period in week
-            - console.log("period", period);
             tr
             each block, day in period
               td(class="#{block}block") #{block} Block
