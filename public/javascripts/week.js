@@ -69,6 +69,8 @@ $(document).ready(function(){
     $("#blockSelect").val(block +' block');
     eventDate.block = block; // convert block to number and add block info to the eventDate object
 
+	populateOptions();
+	
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
       keyboard: true,
@@ -102,17 +104,35 @@ $(document).ready(function(){
   });
 });
 
+function populateOptions(){
+	var bootClasses = ["label success","label important","label notice"];
+	$("#options").html('');
+	for (var i = 0; i < 3; i++){
+		$("#options").append('<div class="options '+ bootClasses[i] +'" style="" >'+ '<input class="options" name="modalRadio1" type="radio" />   ' + $("#eventNameInput").val() +'</div> <br />');
+	}
+}
+
 // Creates a new event from info in modal
 function createEvent(){
   // grab the current eventDate object which we will extend
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
+  newEvent.bootClass   = "label success";
 
+  var radios = $('input[name=modalRadio1]:radio'); 
+  for (var i = 0; i < radios.length; i++){
+	if (radios[i].checked){
+	  var bootClasses = ["label success","label important","label notice"];
+	  newEvent.bootClass = bootClasses[i];
+	}
+  }
+  
 
   // now add the element to the UI
   // TODO re-style these event boxes
-  $(eventDate.node).append('<div class="event" style="height:20"><h4>' + newEvent.name + '</h4></div>');
+
+  $(eventDate.node).append('<div class="event '+ newEvent.bootClass +'" style="">'+ newEvent.name +'</div>');
   
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
