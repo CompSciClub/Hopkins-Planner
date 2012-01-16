@@ -35,7 +35,7 @@ exports.index = function(req, res){
       }
       //TODO use the date to pick gray or maroon
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("gray"), events: eventsObj, name: req.session.displayName});
+                          week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName});
     });
 
   }
