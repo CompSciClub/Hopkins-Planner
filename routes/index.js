@@ -40,12 +40,12 @@ exports.index = function(req, res){
             eventsObj[events[i].day][events[i].block] =[];
 
         eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
-      }
-      //TODO use the date to pick gray or maroon
-      res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName});
+        }
+        //TODO use the date to pick gray or maroon
+        res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+                            week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName});
+      });
     });
-
   }
 };
 
