@@ -65,7 +65,7 @@ block content
         <h3>Login</a>
       </div>
       <div class="modal-body">
-        <form action="/login" method="POST" id="loginForm" onsubmit="return login()" class="form-stacked">
+        <form action="/login" method="POST" id="loginForm" onsubmit="return login(0)" class="form-stacked">
           <div class="clearfix ">
             <label for="email">Email:</label><input class="email_input" type="text" name="email">
           </div>
@@ -83,15 +83,19 @@ block content
         <h3>Create Account</a>
       </div>
       <div class="modal-body">
-        <form action="/createAccount" method="POST"  onsubmit="return login()" class="form-stacked">
+        <form action="/createAccount" method="POST"  onsubmit="return login(1)" class="form-stacked">
           <div class="clearfix ">
-            <label for="createEmail">Email:</label><input class="email_input" type="text" name="createEmail">
+            <label for="email">Email:</label><input class="createEmail_input" type="text" name="email" value="">
           </div>
           <div class="clearfix ">
-            <label for="createPaassword">Password:</label> <input class="password_input" type="password" name="craetePassword">
+            <label for="password">Password:</label> <input class="createPassword_input" type="password" name="password">
           </div>
           <div class="clearfix">
             <label for="name">Name:</label> <input name="name" type="text">
+          </div>
+          <div class="clearfix">
+            <laber for="is_teacher">Teacher</label> <input name="is_teacher" type="checkbox">
+          </div>
          <center><input type="submit" class="success btn" id="createAccount_btn" value="Create"></center>
        </form>
       </div>

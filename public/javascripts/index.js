@@ -18,10 +18,13 @@ $(document).ready(function(){
 
 });
 
-function login(){
-  var email = $(".email_input"), pass = $(".password_input"),
-      errors = [], errorElements = [];
+function login(type){
+  if(type == 0)
+    var email = $(".email_input"), pass = $(".password_input");
+  else
+    var email = $(".createEmail_input"), pass = $(".createPassword_input");
 
+  var errors = [], errorElements = [];
   if (email.val() == ""){
     errors.push("You must enter an email");
     errorElements.push(email);

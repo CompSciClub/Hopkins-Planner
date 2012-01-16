@@ -5,13 +5,16 @@ block scripts
     var monday = #{date};
     var events = JSON.parse(decodeURIComponent("!{encodeURIComponent(JSON.stringify(events))}"));
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
+  script(type="text/javascript", src="javascripts/bootstrap-twipsy.js")
+  script(type="text/javascript", src="javascripts/bootstrap-popovers.js")
   <script src="javascripts/week.js"></script>
-  <script src="stylsheets/boostrap-modal.js""></script>
+  <script src="javascripts/bootstrap-modal.js"></script>
 
 block styles
   <link rel="stylesheet" href="stylesheets/week.css">
 
 block sidebar
+  - escapeHtml("test");
   .sidebar
     .well
       h3 Important Events
@@ -38,8 +41,9 @@ block content
             each block, day in period
               td(class="#{block}block") #{block} Block
                 if (events[day] && events[day][block])
+                  - console.log("event", events[day][block]);
                   each eventObj in events[day][block]
-                    .alert-message.info.event(eventId = eventObj._id, style="height:20")
+                    .alert-message.info.event(eventId = eventObj._id, style="height:20", rel="popover", data-content="#{eventObj.description}", data-original-title="#{eventObj.name}")
                       h4
                         #{eventObj.name}
     #eventCreatorModal.modal.hide.fade.
