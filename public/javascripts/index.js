@@ -25,7 +25,6 @@ function login(type){
     var email = $(".createEmail_input"), pass = $(".createPassword_input");
 
   var errors = [], errorElements = [];
-
   if (email.val() == ""){
     errors.push("You must enter an email");
     errorElements.push(email);

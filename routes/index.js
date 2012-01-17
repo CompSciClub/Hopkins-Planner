@@ -39,14 +39,13 @@ exports.index = function(req, res){
           if (!eventsObj[events[i].day][events[i].block])
             eventsObj[events[i].day][events[i].block] =[];
 
-          eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
+        eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
         }
         //TODO use the date to pick gray or maroon
         res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("gray"), events: eventsObj, name: req.session.displayName});
+                            week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
       });
     });
-
   }
 };
 
@@ -374,4 +373,13 @@ function getWeekStructure(weekColor){
   ];
 		
 	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
+}
+
+function escapeHtml(unsafe) {
+  return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 }
