@@ -236,6 +236,8 @@ exports.addStudent = function(req, res) {
 exports.createEvent = function(req, res){
   if (!isLoggedIn(req, res))
     return;
+
+  console.log(req.body.bootClass);
   
   var addEvent = function(type, owner) {
     var newEvent = new Event({

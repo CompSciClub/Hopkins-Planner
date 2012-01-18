@@ -124,16 +124,20 @@ function createEvent(){
   newEvent.bootClass   = "label success"
   
   var radios = $('input[name=modalRadio1]:radio'); 
+  var bootClasses = ["Homework",
+                     "Quiz",
+                     "Test",
+                     "Project",
+                     "Reminder"]
   for (var i = 0; i < radios.length; i++){
-	if (radios[i].checked){
-	  var bootClasses = ["label success","label important","label notice"];
-	  newEvent.bootClass = bootClasses[i];
-	}
+    if (radios[i].checked){
+      newEvent.bootClass = bootClasses[i];
+    }
   }
   
   // now add the element to the UI
   // TODO re-style these event boxes
- $(eventDate.node).append('<div class="'+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><h4>' + newEvent.name + '</h4></div>');
+ $(eventDate.node).append('<div class="'+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '</div>');
  $(".event").popover({html: true});
   
   // now save the event on the server

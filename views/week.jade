@@ -7,6 +7,7 @@ block scripts
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   script(type="text/javascript", src="javascripts/bootstrap-twipsy.js")
   script(type="text/javascript", src="javascripts/bootstrap-popovers.js")
+  script(type="text/javascript", src="javascripts/index.js")
   <script src="javascripts/week.js"></script>
   <script src="javascripts/bootstrap-modal.js"></script>
 
@@ -43,8 +44,7 @@ block content
                 if (events[day] && events[day][block])
                   - console.log("event", events[day][block]);
                   each eventObj in events[day][block]
-                    .alert-message.info.event(eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
-                      h4
+                    .label.success.event(eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
                         #{eventObj.name}
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
@@ -66,9 +66,11 @@ block content
                 <textarea id="modalDescriptionBox">Description here</textarea>
               </td>
               <td class="noBorder">
-                <p><input name="modalRadio1" type="radio"> Options</p>
-                <p><input name="modalRadio1" type="radio"> and</p>
-                <p><input name="modalRadio1" type="radio"> Stuff</p>
+                <p><input name="modalRadio1" type="radio"> Homework</p>
+                <p><input name="modalRadio1" type="radio"> Quiz</p>
+                <p><input name="modalRadio1" type="radio"> Test</p>
+                <p><input name="modalRadio1" type="radio"> Project</p>
+                <p><input name="modalRadio1" type="radio"> Reminder</p>
               </td>
             </tr>
           </table>
