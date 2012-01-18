@@ -10,6 +10,9 @@
 #CalendarTable td.Hblock{background-color: #F43CF9;}
 
 .event{
+	width:100%;
+	margin-bottom:7px;
+	text-transform:none; !important /* by default label makes it all caps...we don't necessarily want that */
 }
 
 .container{
