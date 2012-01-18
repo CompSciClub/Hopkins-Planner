@@ -43,7 +43,7 @@ block content
                 if (events[day] && events[day][block])
                   - console.log("event", events[day][block]);
                   each eventObj in events[day][block]
-                    .alert-message.info.event(eventId = eventObj._id, style="height:20", rel="popover", data-content="#{eventObj.description}", data-original-title="#{eventObj.name}")
+                    .alert-message.info.event(eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
                       h4
                         #{eventObj.name}
     #eventCreatorModal.modal.hide.fade.
