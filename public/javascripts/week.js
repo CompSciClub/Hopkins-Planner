@@ -45,7 +45,7 @@ $(document).ready(function(){
     console.log(getChildIndex(this));
     var date = new Date(monday + (getChildIndex(this) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
         eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
-        eventDate.day  = (date.getDay() - 1) % 7;
+        eventDate.day  = getChildIndex(this);
         eventDate.node = this; // store the current element so we can put the event box in later
 
     // inject the date 
@@ -53,7 +53,7 @@ $(document).ready(function(){
     $(".eventBlock").html(block + " block");
     $(".eventDate").html(eventDate.string);
 
-	populateOptions();
+    //populateOptions();
 	
     /* Populate the block selector */
     var options = new Array("A block","B block",
@@ -107,13 +107,13 @@ $(document).ready(function(){
   $(".event").popover({html: true});
 });
 
-function populateOptions(){
+/*function populateOptions(){
  	var bootClasses = ["label success","label important","label notice"];
  	$("#options").html('');
  	for (var i = 0; i < 3; i++){
  		$("#options").append('<div class="options '+ bootClasses[i] +'" style="" >'+ '<input class="options" name="modalRadio1" type="radio" />   ' + $("#eventNameInput").val() +'</div> <br />');
 	}
-}
+} // this is probably a smarter way to do this then just making them in jade, if we use a global bootClasses array */
 
 // Creates a new event from info in modal
 function createEvent(){
@@ -121,23 +121,23 @@ function createEvent(){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
-  newEvent.bootClass   = "label success"
+  newEvent.bootClass   = ""
   
   var radios = $('input[name=modalRadio1]:radio'); 
-  var bootClasses = ["Homework",
-                     "Quiz",
-                     "Test",
-                     "Project",
-                     "Reminder"]
+  var bootClasses = ["hw",
+                     "quiz",
+                     "test",
+                     "project",
+                     "reminder"]
   for (var i = 0; i < radios.length; i++){
     if (radios[i].checked){
-      newEvent.bootClass = bootClasses[i];
+      newEvent.bootClass += bootClasses[i];
     }
   }
   
   // now add the element to the UI
   // TODO re-style these event boxes
- $(eventDate.node).append('<div class="'+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '</div>');
+ $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '</div>');
  $(".event").popover({html: true});
   
   // now save the event on the server

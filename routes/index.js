@@ -41,7 +41,6 @@ exports.index = function(req, res){
 
         eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
         }
-        //TODO use the date to pick gray or maroon
         res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
                             week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
       });
@@ -236,8 +235,6 @@ exports.addStudent = function(req, res) {
 exports.createEvent = function(req, res){
   if (!isLoggedIn(req, res))
     return;
-
-  console.log(req.body.bootClass);
   
   var addEvent = function(type, owner) {
     var newEvent = new Event({
@@ -247,6 +244,7 @@ exports.createEvent = function(req, res){
       day: req.body.day,
       block: req.body.block,
       description: req.body.description,
+      class: req.body.bootClass,
       owner: owner
     });
     newEvent.save(function(error){
