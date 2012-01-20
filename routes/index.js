@@ -10,7 +10,6 @@ var jade       = require("jade");
  */
 
 exports.index = function(req, res){
-  sendEmail("testing@hopplanner.com", "jteplitz13@students.hopkins.edu", "Hello", "views/emails/test.jade", {name: "Sandro"});
   if (!req.session.valid){
     res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
