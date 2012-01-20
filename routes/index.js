@@ -1,12 +1,16 @@
 // for now all routes go in here. We will probbably break them up at some point
 
-var Crypto = require("ezcrypto").Crypto;
+var Crypto     = require("ezcrypto").Crypto;
+var fs         = require("fs");
+var nodemailer = require("nodemailer");
+var jade       = require("jade");
 
 /*
  * GET home page.
  */
 
 exports.index = function(req, res){
+  sendEmail("testing@hopplanner.com", "jteplitz13@students.hopkins.edu", "Hello", "views/emails/test.jade", {name: "Sandro"});
   if (!req.session.valid){
     res.render("index", {title: "Hopkins Planner", loggedIn: false,
                        flash: req.flash()});
@@ -383,4 +387,37 @@ function escapeHtml(unsafe) {
       .replace(/"/g, "&quot;")
       .replace(/(\r\n|[\r\n])/g, "<br />")
       .replace(/'/g, "&#039;");
+}
+
+function sendEmail(sendaddress, emailaddress, subject, directory, vars) {
+	var data = fs.readFile(directory, function(err, data){
+    if (err){
+      console.log("error", err);
+      return;
+    }
+		var jadeTemplate = jade.compile(data.toString("utf8"));
+    var html = jadeTemplate(vars);
+    nodemailer.SMTP = {
+      host: "smtp.mailgun.org",
+      port: 587,
+      ssl: false,
+      use_authentication: true,
+      user: "postmaster@app1811121.mailgun.org",
+      pass: "8k0s9nya04j7"
+    };
+    console.log(html);
+    nodemailer.send_mail(
+      {
+        sender: sendaddress,
+        to: emailaddress,
+        subject: subject,
+        html: html,
+        body:'moar tests, for science'
+      }, function(error, success){
+        if (!success)
+          console.log("Error sending message", error);
+        else
+          console.log("Message sent");
+      });
+   });
 }
