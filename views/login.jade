@@ -1,0 +1,38 @@
+extends layout
+
+block scripts
+  script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
+  script(type="text/javascript", src="javascripts/sha.js")
+  script(type="text/javascript", src="javascripts/index.js")
+
+block styles
+  style
+    .hero-unit{
+      width: 220px;
+    }
+    .alert-message.error p{
+      font-size: 12px;
+    }
+      
+
+block content
+  .container
+    .hero-unit
+      h2 Login
+      p Please login to continue
+      span#errors
+        if flash.error
+          .fade.in.alert-message.error(data-alert="alert")
+            a.close(href="#") x
+            p #{flash.error}
+      form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
+        .clearfix(class="#{flash.emailError}")
+          label(for="email") Email:
+          if !flash.email
+            - flash.email = ""
+          input(class="email_input #{flash.emailError}", type="text", name="email", value="#{flash.email}")
+        .clearfix(class="#{flash.passError}")
+          label(for="password") Password:
+          input.password_input(type="password", name="password")
+        center
+          input.success.btn(type="submit", value="Login")

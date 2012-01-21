@@ -48,6 +48,9 @@ app.get("/signup", routes.createAccount);
 app.post("/createAccount", routes.createUser);
 app.post("/login", routes.login);
 
+app.post('/setup_blocks', routes.setupBlocks);
+app.get("/setup", routes.setup);
+
 // events
 app.post("/event", routes.createEvent);
 app.post("/event/:eventId", routes.modifyEvent);
