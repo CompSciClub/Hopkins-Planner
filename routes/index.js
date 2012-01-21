@@ -93,16 +93,18 @@ exports.createUser = function(req, res){
     if (err){
       if (err.type == undefined){ // this is a bad way to check for this
         req.flash("error", "That email is already being used");
+        req.flash("errorContainer", "#accountModal");
         req.flash("errorEmail", "error");
         res.redirect("back");
         return;
       }
-      console.log(err.errors, err);
       if (err.errors.email){
         req.flash("error", "Please try again with a valid email address");
+        req.flash("errorContainer", "#accountModal");
         req.flash("errorEmail", "error");
       }else if (err.errors.password){
         req.flash("error", "Password can not be empty");
+        req.flash("errorContainer", "#accountModal");
         req.flash("errorPass", "error");
       }
       res.redirect("back");
@@ -127,6 +129,7 @@ exports.login = function(req, res){
     if (users.length == 0){
       req.flash("error", "Invalid email");
       req.flash("emailError", "error");
+      req.flash("errorContainer", "#loginModal");
       res.redirect("back");
       return;
     }
@@ -138,6 +141,7 @@ exports.login = function(req, res){
     }else{
       req.flash("error", "Invalid password");
       req.flash("passError", "error");
+      req.flash("errorContainer", "#loginModal");
       req.flash("email", user.email);
       res.redirect("back");
     }

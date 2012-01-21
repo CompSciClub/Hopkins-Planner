@@ -8,6 +8,15 @@ block scripts
   script(type="text/javascript", src="javascripts/sha.js")
   script(type="text/javascript", src="javascripts/index.js")
   script(type="text/javascript", src="javascripts/bootstrap-modal.js")
+  if (flash.error)
+    script(type="text/javascript")
+      $(document).ready(function(){
+        $("#{flash.errorContainer}").modal({
+          keyboard: true,
+          backdrop: true,
+          show: true
+        });
+      });
 
 block content
   .content
@@ -48,39 +57,44 @@ block content
         p Git dumped after "not being abble to commit due to conflicts".
         a.btn(href="#") View details &raquo;
 
-    // Modals
-    #loginModal.modal.small.hide.fade
-      .modal-header
-        a.close(href="#") &times;
-        h3 Login
-      .modal-body
-        form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
-          .clearfix
-            label(for="email") Email:
-            input(class="email_input", type="text", name="email")
-          .clearfix
-            label(for="password") Password:
-            input.password_input(type="password", name="password")
-          center
-            input.success.btn(type="submit", value="Login")
+  // Modals
+  #loginModal.modal.small.hide.fade
+    .modal-header
+      a.close(href="#") &times;
+      h3 Login
+    .modal-body
+      if (flash.error)
+        span.errors
+          .fade.in.alert-message.error
+            a.clse(href="#")x
+            p #{flash.error}
+      form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
+        .clearfix
+          label(for="email") Email:
+          input(class="email_input", type="text", name="email")
+        .clearfix
+          label(for="password") Password:
+          input.password_input(type="password", name="password")
+        center
+          input.success.btn(type="submit", value="Login")
 
-    #accountModal.modal.small.hide.fade
-      .modal-header
-        a.close(href="#")&times;
-        h3 Create Account
-      .modal-body
-        form.form-stacked(action="/createAccount", method="POST", onsubmit="return login(1)")
-          .clearfix
-            label(for="email") Email:
-            input.createEmail_input(type="text", name="email")
-          .clearfix
-            label(for="password") Password:
-            input.createPassword_input(type="password", name="password")
-          .clearfix
-            label(for="name") Name:
-            input(name="name", type="text")
-          .clearfix
-            label(for="is_teacher") Teacher:
-            input(name="is_teacher", type="checkbox")
-          center
-            input#createAccount_btn.success.btn(type="submit", value="Create")
+  #accountModal.modal.small.hide.fade
+    .modal-header
+      a.close(href="#")&times;
+      h3 Create Account
+    .modal-body
+      form.form-stacked(action="/createAccount", method="POST", onsubmit="return login(1)")
+        .clearfix
+          label(for="email") Email:
+          input.createEmail_input(type="text", name="email")
+        .clearfix
+          label(for="password") Password:
+          input.createPassword_input(type="password", name="password")
+        .clearfix
+          label(for="name") Name:
+          input(name="name", type="text")
+        .clearfix
+          label(for="is_teacher") Teacher:
+          input(name="is_teacher", type="checkbox")
+        center
+          input#createAccount_btn.success.btn(type="submit", value="Create")
