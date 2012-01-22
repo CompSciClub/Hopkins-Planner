@@ -1,0 +1,11 @@
+{
+    "name": "hopkins-planner"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.5.1"
+    , "jade": ">= 0.0.1"
+    , "mongoose": ">=2.4.0"
+    , "ezcrypto": ">=0.0.3"
+  }
+}

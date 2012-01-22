@@ -1,0 +1,32 @@
+!!!
+html
+  head
+    title= title
+    link(rel='stylesheet', href='stylesheets/bootstrap.min.css')
+    script(type="text/javascript", src="javascripts/jquery.min.js")
+
+    block scripts
+      script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
+
+    link(rel="stylesheet", href="stylesheets/style.css")
+    block styles
+      
+  body
+    block header
+      .topbar
+        .topbar-inner
+          .container-fluid
+            a.brand(href="/") Hopkins Planner
+            if loggedIn
+              p.pull-right Logged in as #{name}, 
+                a(href="/logout") Logout
+    .container-fluid
+      block sidebar
+
+      block content
+
+    block footer
+      footer.
+        <p>&copy; Computer Science 2011</p>
+        </div>
+        </div>
