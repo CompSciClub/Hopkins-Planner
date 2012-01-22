@@ -1,16 +1,37 @@
 /* Week.css */
 
-#CalendarTable td.Ablock{background-color: #ccccff;}
+/*#CalendarTable td.Ablock{background-color: #ccccff;}
 #CalendarTable td.Bblock{background-color: #FACA3A;}
 #CalendarTable td.Cblock{background-color: #F1FB39;}
 #CalendarTable td.Dblock{background-color: #40F93C;}
 #CalendarTable td.Eblock{background-color: #3EDBF7;}
 #CalendarTable td.Fblock{background-color: #3C49F9;}
 #CalendarTable td.Gblock{background-color: #A43DF8;}
-#CalendarTable td.Hblock{background-color: #F43CF9;}
+#CalendarTable td.Hblock{background-color: #F43CF9;}*/
 
 .event{
-	width:100%;
+  width:100%;
+  margin-bottom:7px;
+  text-transform:none !important; /* by default label makes it all caps...we don't necessarily want that */
+  font-family: Verdana;
+  border-radius: 6px;
+  background-color: #242DA6;
+  padding-left: 5px;
+}
+.event.test{
+  background-color: #A62424;
+}
+.event.hw{
+  background-color: #242DA6;
+}
+.event.quiz{
+  background-color: #731308;
+}
+.event.project{
+  background-color: #4B89DB;
+}
+.event.reminder{
+  background-color: #997777;
 }
 
 .container{
@@ -26,16 +47,6 @@ font-family:"Lucida Console",monospace;
   top: 3px;
 }
 
-.modal-header{
-  padding-bottom: 10px;
-}
+.monday,.wednesday,.friday{background-color:#f9f9f9;}
 
-.event{
-	margin-bottom:7px;
-	text-transform:none; !important
-}
 
-#modalDescriptionBox{
-  max-height: 200px;
-  max-width: 250px;
-}
