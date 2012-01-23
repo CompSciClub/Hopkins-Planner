@@ -12,39 +12,7 @@ exports.index = function(req, res){
                        flash: req.flash()});
   }else{
     console.log("user", req.session.userId);
-    var date = new Date(); // get the current date
-    date = new Date(date.getTime() - ((date.getDay() - 1) % 7) * 24 * 60 * 60 * 1000); // convert to monday
-
-    // set it to to the beginning of monday EST
-    date.setUTCHours(5); 
-    date.setUTCMinutes(0);
-    date.setUTCSeconds(0);
-    date.setUTCMilliseconds(0);
-
-    // get every event for the current user in this week
-    User.find({_id: req.session.userId}, function(err, users) {
-      var user = users[0];
-      var eventOwners = [req.session.userId];
-      for(var i = 0; i < user.classes.length; i++) {
-        eventOwners.push(user.classes[i].toString());
-      }
-      
-      Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
-        console.log(events);
-        var eventsObj = {};
-        for (var i = 0; i < events.length; i++){
-          if (!eventsObj[events[i].day])
-            eventsObj[events[i].day] = {};
-
-          if (!eventsObj[events[i].day][events[i].block])
-            eventsObj[events[i].day][events[i].block] =[];
-
-        eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
-        }
-        res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                            week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
-      });
-    });
+    loadWeekly(req, res);
   }
 };
 
@@ -62,7 +30,48 @@ exports.monthly = function(req, res){
  */
 
 exports.weekly = function(req, res){
-  res.render("week", {title: "Weekly Planner", loggedIn: req.session.valid});
+  if (!req.session.valid){
+    req.flash("error", "You have to log in to do that.");
+    res.render("login", {title: "Login", loggedIn: false, flash: req.flash()});
+    return;
+  }
+  loadWeekly(req, res);
+}
+
+function loadWeekly(req, res){
+  var date = new Date(); // get the current date
+  date = new Date(date.getTime() - ((date.getDay() - 1) % 7) * 24 * 60 * 60 * 1000); // convert to monday
+
+  // set it to to the beginning of monday EST
+  date.setUTCHours(5); 
+  date.setUTCMinutes(0);
+  date.setUTCSeconds(0);
+  date.setUTCMilliseconds(0);
+
+  // get every event for the current user in this week
+  User.find({_id: req.session.userId}, function(err, users) {
+    var user = users[0];
+    var eventOwners = [req.session.userId];
+    for(var i = 0; i < user.classes.length; i++) {
+      eventOwners.push(user.classes[i].toString());
+    }
+    
+    Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
+      console.log(events);
+      var eventsObj = {};
+      for (var i = 0; i < events.length; i++){
+        if (!eventsObj[events[i].day])
+          eventsObj[events[i].day] = {};
+
+        if (!eventsObj[events[i].day][events[i].block])
+          eventsObj[events[i].day][events[i].block] =[];
+
+      eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
+      }
+      res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+                          week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
+    });
+  });
 }
 
 /*
@@ -117,6 +126,52 @@ exports.createUser = function(req, res){
   })
 };
 
+/*
+ * POST /setup_blocks
+ */
+exports.setup_blocks = function(req, res){
+  if (!req.session.valid){
+    req.flash("error", "You have to login first.");
+    req.redirect("/login");
+    return;
+  }
+
+  req.session.user.blocks = {
+    A: req.body.aBlock,
+    B: req.body.bBlock,
+    C: req.body.cBlock,
+    D: req.body.dBlock,
+    E: req.body.eBlock,
+    F: req.body.fBlock,
+    G: req.body.gBlock,
+    H: req.body.hBlock
+  };
+};
+
+/*
+ * GET /setup
+ */
+exports.setup = function(req, res){
+  if (!req.session.valid){
+    req.flash("error", "You have to be logged in to do that.");
+    req.redirect("/login");
+    return;
+  }
+
+  res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName});
+};
+
+/*
+ * GET /login
+ */
+exports.loginPage = function(req, res){
+  if (req.session.valid){
+    res.redirect("back");
+    return;
+  }
+  res.render("login", {title: "Login", name: req.session.displayName, loggedIn: req.session.valid, flash: req.flash()});
+}
+
 /* 
  * POST /login
  */
@@ -128,22 +183,21 @@ exports.login = function(req, res){
 
     if (users.length == 0){
       req.flash("error", "Invalid email");
+      req.flash("email", req.body.email);
       req.flash("emailError", "error");
-      req.flash("errorContainer", "#loginModal");
-      res.redirect("back");
+      res.redirect("/login");
       return;
     }
 
     if (Crypto.SHA256(req.body.password + user.salt) == user.password){
       validateUser(req, user._id);
       req.session.displayName = user.name;
-      res.redirect(req.body.redirect || "back");
+      res.redirect(req.body.redirect || "/weekly");
     }else{
       req.flash("error", "Invalid password");
       req.flash("passError", "error");
-      req.flash("errorContainer", "#loginModal");
-      req.flash("email", user.email);
-      res.redirect("back");
+      req.flash("email", req.body.email);
+      res.redirect("/login");
     }
   });
 }
@@ -153,7 +207,7 @@ exports.login = function(req, res){
  */
  exports.logout = function(req, res){
    logout(req);
-   res.redirect(req.body.redirect || "back");
+   res.redirect(req.body.redirect || "/");
  }
  
 /*
@@ -361,11 +415,11 @@ function createSalt(){
 function getWeekStructure(weekColor){
   var maroonWeek = [
     ["A", "B", "A", "A", "B", "No school", "No School"],
-    ["C", "C", "B", "C", "A", "", ""],
-    ["D", "D", "E", "D", "C", "", ""],
-    ["E", "F", "F", "E", "F", "", ""],
-    ["F", "G", "activity", "G", "G", '', ''],
-    ["G", "H", "", "H", "H", "", ""]
+    ["C", "C", "B", "C", "A",],
+    ["D", "D", "E", "D", "C"],
+    ["E", "F", "F", "E", "F"],
+    ["F", "G", "activity", "G", "G"],
+    ["G", "H", "", "H", "H"]
   ];
 	var grayWeek = [
     ['A', 'B', 'A', 'B', 'B', "No School", "No School"],

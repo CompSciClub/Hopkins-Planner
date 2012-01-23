@@ -10,7 +10,8 @@ exports.User = new Schema({
   name: String,
   is_teacher: Boolean,
   classes: [String],
-  user_id   : ObjectId
+  user_id   : ObjectId,
+  blocks: Object
 });
 
 exports.Event = new Schema({
