@@ -1,7 +1,17 @@
 var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+    Blocks   = new Schema({
+      A: String,
+      B: String,
+      C: String,
+      D: String,
+      E: String,
+      F: String,
+      G: String,
+      H: String
+    });
 
 exports.User = new Schema({
   email     : {type: String, validate: [validateEmail, 'an email is required'], index: { unique: true }},
@@ -11,7 +21,7 @@ exports.User = new Schema({
   is_teacher: Boolean,
   classes: [String],
   user_id   : ObjectId,
-  blocks: Object
+  blocks: [Blocks]
 });
 
 exports.Event = new Schema({

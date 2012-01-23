@@ -4,16 +4,29 @@ block scripts
   script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
   script(type="text/javascript", src="javascripts/sha.js")
   script(type="text/javascript", src="javascripts/index.js")
+  script(type="text/javascript", src="javascripts/bootstrap-modal.js")
+  script
+    $(document).ready(function(){
+      $("#forgotPassword").click(function(){
+        $("#passwordModal").modal({
+          keyboard: true,
+          backdrop: true,
+          show: true
+        });
+      });
+    });
 
 block styles
   style
     .hero-unit{
-      width: 220px;
+      width: 280px;
     }
     .alert-message.error p{
       font-size: 12px;
     }
-      
+    #loginButton{
+      margin-right: 50px;
+    }
 
 block content
   .container
@@ -33,6 +46,20 @@ block content
           input(class="email_input #{flash.emailError}", type="text", name="email", value="#{flash.email}")
         .clearfix(class="#{flash.passError}")
           label(for="password") Password:
-          input.password_input(type="password", name="password")
+          .input
+            input.password_input(type="password", name="password")
+            span.help-inline.link#forgotPassword Forget?
         center
-          input.success.btn(type="submit", value="Login")
+          input.success.btn#loginButton(type="submit", value="Login")
+
+  #passwordModal.modal.small.hide.fade
+    .modal-header
+      a.close(href="#") &times;
+      h3 Reset Password
+    .modal-body
+      form.form-stacked(action="/reset_password", method="POST", onsubmit="return passwordReset()")
+        .clearfix
+          label(for="email") Email:
+          input.emailRecover_input(type="text")
+        center
+          input.primary.btn(type="submit", value="Reset")
