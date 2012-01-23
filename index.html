@@ -15,7 +15,9 @@
 		<script src="public/javascripts/week.js"></script>
 		<script src="public/javascripts/bootstrap-modal.js"></script>
 		<link rel="stylesheet" href="public/stylesheets/style.css"/>
-		<link rel="stylesheet" href="week.css">
+		<link rel="stylesheet" href="public/stylesheets/week.css">
+		<link type="text/css" href="public/plugins/jquery-ui/css/smoothness/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="public/plugins/jquery-ui/js/jquery-ui-1.8.17.custom.min.js"></script>
 	</head>
 <body>
 	<div class="topbar"><div class="topbar-inner">
@@ -93,7 +95,7 @@
 			<tr>
 				<td class="Fblock">F Block</td>
 				<td class="Gblock">G Block</td>
-				<td class="activityblock" rowspan="2">Activities</td>
+				<td class="activityblock" rowspan="2" >activities</td>
 				<td class="Gblock">G Block</td>
 				<td class="Gblock">G Block</td>
 			</tr>
@@ -111,8 +113,7 @@
   <h3>
     <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
     <br />
-    <small id="eventDate"><span class="eventBlock"></span> on <span class="eventDate"></span></small>
-
+    <small id="eventDate"><span class="eventBlock"></span> on <input class="eventDate" id="datepicker" type="text"></input></span></small>
 </div>
 <div class="modal-body">
   <form>
@@ -121,8 +122,8 @@
 		  <td class="noBorder" width="50%">
           <select name="normalSelect" id="blockSelect">
           </select>
-          <br />
-          <br />
+		  <br />
+		  <br />
           <textarea id="modalDescriptionBox">Description here</textarea>
         </td>
         <td class="noBorder">

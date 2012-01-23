@@ -51,7 +51,19 @@ $(document).ready(function(){
     // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
     $(".eventBlock").html(block + " block");
-    $(".eventDate").html(eventDate.string);
+    //$(".eventDate").html(eventDate.string);
+	$("#datepicker").val(eventDate.string);
+	// Datepicker
+	$('#datepicker').datepicker({
+		altField: $(".eventDate"),
+		inline: true,
+		dateFormat: "M d, yy"
+	});
+	//hover states on the static widgets
+	$('#dialog_link, ul#icons li').hover(
+		function() { $(this).addClass('ui-state-hover'); }, 
+		function() { $(this).removeClass('ui-state-hover'); }
+	);
 
     //populateOptions();
 	
