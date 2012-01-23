@@ -27,7 +27,15 @@ block sidebar
 block content
   .content
     center
-      table(id="CalendarTable", class="bordered-table zebra-striped", style="width:100% !important")
+      table(id="CalendarTable", class="bordered-table", style="width:100% !important")
+        colgroup
+          col.monday
+          col.tuesday
+          col.wednesday
+          col.thursday
+          col.friday
+          col.weekend
+          col.weekend
         tbody
           style(type="text/css")
             td{height:90px; width:150px}
@@ -37,15 +45,24 @@ block content
             th Wednesday
             th Thursday
             th Friday
-            - console.log(week.length);
+            th(colspan="2") 
+              center Weekend
           for period in week
             tr
               each block, day in period
-                td(class="#{block}block") #{block} Block
-                  if (events[day] && events[day][block])
-                    each eventObj in events[day][block]
-                      .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
-                          #{eventObj.name}
+                - if(day == 5)
+                    td.saturday(rowspan="6") Saturday
+                - else if(day == 6)
+                    td.sunday(rowspan="6") Sunday
+                - else if (block == "activity")
+                    td.activityblock(rowspan="2") Activities
+                - else if (block)
+                    td(class="#{block}block") #{block} Block
+                if (events[day] && events[day][block])
+                  each eventObj in events[day][block]
+                    .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
+                        #{eventObj.name}
+
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
         <a href="#" class="close">&times;</a>

@@ -69,7 +69,7 @@ function loadWeekly(req, res){
       eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
       }
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
+                          week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
     });
   });
 }
@@ -415,19 +415,19 @@ function createSalt(){
 function getWeekStructure(weekColor){
   var maroonWeek = [
     ["A", "B", "A", "A", "B", "No school", "No School"],
-    ["C", "C", "B", "C", "A", "", ""],
-    ["D", "D", "E", "D", "C", "", ""],
-    ["E", "F", "F", "E", "F", "", ""],
-    ["F", "G", "activity", "G", "G", '', ''],
-    ["G", "H", "", "H", "H", "", ""]
+    ["C", "C", "B", "C", "A",],
+    ["D", "D", "E", "D", "C"],
+    ["E", "F", "F", "E", "F"],
+    ["F", "G", "activity", "G", "G"],
+    ["G", "H", "", "H", "H"]
   ];
 	var grayWeek = [
     ['A', 'B', 'A', 'B', 'B', "No School", "No School"],
-    ["C", "C", "B", "C", "A", "", ""],
-    ["D", "D", "E", "D", "D", "", ""],
-    ["E", "E", "F", "E", "F", "", ""],
-    ["F", "G", "activity", "G", "G", "", ""],
-    ["H", "H", "", "H", "H", "", ""]
+    ["C", "C", "B", "C", "A"],
+    ["D", "D", "E", "D", "D"],
+    ["E", "E", "F", "E", "F"],
+    ["F", "G", "activity", "G", "G"],
+    ["H", "H", "", "H", "H"]
   ];
 		
 	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;

@@ -39,10 +39,12 @@
 }
 
 td{
-  font-family: Arial,monospace;
+font-family:"Lucida Console",monospace;
 }
 
 #eventDate{
   position: relative;
   top: 3px;
 }
+
+.monday,.wednesday,.friday{background-color:#f9f9f9;}
