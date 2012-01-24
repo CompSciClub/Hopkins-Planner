@@ -57,7 +57,6 @@ function loadWeekly(req, res){
     }
     
     Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
-      console.log(events);
       var eventsObj = {};
       for (var i = 0; i < events.length; i++){
         if (!eventsObj[events[i].day])
@@ -69,7 +68,7 @@ function loadWeekly(req, res){
         eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
       }
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
+                          week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: user.blocks[0]});
     });
   });
 }
@@ -95,7 +94,8 @@ exports.createUser = function(req, res){
     salt: salt,
     name: req.body.name,
     is_teacher: (req.body.is_teacher == "on") ? true : false,
-    classes: []
+    classes: [],
+    blocks: [{}]
   });
 
   user.save(function(err){
@@ -121,7 +121,7 @@ exports.createUser = function(req, res){
       req.session.valid       = true;
       req.session.userId      = user._id;
       req.session.displayName = user.name;
-      res.redirect(req.body.redirect || "/");
+      res.redirect(req.body.redirect || "/setup");
     }
   })
 };
@@ -129,14 +129,14 @@ exports.createUser = function(req, res){
 /*
  * POST /setup_blocks
  */
-exports.setup_blocks = function(req, res){
+exports.setupBlocks = function(req, res){
   if (!req.session.valid){
     req.flash("error", "You have to login first.");
-    req.redirect("/login");
+    res.redirect("/login");
     return;
   }
 
-  req.session.user.blocks = {
+  var blocks = {
     A: req.body.aBlock,
     B: req.body.bBlock,
     C: req.body.cBlock,
@@ -146,6 +146,18 @@ exports.setup_blocks = function(req, res){
     G: req.body.gBlock,
     H: req.body.hBlock
   };
+
+  User.find({_id: req.session.userId}, function(err, users){
+    if (err){
+      console.log("Error finding user");
+      res.setHead(505, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({err: 505, msg: "Unable to get user"}));
+    }
+    var user = users[0];
+    user.blocks = blocks;
+    user.save();
+    res.redirect(req.body.redirect || "/weekly");
+  });
 };
 
 /*
@@ -154,7 +166,7 @@ exports.setup_blocks = function(req, res){
 exports.setup = function(req, res){
   if (!req.session.valid){
     req.flash("error", "You have to be logged in to do that.");
-    req.redirect("/login");
+    res.redirect("/login");
     return;
   }
 

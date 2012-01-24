@@ -46,9 +46,10 @@ exports.Class = new Schema({
 });
 
 // Setup Database models
-User  = mongoose.model("User", exports.User);
-Event = mongoose.model("Event", exports.Event);
-Class = mongoose.model("Class", exports.Class);
+User   = mongoose.model("User", exports.User);
+Event  = mongoose.model("Event", exports.Event);
+Class  = mongoose.model("Class", exports.Class);
+Blocks = mongoose.model("Blocks", Blocks);
 
 function validatePresenceOf(value){
   return value && value.length;
