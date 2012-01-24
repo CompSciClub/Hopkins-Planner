@@ -62,6 +62,7 @@ block content
                   each eventObj in events[day][block]
                     .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
                         #{eventObj.name}
+                        input.eventCheck(type="checkbox")
 
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">

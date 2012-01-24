@@ -80,6 +80,10 @@ $(document).ready(function(){
 
   }); // end td click
 
+  $(".eventCheck").click(function(){
+    console.log("check click", this);
+  });
+
   /* Modal releated events
      I moved them out of the click handler to be more memory effecient because the elements are never deleated
   */

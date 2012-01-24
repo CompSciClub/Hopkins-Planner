@@ -33,7 +33,8 @@ exports.Event = new Schema({
   block: String,
   description: String,
   owner: ObjectId,
-  event_id: ObjectId
+  event_id: ObjectId,
+  done: Boolean
 });
 
 exports.Class = new Schema({
