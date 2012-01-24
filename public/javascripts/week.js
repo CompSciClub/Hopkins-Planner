@@ -38,7 +38,7 @@ $(document).ready(function(){
   ); // end td hover
   $("#CalendarTable td").click(function(){
     // create a new event
-    var block = $(this).attr('class')[0]; // figure out which block the event is
+    var block = $(this).attr('class').split(" ")[0]; // figure out which block the event is
     /** Modal Stuff */
 
     // get the date and information
@@ -50,25 +50,22 @@ $(document).ready(function(){
 
     // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventBlock").html(block + " block");
     $(".eventDate").html(eventDate.string);
 
     //populateOptions();
 	
     /* Populate the block selector */
-    var options = new Array("A block","B block",
-                "C block","D block",
-                "E block","F block",
-                "G block","H block",
-                "Activity period","Lunch","After school");
 
     $("#blockSelect").html(''); // clear the list
-    for (var i = 0; i < options.length; i++){
-      $("#blockSelect").append("<option>"+options[i]+"</option>");// add options
+    for (blockName in blocks){
+      if (blockName != "_id")
+        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
     }
 
+    // add in other blocks
     /* Set the block selector to the current block */
-    $("#blockSelect").val(block +' block');
+    $("#blockSelect").val(blocks[block]);
+    $(".eventBlock").html(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
 
     /* Launch the Modal */
@@ -80,8 +77,20 @@ $(document).ready(function(){
 
   }); // end td click
 
-  $(".eventCheck").click(function(){
-    console.log("check click", this);
+  $(".eventCheck").click(function(event){
+    var done    = ($(this).attr("checked") == "checked");
+    var eventId = $(this).parent().attr("eventId");
+    $.ajax({
+      url: "/event/" + eventId,
+      type: "POST",
+      data: {
+        done: done
+      },
+      failure: function(err){
+        error(err.msg);
+      }
+    });
+    event.stopPropagation();
   });
 
   /* Modal releated events
@@ -236,4 +245,7 @@ function escapeHtml(unsafe) {
       .replace(/"/g, "&quot;")
       .replace(/(\r\n|[\r\n])/g, "<br />")
       .replace(/'/g, "&#039;");
+}
+function error(msg){
+  console.log("error", msg);
 }

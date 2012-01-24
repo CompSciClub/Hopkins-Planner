@@ -3,7 +3,8 @@ extends layout
 block scripts
   script(type="text/javascript")
     var monday = #{date};
-    var events = JSON.parse(decodeURIComponent("!{encodeURIComponent(JSON.stringify(events))}"));
+    var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
+    var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   script(type="text/javascript", src="javascripts/bootstrap-twipsy.js")
   script(type="text/javascript", src="javascripts/bootstrap-popovers.js")
@@ -50,19 +51,25 @@ block content
           for period in week
             tr
               each block, day in period
-                - if(day == 5)
-                    td.saturday(rowspan="6") Saturday
-                - else if(day == 6)
-                    td.sunday(rowspan="6") Sunday
-                - else if (block == "activity")
-                    td.activityblock(rowspan="2") Activities
-                - else if (block)
-                    td(class="#{block}block") #{block} Block
-                if (events[day] && events[day][block])
-                  each eventObj in events[day][block]
-                    .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
-                        #{eventObj.name}
-                        input.eventCheck(type="checkbox")
+                - var rowspan = "1"
+                - if(day == 5 || day == 6)
+                  - rowspan = "6"
+                - else if(block == "Activities")
+                  - rowspan = "2"
+                - var className = "";
+                - if(blocks[block])
+                  - className = blocks[block];
+                - else
+                  - className = block;
+                td(class="#{block} block", rowspan="#{rowspan}") #{className}
+                  if (events[day] && events[day][block])
+                    each eventObj in events[day][block]
+                      .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
+                          #{eventObj.name}
+                          if eventObj.done
+                            input.eventCheck(type="checkbox", checked="checked")
+                          else
+                            input.eventCheck(type="checkbox")
 
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">

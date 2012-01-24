@@ -51,4 +51,5 @@ font-family:"Lucida Console",monospace;
 
 .eventCheck{
   float: right;
+  margin-top: 4px;
 }

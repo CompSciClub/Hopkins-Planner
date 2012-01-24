@@ -10,7 +10,10 @@ var Schema = mongoose.Schema,
       E: String,
       F: String,
       G: String,
-      H: String
+      H: String,
+      Saturday: {type: String, default: "Saturday"},
+      Sunday: {type:String, default: "Sunday"},
+      Activities: {type:String, default: "Activities"}
     });
 
 exports.User = new Schema({
@@ -34,7 +37,7 @@ exports.Event = new Schema({
   description: String,
   owner: ObjectId,
   event_id: ObjectId,
-  done: Boolean
+  done: {type: Boolean, default: false}
 });
 
 exports.Class = new Schema({
@@ -47,9 +50,10 @@ exports.Class = new Schema({
 });
 
 // Setup Database models
-User  = mongoose.model("User", exports.User);
-Event = mongoose.model("Event", exports.Event);
-Class = mongoose.model("Class", exports.Class);
+User   = mongoose.model("User", exports.User);
+Event  = mongoose.model("Event", exports.Event);
+Class  = mongoose.model("Class", exports.Class);
+Blocks = mongoose.model("Blocks", Blocks);
 
 function validatePresenceOf(value){
   return value && value.length;
