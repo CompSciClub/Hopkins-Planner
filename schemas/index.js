@@ -10,7 +10,10 @@ var Schema = mongoose.Schema,
       E: String,
       F: String,
       G: String,
-      H: String
+      H: String,
+      Saturday: {type: String, default: "Saturday"},
+      Sunday: {type:String, default: "Sunday"},
+      Activities: {type:String, default: "Activities"}
     });
 
 exports.User = new Schema({

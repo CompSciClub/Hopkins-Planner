@@ -50,40 +50,22 @@ $(document).ready(function(){
 
     // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventBlock").html(block);
     $(".eventDate").html(eventDate.string);
 
     //populateOptions();
 	
     /* Populate the block selector */
-    var options = new Array("A block","B block",
-                "C block","D block",
-                "E block","F block",
-                "G block","H block",
-                "Activities period","Lunch","After school", "Saturday", "Sunday"); // TODO this should be defined the by user
 
     $("#blockSelect").html(''); // clear the list
-    for (var i = 0; i < options.length; i++){
-      $("#blockSelect").append("<option>"+options[i]+"</option>");// add options
+    for (blockName in blocks){
+      if (blockName != "_id")
+        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
     }
 
-    var blocks = {
-      "A": "A block",
-      "B": "B block",
-      "C": "C block",
-      "D": "D block",
-      "E": "E block",
-      "F": "F block",
-      "G": "G block",
-      "H": "H block",
-      "Activities": "Activities period",
-      "lunch": "Lunch",
-      "Saturday": "Saturday",
-      "Sunday": "Sunday"
-    }; //  TODO this should be defined by the user
-                
+    // add in other blocks
     /* Set the block selector to the current block */
     $("#blockSelect").val(blocks[block]);
+    $(".eventBlock").html(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
 
     /* Launch the Modal */

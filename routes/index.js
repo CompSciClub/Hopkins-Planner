@@ -67,8 +67,15 @@ function loadWeekly(req, res){
 
         eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
       }
+      var blocks = user.blocks[0];
+      //blocks.lunch    = "Lunch";
+      blocks.Saturday   = "Saturday";
+      blocks.Activities = "Activities";
+      blocks.Sunday     = "Sunday";
+      console.log(blocks.Saturday);
+
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: user.blocks[0]});
+                          week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks});
     });
   });
 }

@@ -3,7 +3,8 @@ extends layout
 block scripts
   script(type="text/javascript")
     var monday = #{date};
-    var events = JSON.parse(decodeURIComponent("!{encodeURIComponent(JSON.stringify(events))}"));
+    var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
+    var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   script(type="text/javascript", src="javascripts/bootstrap-twipsy.js")
   script(type="text/javascript", src="javascripts/bootstrap-popovers.js")
