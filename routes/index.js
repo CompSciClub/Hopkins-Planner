@@ -66,7 +66,7 @@ function loadWeekly(req, res){
         if (!eventsObj[events[i].day][events[i].block])
           eventsObj[events[i].day][events[i].block] =[];
 
-      eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
+        eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
       }
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
                           week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml});
@@ -414,20 +414,20 @@ function createSalt(){
 
 function getWeekStructure(weekColor){
   var maroonWeek = [
-    ["A", "B", "A", "A", "B", "No school", "No School"],
+    ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
     ["C", "C", "B", "C", "A",],
     ["D", "D", "E", "D", "C"],
     ["E", "F", "F", "E", "F"],
-    ["F", "G", "activity", "G", "G"],
+    ["F", "G", "Activities", "G", "G"],
     ["G", "H", "", "H", "H"]
   ];
 	var grayWeek = [
-    ['A', 'B', 'A', 'B', 'B', "No School", "No School"],
+    ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
     ["C", "C", "B", "C", "A"],
     ["D", "D", "E", "D", "D"],
     ["E", "E", "F", "E", "F"],
-    ["F", "G", "activity", "G", "G"],
-    ["H", "H", "", "H", "H"]
+    ["F", "G", "Activities", "G", "G"],
+    ["H", "H", "H", "H"]
   ];
 		
 	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;

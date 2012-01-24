@@ -50,19 +50,17 @@ block content
           for period in week
             tr
               each block, day in period
-                - if(day == 5)
-                  td.saturday(rowspan="6") Saturday
-                - else if(day == 6)
-                  td.sunday(rowspan="6") Sunday
-                - else if (block == "activity")
-                  td.activityblock(rowspan="2") Activities
-                - else if (block)
-                  td(class="#{block}block") #{block} Block
-                    if (events[day] && events[day][block])
-                      - console.log("event", day, block)
-                      each eventObj in events[day][block]
-                        .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
-                            #{eventObj.name}
+                - var rowspan = "1"
+                - if(day == 5 || day == 6)
+                  - rowspan = "6"
+                - else if(block == "Activities")
+                  - rowspan = "2"
+
+                td(class="#{block} block", rowspan="#{rowspan}") #{block}
+                  if (events[day] && events[day][block])
+                    each eventObj in events[day][block]
+                      .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
+                          #{eventObj.name}
 
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">

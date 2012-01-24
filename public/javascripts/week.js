@@ -38,7 +38,7 @@ $(document).ready(function(){
   ); // end td hover
   $("#CalendarTable td").click(function(){
     // create a new event
-    var block = $(this).attr('class')[0]; // figure out which block the event is
+    var block = $(this).attr('class').split(" ")[0]; // figure out which block the event is
     /** Modal Stuff */
 
     // get the date and information
@@ -50,7 +50,7 @@ $(document).ready(function(){
 
     // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventBlock").html(block + " block");
+    $(".eventBlock").html(block);
     $(".eventDate").html(eventDate.string);
 
     //populateOptions();
@@ -60,15 +60,30 @@ $(document).ready(function(){
                 "C block","D block",
                 "E block","F block",
                 "G block","H block",
-                "Activity period","Lunch","After school");
+                "Activities period","Lunch","After school", "Saturday", "Sunday"); // TODO this should be defined the by user
 
     $("#blockSelect").html(''); // clear the list
     for (var i = 0; i < options.length; i++){
       $("#blockSelect").append("<option>"+options[i]+"</option>");// add options
     }
 
+    var blocks = {
+      "A": "A block",
+      "B": "B block",
+      "C": "C block",
+      "D": "D block",
+      "E": "E block",
+      "F": "F block",
+      "G": "G block",
+      "H": "H block",
+      "Activities": "Activities period",
+      "lunch": "Lunch",
+      "Saturday": "Saturday",
+      "Sunday": "Sunday"
+    }; //  TODO this should be defined by the user
+                
     /* Set the block selector to the current block */
-    $("#blockSelect").val(block +' block');
+    $("#blockSelect").val(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
 
     /* Launch the Modal */
