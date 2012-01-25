@@ -3,7 +3,8 @@ extends layout
 block scripts
   script(type="text/javascript")
     var monday = #{date};
-    var events = JSON.parse(decodeURIComponent("!{encodeURIComponent(JSON.stringify(events))}"));
+    var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
+    var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   script(type="text/javascript", src="javascripts/bootstrap-twipsy.js")
   script(type="text/javascript", src="javascripts/bootstrap-popovers.js")
@@ -27,7 +28,15 @@ block sidebar
 block content
   .content
     center
-      table(id="CalendarTable", class="bordered-table zebra-striped", style="width:100% !important")
+      table(id="CalendarTable", class="bordered-table", style="width:100% !important")
+        colgroup
+          col.monday
+          col.tuesday
+          col.wednesday
+          col.thursday
+          col.friday
+          col.weekend
+          col.weekend
         tbody
           style(type="text/css")
             td{height:90px; width:150px}
@@ -37,15 +46,31 @@ block content
             th Wednesday
             th Thursday
             th Friday
-            - console.log(week.length);
+            th(colspan="2") 
+              center Weekend
           for period in week
             tr
               each block, day in period
-                td(class="#{block}block") #{block} Block
+                - var rowspan = "1"
+                - if(day == 5 || day == 6)
+                  - rowspan = "6"
+                - else if(block == "Activities")
+                  - rowspan = "2"
+                - var className = "";
+                - if(blocks[block])
+                  - className = blocks[block];
+                - else
+                  - className = block;
+                td(class="#{block} block", rowspan="#{rowspan}") #{className}
                   if (events[day] && events[day][block])
                     each eventObj in events[day][block]
                       .label.success.event(class="#{eventObj.class}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
                           #{eventObj.name}
+                          if eventObj.done
+                            input.eventCheck(type="checkbox", checked="checked")
+                          else
+                            input.eventCheck(type="checkbox")
+
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
         <a href="#" class="close">&times;</a>

@@ -49,7 +49,7 @@ function error(msgs, elements){
                         "<a class=\"close\" href=\"#\">x</a><p>" + msgs[i] +
                         "</p></div>");
   }
-  $(".error").alert();
+  //$(".error").alert();
 
   for (i = 0; i < elements.length; i++){
     elements[i].parent().addClass("error");

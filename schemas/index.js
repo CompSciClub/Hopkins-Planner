@@ -1,7 +1,20 @@
 var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+    Blocks   = new Schema({
+      A: String,
+      B: String,
+      C: String,
+      D: String,
+      E: String,
+      F: String,
+      G: String,
+      H: String,
+      Saturday: {type: String, default: "Saturday"},
+      Sunday: {type:String, default: "Sunday"},
+      Activities: {type:String, default: "Activities"}
+    });
 
 exports.User = new Schema({
   email     : {type: String, validate: [validateEmail, 'an email is required'], index: { unique: true }},
@@ -10,7 +23,8 @@ exports.User = new Schema({
   name: String,
   is_teacher: Boolean,
   classes: [String],
-  user_id   : ObjectId
+  user_id   : ObjectId,
+  blocks: [Blocks]
 });
 
 exports.Event = new Schema({
@@ -22,7 +36,8 @@ exports.Event = new Schema({
   block: String,
   description: String,
   owner: ObjectId,
-  event_id: ObjectId
+  event_id: ObjectId,
+  done: {type: Boolean, default: false}
 });
 
 exports.Class = new Schema({
@@ -35,9 +50,10 @@ exports.Class = new Schema({
 });
 
 // Setup Database models
-User  = mongoose.model("User", exports.User);
-Event = mongoose.model("Event", exports.Event);
-Class = mongoose.model("Class", exports.Class);
+User   = mongoose.model("User", exports.User);
+Event  = mongoose.model("Event", exports.Event);
+Class  = mongoose.model("Class", exports.Class);
+Blocks = mongoose.model("Blocks", Blocks);
 
 function validatePresenceOf(value){
   return value && value.length;

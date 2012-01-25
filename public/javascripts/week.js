@@ -38,7 +38,7 @@ $(document).ready(function(){
   ); // end td hover
   $("#CalendarTable td").click(function(){
     // create a new event
-    var block = $(this).attr('class')[0]; // figure out which block the event is
+    var block = $(this).attr('class').split(" ")[0]; // figure out which block the event is
     /** Modal Stuff */
 
     // get the date and information
@@ -50,37 +50,22 @@ $(document).ready(function(){
 
     // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventBlock").html(block + " block");
-    //$(".eventDate").html(eventDate.string);
-	$("#datepicker").val(eventDate.string);
-	// Datepicker
-	$('#datepicker').datepicker({
-		altField: $(".eventDate"),
-		inline: true,
-		dateFormat: "M d, yy"
-	});
-	//hover states on the static widgets
-	$('#dialog_link, ul#icons li').hover(
-		function() { $(this).addClass('ui-state-hover'); }, 
-		function() { $(this).removeClass('ui-state-hover'); }
-	);
+    $(".eventDate").html(eventDate.string);
 
     //populateOptions();
 	
     /* Populate the block selector */
-    var options = new Array("A block","B block",
-                "C block","D block",
-                "E block","F block",
-                "G block","H block",
-                "Activity period","Lunch","After school");
 
     $("#blockSelect").html(''); // clear the list
-    for (var i = 0; i < options.length; i++){
-      $("#blockSelect").append("<option>"+options[i]+"</option>");// add options
+    for (blockName in blocks){
+      if (blockName != "_id")
+        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
     }
 
+    // add in other blocks
     /* Set the block selector to the current block */
-    $("#blockSelect").val(block +' block');
+    $("#blockSelect").val(blocks[block]);
+    $(".eventBlock").html(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
 
     /* Launch the Modal */
@@ -91,6 +76,8 @@ $(document).ready(function(){
     });
 
   }); // end td click
+
+  $(".eventCheck").click(checkboxClicked);
 
   /* Modal releated events
      I moved them out of the click handler to be more memory effecient because the elements are never deleated
@@ -118,6 +105,22 @@ $(document).ready(function(){
   // event popovers
   $(".event").popover({html: true});
 });
+function checkboxClicked (event){
+  console.log("checkbox", event);
+  var done    = ($(this).attr("checked") == "checked");
+  var eventId = $(this).parent().attr("eventId");
+  $.ajax({
+    url: "/event/" + eventId,
+    type: "POST",
+    data: {
+      done: done
+    },
+    failure: function(err){
+      error(err.msg);
+    }
+  });
+  event.stopPropagation();
+};
 
 /*function populateOptions(){
  	var bootClasses = ["label success","label important","label notice"];
@@ -149,7 +152,9 @@ function createEvent(){
   
   // now add the element to the UI
   // TODO re-style these event boxes
- $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '</div>');
+ $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
+ $(".eventCheck").unbind("click", checkboxClicked);
+ $(".eventCheck").click(checkboxClicked);
  $(".event").popover({html: true});
   
   // now save the event on the server
@@ -244,4 +249,7 @@ function escapeHtml(unsafe) {
       .replace(/"/g, "&quot;")
       .replace(/(\r\n|[\r\n])/g, "<br />")
       .replace(/'/g, "&#039;");
+}
+function error(msg){
+  console.log("error", msg);
 }

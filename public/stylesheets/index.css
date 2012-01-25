@@ -5,10 +5,14 @@
 }
 
 .btns{
-  width: 165px;
+  width: 180px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   top: -30px;
+}
+
+#signUp_btn{
+  margin-left: 15px;
 }
 

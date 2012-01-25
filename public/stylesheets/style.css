@@ -73,3 +73,7 @@ a {
 #createAccount_btn{
   margin-top: 10px;
 }
+.link{
+  cursor: pointer;
+  text-decoration: underline;
+}

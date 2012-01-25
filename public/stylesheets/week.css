@@ -49,4 +49,7 @@ font-family:"Lucida Console",monospace;
 
 .monday,.wednesday,.friday{background-color:#f9f9f9;}
 
-.ui-datepicker-calendar td{height:14px !important;}
+.eventCheck{
+  float: right;
+  margin-top: 4px;
+}

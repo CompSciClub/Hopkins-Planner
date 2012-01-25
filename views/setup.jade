@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  .container
+    h2 Setup
+    h3 Your Classes:
+    form.form-stacked(action="/setup_blocks", method="POST")
+      .clearfix
+        label(for="aBlock") A block: 
+        input.block_input(type="Text", name="aBlock")
+      .clearfix
+        label(for="bBlock") B block: 
+        input.block_input(type="Text", name="bBlock")
+      .clearfix
+        label(for="cBlock") C block: 
+        input.block_input(type="Text", name="cBlock")
+      .clearfix
+        label(for="dBlock") D block: 
+        input.block_input(type="Text", name="dBlock")
+      .clearfix
+        label(for="eBlock") E block: 
+        input.block_input(type="Text", name="eBlock")
+      .clearfix
+        label(for="fBlock") F block: 
+        input.block_input(type="Text", name="fBlock")
+      .clearfix
+        label(for="gBlock") G block: 
+        input.block_input(type="Text", name="gBlock")
+      .clearfix
+        label(for="hBlock") H block: 
+        input.block_input(type="Text", name="hBlock")
+      input.btn.success(type="submit") Save
