@@ -77,21 +77,7 @@ $(document).ready(function(){
 
   }); // end td click
 
-  $(".eventCheck").click(function(event){
-    var done    = ($(this).attr("checked") == "checked");
-    var eventId = $(this).parent().attr("eventId");
-    $.ajax({
-      url: "/event/" + eventId,
-      type: "POST",
-      data: {
-        done: done
-      },
-      failure: function(err){
-        error(err.msg);
-      }
-    });
-    event.stopPropagation();
-  });
+  $(".eventCheck").click(checkboxClicked);
 
   /* Modal releated events
      I moved them out of the click handler to be more memory effecient because the elements are never deleated
@@ -119,6 +105,22 @@ $(document).ready(function(){
   // event popovers
   $(".event").popover({html: true});
 });
+function checkboxClicked (event){
+  console.log("checkbox", event);
+  var done    = ($(this).attr("checked") == "checked");
+  var eventId = $(this).parent().attr("eventId");
+  $.ajax({
+    url: "/event/" + eventId,
+    type: "POST",
+    data: {
+      done: done
+    },
+    failure: function(err){
+      error(err.msg);
+    }
+  });
+  event.stopPropagation();
+};
 
 /*function populateOptions(){
  	var bootClasses = ["label success","label important","label notice"];
@@ -150,7 +152,9 @@ function createEvent(){
   
   // now add the element to the UI
   // TODO re-style these event boxes
- $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '</div>');
+ $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
+ $(".eventCheck").unbind("click", checkboxClicked);
+ $(".eventCheck").click(checkboxClicked);
  $(".event").popover({html: true});
   
   // now save the event on the server
