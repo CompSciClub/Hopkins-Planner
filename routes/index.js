@@ -388,6 +388,7 @@ exports.modifyEvent = function(req, res){
     e.block       = req.body.block         || e.block;
     e.description = req.body.description   || e.description;
     if (req.body.done != undefined){
+      console.log("done", req.body.done, req.body.done === "true");
       e.done = (req.body.done === true); // different for this one because it's a boolean
     }
     e.save(function(error){
