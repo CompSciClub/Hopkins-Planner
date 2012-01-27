@@ -142,6 +142,7 @@ function checkboxClicked (event){
       error(err.msg);
     }
   });
+  $(this).parent().toggleClass("done");
   event.stopPropagation();
 };
 
