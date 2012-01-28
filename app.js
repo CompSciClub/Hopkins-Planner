@@ -22,7 +22,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: process.env.secret || "The computer science club will rise again... and reclaim B204" }));
+  app.use(express.session({ cookie: {path: "/", httpOnly: true, maxAge: 604800000}, secret: process.env.secret || "The computer science club will rise again... and reclaim B204" }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });

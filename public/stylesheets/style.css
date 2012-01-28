@@ -1,8 +1,32 @@
 body {
-  padding-top: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+html, body{
+  height: 100%
+}
+
+footer{
+  height: 36px;
+}
+.topbar{
+  height: 15%;
+}
+.push{
+  height: 54px;
+}
+.container-fluid{
+  min-height: 85%;
+  height: auto !important;
+  height: 85%;
+  margin: 50 auto -54px;
+}
+.content, .sidebar{
+  padding-top: 50px;
+}
+* {
+  margin: 0;
+}
 a {
   color: #00B7FF;
 }
