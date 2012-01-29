@@ -443,7 +443,7 @@ function getWeekStructure(weekColor){
     ["D", "D", "E", "D", "C"],
     ["E", "F", "F", "E", "F"],
     ["F", "G", "Activities", "G", "G"],
-    ["G", "H", "", "H", "H"]
+    ["G", "H", "H", "H"]
   ];
 	var grayWeek = [
     ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
