@@ -75,7 +75,7 @@ function loadWeekly(req, res){
       console.log(blocks.Saturday);
 
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("grey"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks});
+                          week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks});
     });
   });
 }
@@ -443,7 +443,7 @@ function getWeekStructure(weekColor){
     ["D", "D", "E", "D", "C"],
     ["E", "F", "F", "E", "F"],
     ["F", "G", "Activities", "G", "G"],
-    ["G", "H", "", "H", "H"]
+    ["G", "H", "H", "H"]
   ];
 	var grayWeek = [
     ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],

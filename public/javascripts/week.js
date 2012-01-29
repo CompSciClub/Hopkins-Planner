@@ -48,37 +48,18 @@ $(document).ready(function(){
         eventDate.day  = getChildIndex(this);
         eventDate.node = this; // store the current element so we can put the event box in later
 
-    // inject the date 
-    // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventDate").html(eventDate.string);
+			createEventModal("new", block);
+		});
+  // event popovers
+  $(".event").popover({html: false});
 
-    //populateOptions();
-	
-    /* Populate the block selector */
+	$(".eventCheck").click(checkboxClicked);
 
-    $("#blockSelect").html(''); // clear the list
-    for (blockName in blocks){
-      if (blockName != "_id")
-        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
-    }
-
-    // add in other blocks
-    /* Set the block selector to the current block */
-    $("#blockSelect").val(blocks[block]);
-    $(".eventBlock").html(blocks[block]);
-    eventDate.block = block; // convert block to number and add block info to the eventDate object
-
-    /* Launch the Modal */
-    $("#eventCreatorModal").modal({
-      keyboard: true,
-      backdrop: true,
-      show: true
-    });
-
-  }); // end td click
-
-  $(".eventCheck").click(checkboxClicked);
-
+  $(".event").click(function(event){
+		event.stopPropagation(); // stop from spreading
+		editEvent(this);
+  });
+  
   /* Modal releated events
      I moved them out of the click handler to be more memory effecient because the elements are never deleated
   */
@@ -101,10 +82,52 @@ $(document).ready(function(){
       $(this).select();
     }
   });
-
-  // event popovers
-  $(".event").popover({html: true});
 });
+
+function createEventModal(modalType, block){
+	// inject the date 
+    // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
+    $(".eventDate").html(eventDate.string);
+
+    //populateOptions();
+	
+    /* Populate the block selector */
+
+    $("#blockSelect").html(''); // clear the list
+    for (blockName in blocks){
+      if (blockName != "_id")
+        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
+    }
+
+    // add in other blocks
+    /* Set the block selector to the current block */
+    $("#blockSelect").val(blocks[block]);
+    $(".eventBlock").html(blocks[block]);
+    eventDate.block = block; // convert block to number and add block info to the eventDate object
+
+		if (modalType == "edit") {
+			$("#eventNameInput").val("Event Name"); // make this actually the name
+		}
+    /* Launch the Modal */
+    $("#eventCreatorModal").modal({
+      keyboard: true,
+      backdrop: true,
+      show: true
+    });  
+}
+
+function editEvent(node){
+	var blockNode = $(node).parent("td")[0];
+    var date = new Date(monday + (getChildIndex(blockNode) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
+      eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
+      eventDate.day  = getChildIndex(blockNode);
+      eventDate.node = blockNode; // store the current element so we can put the event box in later
+	var block = $(blockNode).attr('class').split(" ")[0];
+	var thisEvent = events[eventDate.day][block][getChildIndex(node)-1];
+	console.log(thisEvent);
+	createEventModal("edit", block);
+}
+
 function checkboxClicked (event){
   console.log("checkbox", event);
   var done    = ($(this).attr("checked") == "checked");
@@ -156,7 +179,7 @@ function createEvent(){
  $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
  $(".eventCheck").unbind("click", checkboxClicked);
  $(".eventCheck").click(checkboxClicked);
- $(".event").popover({html: true});
+ $(".event").popover({html: false});
   
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
