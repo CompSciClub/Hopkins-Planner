@@ -1,129 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-	<head>
-		<title>Hopkins Week</title>
-		<link rel="stylesheet" href="public/stylesheets/bootstrap.min.css"/>
-		<script type="text/javascript" src="public/javascripts/jquery.min.js"></script>
-		<script type="text/javascript">
-			var monday = 1327294800000;
-			var events = JSON.parse(decodeURIComponent("%7B%7D"));
-		</script>
-		<script type="text/javascript" src="public/javascripts/bootstrap-alerts.js"></script>
-		<script type="text/javascript" src="public/javascripts/bootstrap-twipsy.js"></script>
-		<script type="text/javascript" src="public/javascripts/bootstrap-popovers.js"></script>
-		<script type="text/javascript" src="public/javascripts/index.js"></script>
-		<script src="public/javascripts/week.js"></script>
-		<script src="public/javascripts/bootstrap-modal.js"></script>
-		<link rel="stylesheet" href="public/stylesheets/style.css"/>
-		<link rel="stylesheet" href="public/stylesheets/week.css">
-		<link type="text/css" href="public/plugins/jquery-ui/css/smoothness/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
-		<script type="text/javascript" src="public/plugins/jquery-ui/js/jquery-ui-1.8.17.custom.min.js"></script>
-	</head>
-<body>
-	<div class="topbar"><div class="topbar-inner">
-		<div class="container-fluid">
-			<a href="/" class="brand">Hopkins Planner</a>
-			<p class="pull-right">Logged in as test13, <a href="/logout">Logout</a></p>
-		</div>
-	</div></div>
-	<div class="container-fluid"><div class="sidebar"><div class="well">
-		<h3>Important Events
-			<p>Important events for this week will go here</p>
-			<p>And here</p>
-			<p>And here</p>
-			<p>You get the idea</p>
-		</h3>
-	</div></div>
-	<div class="content">
-		<center><table id="CalendarTable" style="width:100% !important" class="bordered-table">
-		<!--<colgroup span="1" style="background-color:#000000"></colgroup>
-		<colgroup span="1" style="background-color:#f9f9f9"></colgroup>
-		<colgroup span="1" style="background-color:#000000"></colgroup>
-		<colgroup span="1" style="background-color:#f9f9f9"></colgroup>
-		<colgroup span="1" style="background-color:#000000"></colgroup>
-		<colgroup span="2" style="background-color:#f9f9f9"></colgroup>
-		<colgroup span="1" style="background-color:#000000"></colgroup>-->
-		<colgroup>
-			<col class="monday"></col>
-			<col class="tuesday" ></col>
-			<col class="wednesday"></col>
-			<col class="thursday" ></col>
-			<col class="friday"></col>
-			<col class="weekend" ></col>
-			<col class="weekend" ></col>
-		</colgroup>
-		<tbody>
-			<style type="text/css">td{height:90px; width:150px}</style>
-			<tr>
-				<th>Monday</th>	
-				<th>Tuesday</th>
-				<th>Wednesday</th>
-				<th>Thursday</th>
-				<th>Friday</th>
-				<th colspan="2"><center>Weekend</center></th>
-			</tr>
-			<tr>
-				<td class="Ablock">A Block</td>
-				<td class="Bblock">B Block</td>
-				<td class="Ablock">A Block</td>
-				<td class="Ablock">A Block</td>
-				<td class="Bblock">B Block</td>
-				<td class="saturday" rowspan="6">Saturday</td>
-				<td class="sunday" rowspan="6">Sunday</td>
-			</tr>
-			<tr>
-				<td class="Cblock">C Block</td>
-				<td class="Cblock">C Block</td>
-				<td class="Bblock">B Block</td>
-				<td class="Cblock">C Block</td>
-				<td class="Ablock">A Block</td>
-			</tr>
-			<tr>
-				<td class="Dblock">D Block</td>
-				<td class="Dblock">D Block</td>
-				<td class="Eblock">E Block</td>
-				<td class="Dblock">D Block</td>
-				<td class="Cblock">C Block</td>
-			</tr>
-			<tr>
-				<td class="Eblock">E Block</td>
-				<td class="Fblock">F Block</td>
-				<td class="Fblock">F Block</td>
-				<td class="Eblock">E Block</td>
-				<td class="Fblock">F Block</td>
-			</tr>
-			<tr>
-				<td class="Fblock">F Block</td>
-				<td class="Gblock">G Block</td>
-				<td class="activityblock" rowspan="2" >activities</td>
-				<td class="Gblock">G Block</td>
-				<td class="Gblock">G Block</td>
-			</tr>
-			<tr>
-				<td class="Gblock">G Block</td>
-				<td class="Hblock">H Block</td>
-				<td class="Hblock">H Block</td>
-				<td class="Hblock">H Block</td>
-			</tr>
-		</tbody>
-		</table></center>
-<div id="eventCreatorModal" class="modal hide fade">
-	<div class="modal-header">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Hopkins Week</title><link rel="stylesheet" href="public/stylesheets/bootstrap.min.css"/><script type="text/javascript" src="public/javascripts/jquery.min.js"></script><script type="text/javascript">var monday = 1327294800000;
+var blocks = JSON.parse(decodeURIComponent("%7B%22A%22%3A%22Biology%22%2C%22B%22%3A%22English%22%2C%22C%22%3A%22Orchestra%22%2C%22D%22%3A%22Math%22%2C%22E%22%3A%22French%22%2C%22F%22%3A%22Study%20Hall%22%2C%22G%22%3A%22Ath.%20Study%20Hall%22%2C%22H%22%3A%22AC1%22%2C%22_id%22%3A%224f1f521587f4c3010000005e%22%2C%22Activities%22%3A%22Activities%22%2C%22Sunday%22%3A%22Sunday%22%2C%22Saturday%22%3A%22Saturday%22%7D"));
+var events = JSON.parse(decodeURIComponent("%7B%220%22%3A%7B%22A%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22Test%22%2C%22timestamp%22%3A1327294800000%2C%22day%22%3A0%2C%22block%22%3A%22A%22%2C%22description%22%3A%22This%20%5C%22is%20an%20experiment%5C%22%20'yeah'%3B%22%2C%22class%22%3A%22quiz%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f5db39d0d1f0100000011%22%2C%22done%22%3Afalse%7D%5D%7D%2C%222%22%3A%7B%22Activities%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22French%20Club%22%2C%22timestamp%22%3A1327467600000%2C%22day%22%3A2%2C%22block%22%3A%22Activities%22%2C%22description%22%3A%22Come%20to%20the%20dark%20side...we%20have...%5Cn...%5Cn...%5CnBrownies...%22%2C%22class%22%3A%22reminder%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f554f87f4c3010000006a%22%2C%22done%22%3Afalse%7D%2C%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22CS%20Club%22%2C%22timestamp%22%3A1327467600000%2C%22day%22%3A2%2C%22block%22%3A%22Activities%22%2C%22description%22%3A%22w00t%22%2C%22class%22%3A%22reminder%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f555f87f4c3010000006b%22%2C%22done%22%3Afalse%7D%5D%2C%22A%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22Reading%22%2C%22timestamp%22%3A1327467600000%2C%22day%22%3A2%2C%22block%22%3A%22A%22%2C%22description%22%3A%22Do%20Guided%20readings%201-4%20which%20you%20should%20have%20done%20ages%20ago...%22%2C%22class%22%3A%22hw%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f559287f4c3010000006c%22%2C%22done%22%3Atrue%7D%5D%2C%22B%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22More%20Reading...%22%2C%22timestamp%22%3A1327467600000%2C%22day%22%3A2%2C%22block%22%3A%22B%22%2C%22description%22%3A%22Prepare%20to%20be%20inundated%20by%20superfluously%20large%20words%22%2C%22class%22%3A%22hw%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f55b287f4c3010000006d%22%2C%22done%22%3Atrue%7D%5D%2C%22E%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22Study%22%2C%22timestamp%22%3A1327467600000%2C%22day%22%3A2%2C%22block%22%3A%22E%22%2C%22description%22%3A%22Study.%20A%20lot.%22%2C%22class%22%3A%22hw%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f55c087f4c3010000006e%22%2C%22done%22%3Afalse%7D%5D%2C%22F%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22Health%22%2C%22timestamp%22%3A1327467600000%2C%22day%22%3A2%2C%22block%22%3A%22F%22%2C%22description%22%3A%22boo%22%2C%22class%22%3A%22quiz%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f55cf87f4c3010000006f%22%2C%22done%22%3Afalse%7D%5D%7D%2C%223%22%3A%7B%22E%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22French%20Test%22%2C%22timestamp%22%3A1327554000000%2C%22day%22%3A3%2C%22block%22%3A%22E%22%2C%22description%22%3A%22On%20Geography%20and%20landforms%2C%20and%20also%20on%20pronouns%20such%20as%20%5C%22en%5C%22%20and%20%5C%22y%5C%22.%20%5CnGrammar%20may%20include%20direct%20vs%20indirect%20pronouns%22%2C%22class%22%3A%22test%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f526e87f4c30100000061%22%2C%22done%22%3Afalse%7D%5D%2C%22C%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22Performance%22%2C%22timestamp%22%3A1327554000000%2C%22day%22%3A3%2C%22block%22%3A%22C%22%2C%22description%22%3A%22We'll%20play%20Vivaldi%20121%20in%20front%20of%20the%20class.%5Cn%5CnBrace%20yourself.%22%2C%22class%22%3A%22quiz%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f551287f4c30100000069%22%2C%22done%22%3Afalse%7D%5D%7D%2C%225%22%3A%7B%22Saturday%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22Fencing%20Meet%22%2C%22timestamp%22%3A1327726800000%2C%22day%22%3A5%2C%22block%22%3A%22Saturday%22%2C%22description%22%3A%22Be%20at%20school%20by%206am...*groan*%22%2C%22class%22%3A%22reminder%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%224f1f53ec87f4c30100000067%22%2C%22done%22%3Afalse%7D%5D%7D%7D"));
+</script><script type="text/javascript" src="public/javascripts/bootstrap-alerts.js"></script>
+<script type="text/javascript" src="public/javascripts/bootstrap-twipsy.js"></script><script type="text/javascript" src="public/javascripts/bootstrap-popovers.js"></script><script type="text/javascript" src="public/javascripts/index.js"></script><script src="public/javascripts/week.js"></script>
+<script src="public/javascripts/bootstrap-modal.js"></script>
+<link rel="stylesheet" href="public/stylesheets/style.css"/><link rel="stylesheet" href="public/stylesheets/week.css">
+</head><body><div class="topbar"><div class="topbar-inner"><div class="container-fluid"><a href="/" class="brand">Hopkins Planner</a><p class="pull-right">Logged in as test13, <a href="/logout">Logout</a></p></div></div></div><div class="container-fluid"><div class="sidebar"><div class="well"><h3>Important Events<p>Important events for this week will go here</p><p>And here</p><p>And here</p><p>You get the idea</p></h3></div></div><div class="content"><center><table id="CalendarTable" style="width:100% !important" class="bordered-table"><colgroup><col class="monday"/><col class="tuesday"/><col class="wednesday"/><col class="thursday"/><col class="friday"/><col class="weekend"/><col class="weekend"/></colgroup><tbody><style type="text/css">td{height:90px; width:150px}
+</style><tr><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th colspan="2"><center>Weekend</center></th></tr><tr><td rowspan="1" class="A block">Biology<div eventId="4f1f5db39d0d1f0100000011" style="height:20" rel="popover" data-content="This &quot;is an experiment&quot; &amp;#039;yeah&amp;#039;;" data-original-title="Test" class="label success event quiz">Test
+<input type="checkbox" class="eventCheck"/></div></td><td rowspan="1" class="B block">English</td><td rowspan="1" class="A block">Biology<div eventId="4f1f559287f4c3010000006c" style="height:20" rel="popover" data-content="Do Guided readings 1-4 which you should have done ages ago..." data-original-title="Reading" class="label success event hw">Reading
+<input type="checkbox"  class="eventCheck"/></div></td><td rowspan="1" class="B block">English</td><td rowspan="1" class="B block">English</td><td rowspan="6" class="Saturday block">Saturday<div eventId="4f1f53ec87f4c30100000067" style="height:20" rel="popover" data-content="Be at school by 6am...*groan*" data-original-title="Fencing Meet" class="label success event reminder">Fencing Meet
+<input type="checkbox" class="eventCheck"/></div></td><td rowspan="6" class="Sunday block">Sunday</td></tr><tr><td rowspan="1" class="C block">Orchestra</td><td rowspan="1" class="C block">Orchestra</td><td rowspan="1" class="B block">English<div eventId="4f1f55b287f4c3010000006d" style="height:20" rel="popover" data-content="Prepare to be inundated by superfluously large words" data-original-title="More Reading..." class="label success event hw">More Reading...
+<input type="checkbox"  class="eventCheck"/></div></td><td rowspan="1" class="C block">Orchestra<div eventId="4f1f551287f4c30100000069" style="height:20" rel="popover" data-content="We&amp;#039;ll play Vivaldi 121 in front of the class.&lt;br /&gt;&lt;br /&gt;Brace yourself." data-original-title="Performance" class="label success event quiz">Performance
+<input type="checkbox" class="eventCheck"/></div></td><td rowspan="1" class="A block">Biology</td></tr><tr><td rowspan="1" class="D block">Math</td><td rowspan="1" class="D block">Math</td><td rowspan="1" class="E block">French<div eventId="4f1f55c087f4c3010000006e" style="height:20" rel="popover" data-content="Study. A lot." data-original-title="Study" class="label success event hw">Study
+<input type="checkbox" class="eventCheck"/></div></td><td rowspan="1" class="D block">Math</td><td rowspan="1" class="D block">Math</td></tr><tr><td rowspan="1" class="E block">French</td><td rowspan="1" class="E block">French</td><td rowspan="1" class="F block">Study Hall<div eventId="4f1f55cf87f4c3010000006f" style="height:20" rel="popover" data-content="boo" data-original-title="Health" class="label success event quiz">Health
+<input type="checkbox" class="eventCheck"/></div></td><td rowspan="1" class="E block">French<div eventId="4f1f526e87f4c30100000061" style="height:20" rel="popover" data-content="On Geography and landforms, and also on pronouns such as &quot;en&quot; and &quot;y&quot;. &lt;br /&gt;Grammar may include direct vs indirect pronouns" data-original-title="French Test" class="label success event test">French Test
+<input type="checkbox" class="eventCheck"/></div></td><td rowspan="1" class="F block">Study Hall</td></tr><tr><td rowspan="1" class="F block">Study Hall</td><td rowspan="1" class="G block">Ath. Study Hall</td><td rowspan="2" class="Activities block">Activities<div eventId="4f1f554f87f4c3010000006a" style="height:20" rel="popover" data-content="Come to the dark side...we have...&lt;br /&gt;...&lt;br /&gt;...&lt;br /&gt;Brownies..." data-original-title="French Club" class="label success event reminder">French Club
+<input type="checkbox" class="eventCheck"/></div><div eventId="4f1f555f87f4c3010000006b" style="height:20" rel="popover" data-content="w00t" data-original-title="CS Club" class="label success event reminder">CS Club
+<input type="checkbox" class="eventCheck"/></div></td><td rowspan="1" class="G block">Ath. Study Hall</td>
+<td rowspan="1" class="G block">Ath. Study Hall</td></tr>
+<tr><td rowspan="1" class="H block">AC1</td><td rowspan="1" class="H block">AC1</td><td rowspan="1" class="H block">AC1</td><td rowspan="1" class="H block">AC1</td></tr>
+</tbody></table></center>
+<div id="eventCreatorModal" class="modal hide"><div class="modal-header">
   <a href="#" class="close">&times;</a>
   <h3>
     <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
     <br />
-    <small id="eventDate"><span class="eventBlock"></span> on <input class="eventDate" id="datepicker" type="text"></input></span></small>
+    <small id="eventDate"><span class="eventBlock"></span> on <span class="eventDate"></span></small>
+
 </div>
 <div class="modal-body">
   <form>
     <table>
       <tr>
-		  <td class="noBorder" width="50%">
+        <td class="noBorder" width="50%">
           <select name="normalSelect" id="blockSelect">
           </select>
-		  <br />
-		  <br />
+          <br />
+          <br />
           <textarea id="modalDescriptionBox">Description here</textarea>
         </td>
         <td class="noBorder">
@@ -138,6 +51,7 @@
   </form>
 </div>
 <div class="modal-footer">
+	<input id="deleteButton" type="submit" class="btn danger" value="Delete" style="float:left">
   <input id="saveButton" type="submit" class="btn primary" value="Save">
   <input id="cancelButton" type="submit" class="btn secondary" value="Cancel">
 </div>

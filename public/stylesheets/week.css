@@ -17,6 +17,10 @@
   border-radius: 6px;
   background-color: #242DA6;
   padding-left: 5px;
+	cursor:pointer;
+}
+.event.done{
+  opacity: 0.4;
 }
 .event.test{
   background-color: #A62424;
@@ -51,5 +55,7 @@ font-family:"Lucida Console",monospace;
 
 .eventCheck{
   float: right;
-  margin-top: 4px;
+  margin-top: 4px !important;
 }
+
+.modal-backdrop{opacity:0.15 !important;}
