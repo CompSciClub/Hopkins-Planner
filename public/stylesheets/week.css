@@ -20,6 +20,8 @@
 }
 .event.done{
   opacity: 0.4;
+  zoom: 1;
+  filter: aplha(opactiy = 40);
 }
 .event.test{
   background-color: #A62424;
