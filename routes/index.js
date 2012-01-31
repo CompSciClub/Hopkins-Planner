@@ -387,6 +387,7 @@ exports.modifyEvent = function(req, res){
     e.day         = req.body.day           || e.day;
     e.block       = req.body.block         || e.block;
     e.description = req.body.description   || e.description;
+    e.class       = req.body.bootClass     || e.class;
     if (req.body.done != undefined){
       e.done = (req.body.done === "true"); // different for this one because it's a boolean
     }
