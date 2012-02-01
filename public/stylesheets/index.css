@@ -5,14 +5,45 @@
 }
 
 .btns{
-  width: 180px;
+  width: 200px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   top: -30px;
+}
+.btns .btn{
+  font-size: 20px;
+  display: inline-block;
 }
 
 #signUp_btn{
   margin-left: 15px;
 }
 
+@media (max-width: 480px){
+  .btns .btn{
+    display: block;
+    font-size: 18px;
+  }
+  .btns{
+    width: auto;
+  }
+  #signUp_btn{
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+
+#loginModal{
+  max-height: 300px;
+  margin-top: -150px;
+}
+
+header{
+  margin-top: 40px;
+}
+.headerImage{
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}

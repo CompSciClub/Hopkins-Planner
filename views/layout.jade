@@ -2,9 +2,16 @@
 html
   head
     title= title
+
+    // for IE6-8 support of HTML elements -->
+    // if lt IE 9
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+   
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="stylesheets/bootstrap.min.css")
     link(rel="stylesheet", href="stylesheets/bootstrap.min.responsive.css")
     script(type="text/javascript", src="javascripts/jquery.min.js")
+    script(type="text/javascript", src="javascipts/bootstrap.min.js")
 
     block scripts
       script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
@@ -12,9 +19,9 @@ html
     link(rel="stylesheet", href="stylesheets/style.css")
     block styles
       
-  body
+  body(data-spy="scroll")
     block header
-      .navbar
+      .navbar.navbar-fixed-top
         .navbar-inner
           .container
             a.brand(href="/") Hopkins Planner

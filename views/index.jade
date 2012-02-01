@@ -4,10 +4,8 @@ block styles
   link(rel="stylesheet", href="stylesheets/index.css")
 
 block scripts
-  script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
   script(type="text/javascript", src="javascripts/sha.js")
   script(type="text/javascript", src="javascripts/index.js")
-  script(type="text/javascript", src="javascripts/bootstrap-modal.js")
   if (flash.error)
     script(type="text/javascript")
       $(document).ready(function(){
@@ -19,12 +17,13 @@ block scripts
       });
 
 block content
-  .hero-unit
-    p.heroImage
-      img(src="images/hop2.png", width="500px", height="169px")
-    p.btns
-      a#login_btn.btn.btn-success.btn-large Login
-      a#signUp_btn.btn.btn-primary.btn-large Sign Up
+  header
+    .inner
+      p.headerImage
+        img(src="images/hop2.png", height="169px")
+      p.btns
+        a#login_btn.btn.btn-success.btn-large Login
+        a#signUp_btn.btn.btn-primary.btn-large Sign Up
   .row-fluid
     .span4
       h2 School Event
@@ -40,8 +39,6 @@ block content
       p Massive outbreak of protesters for the game "Skyrim". Protesters say the game is offensive to Dragons.
       a.btn(href="#") View details &raquo;
 
-  hr
-  
   .row-fluid
     .span4
       h2 School Event
@@ -59,13 +56,13 @@ block content
   // Modals
   #loginModal.modal.small.hide.fade
     .modal-header
-      a.close(href="#") &times;
+      a.close(data-dismiss="modal") &times;
       h3 Login
     .modal-body
       if (flash.error)
         span.errors
           .fade.in.alert-message.error
-            a.clse(href="#")x
+            a.close(href="#")x
             p #{flash.error}
       form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
         .clearfix
@@ -79,7 +76,7 @@ block content
 
   #accountModal.modal.small.hide.fade
     .modal-header
-      a.close(href="#") &times;
+      a.close(data-dismiss="modal") &times;
       h3 Create Account
     .modal-body
       form.form-stacked(action="/createAccount", method="POST", onsubmit="return login(1)")

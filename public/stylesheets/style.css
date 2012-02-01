@@ -90,7 +90,8 @@ a {
 
 .modal.small{
   width: 250px;
-  left: 60%; /* HACK and a bad one at that */
+  left: 50%;
+  margin-left: -125px;
 }
 
 #createAccount_btn{
@@ -100,3 +101,10 @@ a {
   cursor: pointer;
   text-decoration: underline;
 }
+.modal{
+  position: fixed !important;
+  max-height: 500px;
+  margin-top: -250px;
+  top: 50% !important;
+}
+
