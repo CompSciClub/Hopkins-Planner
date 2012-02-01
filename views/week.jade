@@ -17,7 +17,7 @@ block styles
 
 block sidebar
   - escapeHtml("test");
-  .sidebar
+  .sidebar-nav
     .well
       h3 Important Events
         p Important events for this week will go here
@@ -28,7 +28,7 @@ block sidebar
 block content
   .content
     center
-      table(id="CalendarTable", class="bordered-table", style="width:100% !important")
+      table(id="CalendarTable", class="table table-bordered", style="width:100% !important")
         colgroup
           col.monday
           col.tuesday
@@ -103,8 +103,8 @@ block content
         </form>
       </div>
       <div class="modal-footer">
-        <input id="saveButton" type="submit" class="btn primary" value="Save">
-        <input id="cancelButton" type="submit" class="btn secondary" value="Cancel">
+        <input id="saveButton" type="submit" class="btn-primary" value="Save">
+        <input id="cancelButton" type="submit" class="btn-secondary" value="Cancel">
       </div>
     </div>
     <!-- End Modal Content -->
