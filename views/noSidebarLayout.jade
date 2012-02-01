@@ -21,12 +21,10 @@ html
             if loggedIn
               p.pull-right Logged in as #{name}, 
                 a(href="/logout") Logout
-    .container-fluid
+    .container
       .row-fluid
-        .span3
-          block sidebar
         .span9
-          block content
+        block content
     block footer
       footer.
         <p>&copy; Computer Science 2011</p>
