@@ -107,4 +107,6 @@ a {
   margin-top: -250px;
   top: 50% !important;
 }
-
+.navbar ul.nav{
+  float: right;
+}

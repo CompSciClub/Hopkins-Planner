@@ -17,6 +17,8 @@ html
       script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
 
     link(rel="stylesheet", href="stylesheets/style.css")
+    style
+      .brand {margin-left: 20px !important;}
     block styles
       
   body(data-spy="scroll")
@@ -24,10 +26,15 @@ html
       .navbar.navbar-fixed-top
         .navbar-inner
           .container
-            a.brand(href="/") Hopkins Planner
-            if loggedIn
-              p.pull-right Logged in as #{name}, 
-                a(href="/logout") Logout
+            if !loggedIn
+              a.brand(href="/") Hopkins Planner
+            else
+              a.brand(href="/") #{name}'s Planner
+            .nav-collapse
+              ul.nav
+                if loggedIn
+                  li
+                    a(href="/logout") Logout
     .container-fluid
       .row-fluid
         .span2
