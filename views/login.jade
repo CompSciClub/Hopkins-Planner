@@ -1,10 +1,6 @@
 extends noSidebarLayout
 
 block scripts
-  script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
-  script(type="text/javascript", src="javascripts/sha.js")
-  script(type="text/javascript", src="javascripts/index.js")
-  script(type="text/javascript", src="javascripts/bootstrap-modal.js")
   script
     $(document).ready(function(){
       $("#forgotPassword").click(function(){
@@ -33,10 +29,11 @@ block styles
     .content{
       margin-left: 0 !important;
     }
+  script(type="text/javascript", src="javascripts/index.js")
 
 block content
-  .content
-    .hero-unit
+  header
+    .inner
       h2 Login
       p Please login to continue
       span#errors
@@ -44,19 +41,20 @@ block content
           .fade.in.alert-message.error(data-alert="alert")
             a.close(href="#") x
             p #{flash.error}
-      form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
-        .clearfix(class="#{flash.emailError}")
-          label(for="email") Email:
-          if !flash.email
-            - flash.email = ""
-          input(class="email_input #{flash.emailError}", type="text", name="email", value="#{flash.email}")
-        .clearfix(class="#{flash.passError}")
-          label(for="password") Password:
-          .input
-            input.password_input(type="password", name="password")
-            span.help-inline.link#forgotPassword Forget?
-        center
-          input.success.btn#loginButton(type="submit", value="Login")
+  .row-fluid
+    form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
+      .clearfix(class="#{flash.emailError}")
+        label(for="email") Email:
+        if !flash.email
+          - flash.email = ""
+        input(class="email_input #{flash.emailError}", type="text", name="email", value="#{flash.email}")
+      .clearfix(class="#{flash.passError}")
+        label(for="password") Password:
+        .input
+          input.password_input(type="password", name="password")
+          span.help-inline.link#forgotPassword Forget?
+      center
+        input.success.btn#loginButton(type="submit", value="Login")
 
   #passwordModal.modal.small.hide.fade
     .modal-header

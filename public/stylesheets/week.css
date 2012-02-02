@@ -12,6 +12,16 @@
   opacity: 0.6;
 }*/
 
+td.block{
+  width: 16%;
+}
+td.Saturday.block{
+  width: 10%;
+}
+td.Sunday.block{
+  width: 10%;
+}
+
 .event{
   width:100%;
   margin-bottom:7px;
