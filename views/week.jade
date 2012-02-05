@@ -70,7 +70,7 @@ block content
 
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
-        <a href="#" class="close">&times;</a>
+        <a data-dismiss="modal" class="close">&times;</a>
         <h3>
           <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
           <br />
@@ -99,8 +99,14 @@ block content
         </form>
       </div>
       <div class="modal-footer">
-        <input id="saveButton" type="submit" class="btn-primary" value="Save">
-        <input id="cancelButton" type="submit" class="btn-secondary" value="Cancel">
+        <a id="saveButton" class="btn btn-primary">
+          <i class="icon-ok icon-white"></i>
+          Save
+        </a>
+        <a id="cancelButton" class="btn btn-secondary">
+          <i class="icon-remove icon-black"></i>
+          Cancel
+        </a>
       </div>
     </div>
     <!-- End Modal Content -->

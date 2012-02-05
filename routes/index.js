@@ -40,7 +40,8 @@ exports.weekly = function(req, res){
 
 function loadWeekly(req, res){
   var date = new Date(); // get the current date
-  date = new Date(date.getTime() - ((date.getDay() - 1) % 7) * 24 * 60 * 60 * 1000); // convert to monday
+  date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
+  console.log(date);
 
   // set it to to the beginning of monday EST
   date.setUTCHours(5); 

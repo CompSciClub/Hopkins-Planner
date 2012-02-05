@@ -24,10 +24,7 @@ block styles
       width: 190px;
     }
     #loginButton{
-      margin-right: 50px;
-    }
-    .content{
-      margin-left: 0 !important;
+      text-align: center;
     }
 
 block content
@@ -52,8 +49,7 @@ block content
         .input
           input.password_input(type="password", name="password")
           span.help-inline.link#forgotPassword Forget?
-      center
-        input.success.btn#loginButton(type="submit", value="Login")
+      input.btn-success.btn#loginButton(type="submit", value="Login")
 
   #passwordModal.modal.small.hide.fade
     .modal-header

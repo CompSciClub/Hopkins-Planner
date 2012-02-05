@@ -28,9 +28,7 @@ html
               p.pull-right Logged in as #{name}, 
                 a(href="/logout") Logout
     .container
-      .row-fluid
-        .span9
-        block content
+      block content
     .push
     block footer
       footer(class="footer").
