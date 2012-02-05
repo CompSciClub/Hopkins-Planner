@@ -37,7 +37,7 @@ mongoose.connection.on("open", function(){
 
   app.get('/', routes.index);
   app.get("/monthly", routes.monthly);
-  app.get("/weekly", routes.weekly);
+  app.get("/weekly/:offset?", routes.weekly);
 
   app.get("/logout", routes.logout);
   app.get("/login", routes.loginPage);

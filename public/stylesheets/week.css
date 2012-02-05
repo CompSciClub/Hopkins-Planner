@@ -71,3 +71,7 @@ font-family:"Lucida Console",monospace;
   float: right;
   margin-top: 4px !important;
 }
+
+.row-fluid .span2{
+  text-align: center;
+}

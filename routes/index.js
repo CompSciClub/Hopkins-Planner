@@ -39,9 +39,9 @@ exports.weekly = function(req, res){
 }
 
 function loadWeekly(req, res){
-  var date = new Date(); // get the current date
+  var offset = parseInt(req.params.offset || 0);
+  var date   = new Date(new Date().getTime() + (offset * 604800000)); // get the current date
   date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
-  console.log(date);
 
   // set it to to the beginning of monday EST
   date.setUTCHours(5); 
@@ -76,7 +76,7 @@ function loadWeekly(req, res){
       console.log(blocks.Saturday);
 
       res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks});
+                          week: getWeekStructure(date), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks, offset: offset});
     });
   });
 }
@@ -438,7 +438,7 @@ function createSalt(){
   return Crypto.SHA256(string);
 }
 
-function getWeekStructure(weekColor){
+function getWeekStructure(date){
   var maroonWeek = [
     ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
     ["C", "C", "B", "C", "A",],
@@ -456,7 +456,11 @@ function getWeekStructure(weekColor){
     ["H", "H", "H", "H"]
   ];
 		
-	return (weekColor == "maroon") ? maroonWeek.slice(0) : grayWeek;
+	return (getWeek(date) == "maroon") ? maroonWeek.slice(0) : grayWeek;
+}
+
+function getWeek(date){
+  return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? "maroon" : "gray";
 }
 
 function escapeHtml(unsafe) {
