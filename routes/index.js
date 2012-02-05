@@ -460,7 +460,7 @@ function getWeekStructure(date){
 }
 
 function getWeek(date){
-  return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? "maroon" : "gray";
+  return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? "gray" : "maroon";
 }
 
 function escapeHtml(unsafe) {
