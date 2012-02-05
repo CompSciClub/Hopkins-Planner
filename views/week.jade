@@ -44,7 +44,7 @@ block content
             tr
               each block, day in period
                 - var rowspan = "1"
-                - if(day == 5 || day == 6)
+                - if(day == 5 || day == 6 || block == "No School")
                   - rowspan = "6"
                 - else if(block == "Activities")
                   - rowspan = "2"

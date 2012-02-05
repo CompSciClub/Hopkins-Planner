@@ -75,8 +75,10 @@ function loadWeekly(req, res){
       blocks.Sunday     = "Sunday";
       console.log(blocks.Saturday);
 
-      res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                          week: getWeekStructure(date), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks, offset: offset});
+      getWeekStructure(date, function(week){
+        res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+                            week: week, events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks, offset: offset});
+      });
     });
   });
 }
@@ -404,6 +406,39 @@ exports.modifyEvent = function(req, res){
   });
 }
 
+// Administrative tasks
+
+exports.createHoliday = function(req, res){
+  if (!isLoggedIn(req, res))
+    return;
+
+  User.find({_id: req.session.userId}, function(err, user){
+    var user = user[0];
+    if (user == null || user == undefined || !user.admin || err){
+      res.writeHead(401, {"Content-Type": "application/json"});
+      res.end(JSON.stringify({error: 401, msg: "You are not authorized to do that " + JSON.stringify(err)}));
+      return;
+    }
+
+    var holiday = new Holiday({
+      name: req.body.name || "",
+      noSchool: req.body.noSchool,
+      timestamp: req.body.timestamp,
+      day: req.body.day
+    });
+
+    holiday.save(function(error){
+      if (!error){
+        res.writeHead(200, {"Content-Type": "application/json"});
+        res.end(JSON.stringify({error: 0, msg: "Holiday"}));
+      }else{
+        res.writeHead(500, {"Content-Type": "application/json"});
+        res.end(JSON.stringify({error: 500, msg: "Unable to add Holiday. Db returned: " + JSON.stringify(error)}));
+      }
+    });
+  });
+};
+
 
 // User releated functions we may want to move these to another file
 function validateUser(req, id){
@@ -438,7 +473,7 @@ function createSalt(){
   return Crypto.SHA256(string);
 }
 
-function getWeekStructure(date){
+function getWeekStructure(date, callback){
   var maroonWeek = [
     ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
     ["C", "C", "B", "C", "A",],
@@ -455,8 +490,28 @@ function getWeekStructure(date){
     ["F", "G", "Activities", "G", "G"],
     ["H", "H", "H", "H"]
   ];
-		
-	return (getWeek(date) == "maroon") ? maroonWeek.slice(0) : grayWeek;
+  var week = (getWeek(date) == "maroon") ? maroonWeek.slice(0) : grayWeek;
+  Holiday.find({timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, holidays){
+    if (err){
+      console.log("error getting holidays", err)
+      callback(week);
+    }
+    for (holiday in holidays){
+      if (holidays[holiday].noSchool){
+        var day = holidays[holiday].day;
+        week[0][day] = "No School";
+        for (var i = 1; i < week.length - 1; i++){
+          week[i].splice(day, 1);
+        }
+        if (day != 2)
+          week[i].splice(day - 1, 1); // correct for having one less period on Wednesday
+      }else{
+        // TODO other types of holidays (half days, block changes, etc...)
+      }
+    }
+    console.log(week);
+    callback(week);
+  });
 }
 
 function getWeek(date){

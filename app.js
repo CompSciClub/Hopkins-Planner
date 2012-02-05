@@ -57,6 +57,9 @@ mongoose.connection.on("open", function(){
   app.post("/createClass", routes.createClass);
   app.post("/addStudent", routes.addStudent);
 
+  // administrative tasks
+  app.post("/holiday", routes.createHoliday);
+
 
   app.listen(process.env.PORT || 3000);
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
