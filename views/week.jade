@@ -5,21 +5,17 @@ block scripts
     var monday = #{date.getTime();};
     var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
-  script(type="text/javascript", src="javascripts/index.js")
-  <script src="javascripts/week.js"></script>
+  script(type="text/javascript", src="/javascripts/index.js")
+  <script src="/javascripts/week.js"></script>
 
 block styles
-  <link rel="stylesheet" href="stylesheets/week.css">
+  <link rel="stylesheet" href="/stylesheets/week.css">
 
 block sidebar
-  - escapeHtml("test");
-  .sidebar-nav
-    .well
-      h3 Important Events
-        p Important events for this week will go here
-        p And here
-        p And here
-        p You get the idea
+  a.btn(href="/weekly/#{offset - 1}")
+    i.icon-arrow-left
+  a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+    i.icon-arrow-right
 
 block content
   .content
@@ -48,7 +44,7 @@ block content
             tr
               each block, day in period
                 - var rowspan = "1"
-                - if(day == 5 || day == 6)
+                - if(day == 5 || day == 6 || block == "No School")
                   - rowspan = "6"
                 - else if(block == "Activities")
                   - rowspan = "2"
@@ -70,7 +66,7 @@ block content
 
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
-        <a href="#" class="close">&times;</a>
+        <a data-dismiss="modal" class="close">&times;</a>
         <h3>
           <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
           <br />
@@ -99,8 +95,14 @@ block content
         </form>
       </div>
       <div class="modal-footer">
-        <input id="saveButton" type="submit" class="btn-primary" value="Save">
-        <input id="cancelButton" type="submit" class="btn-secondary" value="Cancel">
+        <a id="saveButton" class="btn btn-primary">
+          <i class="icon-ok icon-white"></i>
+          Save
+        </a>
+        <a id="cancelButton" class="btn btn-secondary">
+          <i class="icon-remove icon-black"></i>
+          Cancel
+        </a>
       </div>
     </div>
     <!-- End Modal Content -->

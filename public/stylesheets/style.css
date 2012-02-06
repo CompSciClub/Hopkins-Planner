@@ -110,3 +110,9 @@ a {
 .navbar ul.nav{
   float: right;
 }
+header{
+  margin-top: 40px;
+}
+header.inner{
+
+}

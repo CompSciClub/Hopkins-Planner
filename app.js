@@ -12,6 +12,7 @@ var express         = require('express')
 var app        = module.exports = express.createServer();
 var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar";
 mongoose.connect(mongoURI);
+console.log(mongoose.connection.db);
 
 mongoose.connection.on("open", function(){
   app.configure(function(){
@@ -37,7 +38,7 @@ mongoose.connection.on("open", function(){
 
   app.get('/', routes.index);
   app.get("/monthly", routes.monthly);
-  app.get("/weekly", routes.weekly);
+  app.get("/weekly/:offset?", routes.weekly);
 
   app.get("/logout", routes.logout);
   app.get("/login", routes.loginPage);
@@ -56,6 +57,9 @@ mongoose.connection.on("open", function(){
 
   app.post("/createClass", routes.createClass);
   app.post("/addStudent", routes.addStudent);
+
+  // administrative tasks
+  app.post("/holiday", routes.createHoliday);
 
 
   app.listen(process.env.PORT || 3000);
