@@ -12,7 +12,6 @@ var express         = require('express')
 var app        = module.exports = express.createServer();
 var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar";
 mongoose.connect(mongoURI);
-console.log(mongoose.connection.db);
 
 mongoose.connection.on("open", function(){
   app.configure(function(){
