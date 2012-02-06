@@ -74,7 +74,7 @@ function loadWeekly(req, res){
       blocks.Sunday     = "Sunday";
       console.log(blocks.Saturday);
 
-      res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
+      res.render("week", {title: "Hopkins Week", date: date, loggedIn: true, flash: req.flash(),
                           week: getWeekStructure("maroon"), events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks});
     });
   });
