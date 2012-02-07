@@ -204,6 +204,7 @@ exports.login = function(req, res){
     user = users[0];
 
     if (users.length == 0){
+      console.log("wrong email");
       req.flash("error", "Invalid email");
       req.flash("email", req.body.email);
       req.flash("emailError", "error");
@@ -214,8 +215,10 @@ exports.login = function(req, res){
     if (Crypto.SHA256(req.body.password + user.salt) == user.password){
       validateUser(req, user._id);
       req.session.displayName = user.name;
+      console.log("logged in");
       res.redirect(req.body.redirect || "/weekly");
     }else{
+      console.log("wrong password");
       req.flash("error", "Invalid password");
       req.flash("passError", "error");
       req.flash("email", req.body.email);

@@ -75,3 +75,20 @@ font-family:"Lucida Console",monospace;
 .row-fluid .span2{
   text-align: center;
 }
+
+#CalendarTable{
+  display: block;
+}
+
+#singleDay{
+  display: hidden;
+}
+
+@media(max-width: 480px){
+  #CalendarTable{
+    display: hidden;
+  }
+  #singleDay{
+    display: block;
+  }
+}
