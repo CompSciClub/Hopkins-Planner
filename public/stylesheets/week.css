@@ -28,6 +28,12 @@ td.Sunday.block{
   width: 10%;
 }
 
+#datepicker{
+  width: 170px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .event{
   width:100%;
   margin-bottom:7px;
