@@ -30,3 +30,14 @@ font-family:"Times New Roman",Times,serif;
   max-height: 200px;
   max-width: 250px;
 }
+
+
+div.ui-datepicker {
+    font-size: 70% !important;
+    z-index: 1;
+    position: absolute;
+}
+
+div.ui-helper-clearfix::after {
+        display: inline;
+}

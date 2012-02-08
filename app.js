@@ -9,9 +9,9 @@ var express  = require('express')
   , schemas  = require("./schemas");
 
 
-var app = module.exports = express.createServer();
-console.log(process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calender");
-mongoose.connect(process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar");
+var app        = module.exports = express.createServer();
+var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar";
+mongoose.connect(mongoURI);
 
 // Configuration
 
@@ -50,6 +50,6 @@ app.post("/login", routes.login);
 app.post("/event", routes.createEvent);
 
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || process.env.C9_PORT);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
