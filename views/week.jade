@@ -33,13 +33,20 @@ block content
           style(type="text/css")
             td{height:90px; width:150px}
           tr
-            th Monday #{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}
-            th Tuesday
-            th Wednesday
-            th Thursday
-            th Friday
-            th(colspan="2") 
-              center Weekend
+            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Tuesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Wednesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Thursday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Friday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.weekend.block(colspan="2") 
+              | Weekend #{date.getMonth() + 1}/#{date.getDate()}
+              - date = addDay(date)
+              | - #{date.getMonth() + 1}/#{date.getDate()}
           for period in week
             tr
               each block, day in period

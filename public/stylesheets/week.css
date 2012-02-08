@@ -15,6 +15,11 @@
 td.block{
   width: 16%;
 }
+
+tr th.block{
+  text-align: center
+}
+
 td.Saturday.block{
   width: 10%;
 }
@@ -77,7 +82,7 @@ font-family:"Lucida Console",monospace;
 }
 
 #CalendarTable{
-  display: block;
+  display: table;
 }
 
 #singleDay{
