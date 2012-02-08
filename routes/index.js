@@ -76,8 +76,8 @@ function loadWeekly(req, res){
       console.log(blocks.Saturday);
 
       getWeekStructure(date, function(week){
-        res.render("week", {title: "Hopkins Week", date: date.getTime(), loggedIn: true, flash: req.flash(),
-                            week: week, events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks, offset: offset});
+        res.render("week", {title: "Hopkins Week", date: date, loggedIn: true, flash: req.flash(),
+                            week: week, events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks, offset: offset, addDay: addDay});
       });
     });
   });
@@ -204,6 +204,7 @@ exports.login = function(req, res){
     user = users[0];
 
     if (users.length == 0){
+      console.log("wrong email");
       req.flash("error", "Invalid email");
       req.flash("email", req.body.email);
       req.flash("emailError", "error");
@@ -214,8 +215,10 @@ exports.login = function(req, res){
     if (Crypto.SHA256(req.body.password + user.salt) == user.password){
       validateUser(req, user._id);
       req.session.displayName = user.name;
+      console.log("logged in");
       res.redirect(req.body.redirect || "/weekly");
     }else{
+      console.log("wrong password");
       req.flash("error", "Invalid password");
       req.flash("passError", "error");
       req.flash("email", req.body.email);
@@ -540,4 +543,9 @@ function escapeHtml(unsafe) {
       .replace(/"/g, "&quot;")
       .replace(/(\r\n|[\r\n])/g, "<br />")
       .replace(/'/g, "&#039;");
+}
+
+function addDay(date){
+  date.setTime(date.getTime() + 86400000);
+  return date;
 }

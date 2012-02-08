@@ -2,7 +2,7 @@ extends layout
 
 block scripts
   script(type="text/javascript")
-    var monday = #{date};
+    var monday = #{date.getTime()};
     var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   script(type="text/javascript", src="/javascripts/index.js")
@@ -33,13 +33,20 @@ block content
           style(type="text/css")
             td{height:90px; width:150px}
           tr
-            th Monday
-            th Tuesday
-            th Wednesday
-            th Thursday
-            th Friday
-            th(colspan="2") 
-              center Weekend
+            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Tuesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Wednesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Thursday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Friday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.weekend.block(colspan="2") 
+              | Weekend #{date.getMonth() + 1}/#{date.getDate()}
+              - date = addDay(date)
+              | - #{date.getMonth() + 1}/#{date.getDate()}
           for period in week
             tr
               each block, day in period
@@ -63,7 +70,6 @@ block content
                             input.eventCheck(type="checkbox", checked="checked")
                           else
                             input.eventCheck(type="checkbox")
-
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
         <a data-dismiss="modal" class="close">&times;</a>
