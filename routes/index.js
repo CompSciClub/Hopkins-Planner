@@ -439,6 +439,21 @@ exports.createHoliday = function(req, res){
   });
 };
 
+exports.createHoliday_page = function(req, res){
+  if (!isLoggedIn(req, res)){
+    return;
+  }
+
+  User.find({_id: req.session.userId}, function(err, user){
+    var user = user[0];
+    if (user == null || user == undefined || !user.admin || err){
+      res.render("401", {loggedIn: true, name: user.name, title: "Unauthorized"});
+      return;
+    }
+
+    res.render("addHoliday", {loggedIn: true, name: user.name, title: "Add Holiday"});
+  });
+};
 
 // User releated functions we may want to move these to another file
 function validateUser(req, id){
@@ -455,9 +470,8 @@ function logout(req){
 
 function isLoggedIn(req, res){
   if (!req.session.valid){
-    res.writeHead(401, {"error": 401, msg: "You must be logged in to add an event"});
     req.flash("error", "You must login first");
-    res.end();
+    res.redirect("/login");
     return false;
   }
   return true;

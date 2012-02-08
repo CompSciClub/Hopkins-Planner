@@ -13,7 +13,6 @@ html
     script(type="text/javascript", src="javascripts/bootstrap.min.js")
 
     block scripts
-      script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
 
     link(rel="stylesheet", href="stylesheets/style.css")
     block styles
@@ -23,15 +22,18 @@ html
       .navbar.navbar-fixed-top
         .navbar-inner
           .container
-            a.brand(href="/") Hopkins Planner
-            if loggedIn
-              p.pull-right Logged in as #{name}, 
-                a(href="/logout") Logout
+            if !loggedIn
+              a.brand(href="/") Hopkins Planner
+            else
+              a.brand(href="/") #{name}'s Planner
+            .nav-collapse
+              ul.nav
+                if loggedIn
+                  li
+                    a(href="/logout") Logout
     .container
       block content
-    .push
-    block footer
-      footer(class="footer").
-        <p>&copy; Computer Science 2011</p>
-        </div>
-        </div>
+      .push
+      block footer
+        footer(class="footer")
+          p Brought to you by the Hopkins Computer Science Club.

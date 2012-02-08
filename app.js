@@ -59,6 +59,7 @@ mongoose.connection.on("open", function(){
 
   // administrative tasks
   app.post("/holiday", routes.createHoliday);
+  app.get("/holiday", routes.createHoliday_page);
 
 
   app.listen(process.env.PORT || 3000);
