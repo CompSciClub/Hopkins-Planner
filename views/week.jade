@@ -2,7 +2,7 @@ extends layout
 
 block scripts
   script(type="text/javascript")
-    var monday = #{date.getTime();};
+    var monday = #{date.getTime()};
     var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   script(type="text/javascript", src="/javascripts/index.js")
@@ -33,7 +33,7 @@ block content
           style(type="text/css")
             td{height:90px; width:150px}
           tr
-            th Monday #{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear}
+            th Monday #{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}
             th Tuesday
             th Wednesday
             th Thursday
