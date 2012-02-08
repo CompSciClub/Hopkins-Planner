@@ -2,6 +2,7 @@
 
 var eventDate; // Date info for the event currently being created
 
+
 $(document).ready(function(){
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {

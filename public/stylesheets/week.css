@@ -15,6 +15,11 @@
 td.block{
   width: 16%;
 }
+
+tr th.block{
+  text-align: center
+}
+
 td.Saturday.block{
   width: 10%;
 }
@@ -75,4 +80,23 @@ font-family:"Lucida Console",monospace;
 
 .modal-backdrop{
   opacity:0.15 !important;
+.row-fluid .span2{
+  text-align: center;
+}
+
+#CalendarTable{
+  display: table;
+}
+
+#singleDay{
+  display: hidden;
+}
+
+@media(max-width: 480px){
+  #CalendarTable{
+    display: hidden;
+  }
+  #singleDay{
+    display: block;
+  }
 }

@@ -2,24 +2,20 @@ extends layout
 
 block scripts
   script(type="text/javascript")
-    var monday = #{date};
+    var monday = #{date.getTime()};
     var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
-  script(type="text/javascript", src="javascripts/index.js")
-  <script src="javascripts/week.js"></script>
+  script(type="text/javascript", src="/javascripts/index.js")
+  <script src="/javascripts/week.js"></script>
 
 block styles
-  <link rel="stylesheet" href="stylesheets/week.css">
+  <link rel="stylesheet" href="/stylesheets/week.css">
 
 block sidebar
-  - escapeHtml("test");
-  .sidebar-nav
-    .well
-      h3 Important Events
-        p Important events for this week will go here
-        p And here
-        p And here
-        p You get the idea
+  a.btn(href="/weekly/#{offset - 1}")
+    i.icon-arrow-left
+  a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+    i.icon-arrow-right
 
 block content
   .content
@@ -37,18 +33,25 @@ block content
           style(type="text/css")
             td{height:90px; width:150px}
           tr
-            th Monday
-            th Tuesday
-            th Wednesday
-            th Thursday
-            th Friday
-            th(colspan="2") 
-              center Weekend
+            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Tuesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Wednesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Thursday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Friday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.weekend.block(colspan="2") 
+              | Weekend #{date.getMonth() + 1}/#{date.getDate()}
+              - date = addDay(date)
+              | - #{date.getMonth() + 1}/#{date.getDate()}
           for period in week
             tr
               each block, day in period
                 - var rowspan = "1"
-                - if(day == 5 || day == 6)
+                - if(day == 5 || day == 6 || block == "No School")
                   - rowspan = "6"
                 - else if(block == "Activities")
                   - rowspan = "2"
@@ -67,10 +70,9 @@ block content
                             input.eventCheck(type="checkbox", checked="checked")
                           else
                             input.eventCheck(type="checkbox")
-
-    #eventCreatorModal.modal.hide.
+    #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
-        <a href="#" class="close">&times;</a>
+        <a data-dismiss="modal" class="close">&times;</a>
         <h3>
           <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
           <br />
@@ -99,9 +101,18 @@ block content
         </form>
       </div>
       <div class="modal-footer">
-        <input id="deleteButton" type="submit" class="btn btn-danger" value="Delete" style="float:left">
-        <input id="saveButton" type="submit" class="btn btn-primary" value="Save">
-        <input id="cancelButton" type="submit" class="btn btn-secondary" value="Cancel">
+        <a id="deleteButton" type="submit" class="btn btn-danger" style="float: left">
+          <i class="icon-trash icon-white"></i>
+          Delete
+        </a>
+        <a id="saveButton" class="btn btn-primary">
+          <i class="icon-ok icon-white"></i>
+          Save
+        </a>
+        <a id="cancelButton" class="btn btn-secondary">
+          <i class="icon-remove icon-black"></i>
+          Cancel
+        </a>
       </div>
     </div>
     <!-- End Modal Content -->

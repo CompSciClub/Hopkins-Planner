@@ -7,15 +7,14 @@ html
     // if lt IE 9
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet", href="stylesheets/bootstrap.min.css")
-    link(rel="stylesheet", href="stylesheets/bootstrap.min.responsive.css")
-    script(type="text/javascript", src="javascripts/jquery.min.js")
-    script(type="text/javascript", src="javascripts/bootstrap.min.js")
+    link(rel="stylesheet", href="/stylesheets/bootstrap.min.css")
+    link(rel="stylesheet", href="/stylesheets/bootstrap.min.responsive.css")
+    script(type="text/javascript", src="/javascripts/jquery.min.js")
+    script(type="text/javascript", src="/javascripts/bootstrap.min.js")
 
     block scripts
-      script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
 
-    link(rel="stylesheet", href="stylesheets/style.css")
+    link(rel="stylesheet", href="/stylesheets/style.css")
     block styles
       
   body
@@ -23,17 +22,18 @@ html
       .navbar.navbar-fixed-top
         .navbar-inner
           .container
-            a.brand(href="/") Hopkins Planner
-            if loggedIn
-              p.pull-right Logged in as #{name}, 
-                a(href="/logout") Logout
+            if !loggedIn
+              a.brand(href="/") Hopkins Planner
+            else
+              a.brand(href="/") #{name}'s Planner
+            .nav-collapse
+              ul.nav
+                if loggedIn
+                  li
+                    a(href="/logout") Logout
     .container
-      .row-fluid
-        .span9
-        block content
-    .push
-    block footer
-      footer(class="footer").
-        <p>&copy; Computer Science 2011</p>
-        </div>
-        </div>
+      block content
+      .push
+      block footer
+        footer(class="footer")
+          p Brought to you by the Hopkins Computer Science Club.
