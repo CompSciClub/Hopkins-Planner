@@ -14,6 +14,7 @@
 
 td.block{
   width: 16%;
+  height: 90px;
 }
 
 tr th.block{
@@ -96,4 +97,15 @@ font-family:"Lucida Console",monospace;
   #singleDay{
     display: block;
   }
+}
+
+
+div.ui-datepicker {
+    font-size: 70% !important;
+    z-index: 1;
+    position: absolute;
+}
+
+div.ui-helper-clearfix::after {
+        display: inline;
 }

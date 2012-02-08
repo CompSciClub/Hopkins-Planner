@@ -2,20 +2,31 @@ extends layout
 
 block scripts
   script(type="text/javascript")
+    $(document).ready(function() {
+      $("#datepicker").datepicker({ autoSize: false }, { onSelect: function(dateText, inst){} });
+    });
     var monday = #{date.getTime()};
     var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
+  <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
+  <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>-->
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 block styles
   <link rel="stylesheet" href="/stylesheets/week.css">
 
 block sidebar
-  a.btn(href="/weekly/#{offset - 1}")
-    i.icon-arrow-left
-  a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
-    i.icon-arrow-right
+    a.btn(href="/weekly/#{offset - 1}")
+      i.icon-arrow-left
+    a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+      i.icon-arrow-right
+    h3
+    br
+    #datepicker
 
 block content
   .content
@@ -30,8 +41,6 @@ block content
           col.weekend
           col.weekend
         tbody
-          style(type="text/css")
-            td{height:90px; width:150px}
           tr
             th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
             - date = addDay(date);
