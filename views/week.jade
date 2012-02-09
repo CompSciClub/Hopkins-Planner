@@ -20,13 +20,13 @@ block styles
   <link rel="stylesheet" href="/stylesheets/week.css">
 
 block sidebar
+  .arrows
     a.btn(href="/weekly/#{offset - 1}")
       i.icon-arrow-left
     a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
       i.icon-arrow-right
-    h3
-    br
-    #datepicker
+  br
+  #datepicker
 
 block content
   .content

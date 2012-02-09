@@ -29,7 +29,13 @@ td.Sunday.block{
 }
 
 #datepicker{
-  width: 170px;
+  width: 269px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.arrows{
+  width: 80px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -85,8 +91,10 @@ font-family:"Lucida Console",monospace;
   margin-top: 4px !important;
 }
 
-.modal-backdrop{
-  opacity:0.15 !important;
+#deleteButton{
+  float: left;
+}
+
 .row-fluid .span2{
   text-align: center;
 }
@@ -99,22 +107,11 @@ font-family:"Lucida Console",monospace;
   display: hidden;
 }
 
-@media(max-width: 480px){
+@media (max-width: 480px){
   #CalendarTable{
     display: hidden;
   }
   #singleDay{
     display: block;
   }
-}
-
-
-div.ui-datepicker {
-    font-size: 70% !important;
-    z-index: 1;
-    position: absolute;
-}
-
-div.ui-helper-clearfix::after {
-        display: inline;
 }
