@@ -1,16 +1,5 @@
-body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-html, body{
-  height: 100%
-}
-
 footer{
   height: 36px;
-}
-.topbar{
-  height: 15%;
 }
 .push{
   height: 54px;
@@ -20,11 +9,6 @@ footer{
   height: auto !important;
   height: 85%;
   margin: 50px auto -54px;
-}
-.content, .sidebar{
-}
-* {
-  margin: 0;
 }
 a {
   color: #00B7FF;
@@ -110,11 +94,22 @@ a {
 .navbar ul.nav{
   float: right;
 }
+
 header{
   margin-top: 40px;
 }
-header.inner{
-
+header.largeHeader h1{
+  font-size: 81px;
+  line-height: 1;
+}
+header.largeHeader p{
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 300;
+  margin-top: 5px;
+}
+header .inner{
+  text-align: center;
 }
 .footer {
   margin-top: 45px;

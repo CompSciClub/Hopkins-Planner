@@ -28,18 +28,21 @@ block styles
     #loginButton{
       text-align: center;
     }
+    header .inner{
+      text-align: center;
+    }
 
 block content
-  header
+  header.largeHeader
     .inner
-      h2 Login
+      h1 Login
       p Please login to continue
       span#errors
         if flash.error
-          .fade.in.alert-message.error(data-alert="alert")
+          .fade.in.alert.alert-error(data-dismiss="alert")
             a.close(href="#") x
             p #{flash.error}
-  .row-fluid
+  .row-fluid(style="text-align: center")
     form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
       .clearfix(class="#{flash.emailError}")
         label(for="email") Email:
@@ -48,14 +51,14 @@ block content
         input(class="email_input #{flash.emailError}", type="text", name="email", value="#{flash.email}")
       .clearfix(class="#{flash.passError}")
         label(for="password") Password:
-        .input
+        .input(style="margin-left: 40px")
           input.password_input(type="password", name="password")
           span.help-inline.link#forgotPassword Forget?
       input.btn-success.btn#loginButton(type="submit", value="Login")
 
   #passwordModal.modal.small.hide.fade
     .modal-header
-      a.close(href="#") &times;
+      a.close(data-dismiss="modal") &times;
       h3 Reset Password
     .modal-body
       form.form-stacked(action="/reset_password", method="POST", onsubmit="return passwordReset()")
