@@ -20,6 +20,19 @@ block sidebar
 block content
   .content
     center
+      table(id="singleDay", class="table table-bordered", 
+style="width:100% !important")
+        colgroup
+          col.monday
+        tbody
+          style(type="text/css")
+            td{height:90px; width:150px}
+          tr
+            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+          td
+
+    center
       table(id="CalendarTable", class="table table-bordered", style="width:100% !important")
         colgroup
           col.monday

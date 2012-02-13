@@ -86,14 +86,15 @@ font-family:"Lucida Console",monospace;
 }
 
 #singleDay{
-  display: hidden;
+  display: none;
 }
 
-@media(max-width: 480px){
+@media screen and (max-width:480px) {
   #CalendarTable{
-    display: hidden;
+    display: none;
   }
   #singleDay{
-    display: block;
+    display: table;
   }
 }
+
