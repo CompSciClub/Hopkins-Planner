@@ -1,32 +1,62 @@
-extends layout
+extends noSidebarLayout 
+
+block styles
+  style
+    label.control-label{
+      width: 220px;
+      text-align: center;
+    }
+      
 
 block content
-  .container
-    h2 Setup
-    h3 Your Classes:
-    form.form-stacked(action="/setup_blocks", method="POST")
-      .clearfix
-        label(for="aBlock") A block: 
-        input.block_input(type="Text", name="aBlock")
-      .clearfix
-        label(for="bBlock") B block: 
-        input.block_input(type="Text", name="bBlock")
-      .clearfix
-        label(for="cBlock") C block: 
-        input.block_input(type="Text", name="cBlock")
-      .clearfix
-        label(for="dBlock") D block: 
-        input.block_input(type="Text", name="dBlock")
-      .clearfix
-        label(for="eBlock") E block: 
-        input.block_input(type="Text", name="eBlock")
-      .clearfix
-        label(for="fBlock") F block: 
-        input.block_input(type="Text", name="fBlock")
-      .clearfix
-        label(for="gBlock") G block: 
-        input.block_input(type="Text", name="gBlock")
-      .clearfix
-        label(for="hBlock") H block: 
-        input.block_input(type="Text", name="hBlock")
-      input.btn.success(type="submit") Save
+  h2 Setup
+  br
+  h3 Your Classes:
+
+
+  form(action="/setup_blocks", method="POST")
+    fieldset
+      .row-fluid
+        .span3
+          .control-group
+            label.control-label(for="aBlock") A block: 
+            .controls
+              input.input-large.block_input(type="Text", name="aBlock")
+        .span3
+          .control-group
+            label.control-label(for="bBlock") B block: 
+            .controls
+              input.block_input(type="Text", name="bBlock")
+        .span3
+          .control-group
+            label.control-label(for="cBlock") C block: 
+            .controls
+              input.block_input(type="Text", name="cBlock")
+        .span3
+          .control-group
+            label.control-label(for="dBlock") D block: 
+            .controls
+              input.block_input(type="Text", name="dBlock")
+      .row-fluid
+        .span3
+          .control-group
+            label.control-label(for="eBlock") E block: 
+            .controls
+              input.block_input(type="Text", name="eBlock")
+        .span3
+          .control-group
+            label.control-label(for="fBlock") F block: 
+            .controls
+              input.block_input(type="Text", name="fBlock")
+        .span3
+          .control-group
+            label.control-label(for="gBlock") G block: 
+            .controls
+              input.block_input(type="Text", name="gBlock")
+        .span3
+          .control-group
+            label.control-label(for="hBlock") H block:
+            .controls
+              input.block_input(type="Text", name="hBlock")
+      .form-actions
+        button.btn.btn-success(type="submit") Save
