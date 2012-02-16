@@ -9,6 +9,8 @@ var express         = require('express')
   , mongoStore      = require("connect-mongodb")
   , schemas         = require("./schemas");
 
+URL = process.env.URL || "localhost:3000";
+
 var app        = module.exports = express.createServer();
 var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar";
 mongoose.connect(mongoURI);
@@ -45,6 +47,7 @@ mongoose.connection.on("open", function(){
 
   app.post("/createAccount", routes.createUser);
   app.post("/login", routes.login);
+  app.get("/verify/:token", routes.verify);
 
   app.post('/setup', routes.setPreferences);
   app.get("/setup", routes.setup);

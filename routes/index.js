@@ -146,7 +146,8 @@ exports.createUser = function(req, res){
       req.session.userId      = user._id;
       req.session.displayName = user.name;
       res.redirect(req.body.redirect || "/setup");
-
+      console.log(req.body.email);
+      sendEmail("verficiation@hopkinsplanner.com", req.body.email, "Email Verification", "views/emails/verify.jade", {url: URL, token: token});
     }
   })
 };
@@ -358,11 +359,11 @@ exports.createEvent = function(req, res){
   var addEvent = function(type, owner) {
     var newEvent = new Event({
       type: type,
-      name: req.body.name,
+      name: escapeHtml(req.body.name),
       timestamp: req.body.timestamp,
       day: req.body.day,
       block: req.body.block,
-      description: req.body.description,
+      description: escapeHtml(req.body.description),
       class: req.body.bootClass,
       owner: owner
     });
@@ -602,17 +603,16 @@ function sendEmail(sendaddress, emailaddress, subject, directory, vars) {
       port: 587,
       ssl: false,
       use_authentication: true,
-      user: "postmaster@app1811121.mailgun.org",
-      pass: "8k0s9nya04j7"
+      user: process.env.MAILGUN_SMTP_LOGIN,
+      pass: process.env.MAILGUN_SMTP_PASSWORD,
     };
-    console.log(html);
+    console.log(nodemailer.SMTP);
     nodemailer.send_mail(
       {
         sender: sendaddress,
         to: emailaddress,
         subject: subject,
-        html: html,
-        body:'moar tests, for science'
+        html: html
       }, function(error, success){
         if (!success)
           console.log("Error sending message", error);
