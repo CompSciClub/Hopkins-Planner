@@ -6,57 +6,95 @@ block styles
       width: 220px;
       text-align: center;
     }
-      
+    .control-group{
+      float: left;
+    }
+
+block scripts
+  script(type="text/javascript")
+    $(document).ready(function(){
+      $(".gradeSelect").val(#{grade});
+      $("#nightly").prop("checked", #{nightly || false});
+      $("#weekly").prop("checked", #{weekly || false});
+      $("#important").prop("checked", #{important || false});
+    });
 
 block content
-  h2 Setup
-  br
-  h3 Your Classes:
+  header
+    h2 Preferences
+    br
+  form.form-horizontal(action="/setup", method="POST")
+    h3 Your Classes
+    .row
+      .span8
+        fieldset
+            .control-group
+              label.control-label(for="aBlock") A block:
+              .controls
+                input.input-large.block_input(type="Text", name="aBlock", value="#{blocks.A}")
+            .control-group
+              label.control-label(for="bBlock") B block:
+              .controls
+                input.block_input(type="Text", name="bBlock", value="#{blocks.B}")
+            .control-group
+              label.control-label(for="cBlock") C block:
+              .controls
+                input.block_input(type="Text", name="cBlock", value="#{blocks.C}")
+            .control-group
+              label.control-label(for="dBlock") D block:
+              .controls
+                input.block_input(type="Text", name="dBlock", value="#{blocks.D}")
+            .control-group
+              label.control-label(for="eBlock") E block:
+              .controls
+                input.block_input(type="Text", name="eBlock", value="#{blocks.E}")
+            .control-group
+              label.control-label(for="fBlock") F block:
+              .controls
+                input.block_input(type="Text", name="fBlock", value="#{blocks.F}")
+            .control-group
+              label.control-label(for="gBlock") G block:
+              .controls
+                input.block_input(type="Text", name="gBlock", value="#{blocks.G}")
+            .control-group
+              label.control-label(for="hBlock") H block:
+              .controls
+                input.block_input(type="Text", name="hBlock", value="#{blocks.H}")
+        h3 About You
+        fieldset
+          .control-group
+            label.control-label(for="name") Name:
+            .controls
+              input.xlarge-input(type="Text", name="name", value="#{name}")
+          .control-group
+            label.control-label(for="name") Grade:
+            .controls
+              select.gradeSelect(name="grade")
+                option(value="7") 7th
+                option(value="8") 8th 
+                option(value="9") 9th
+                option(value="10") 10th
+                option(value="11") 11th
+                option(value="12") 12th
+             
+        h3 Emails
+        fieldset  
+          .control-group
+            label.control-label(for="emailPrefs") Email Me:
+            .controls
+              label.checkbox
+                input#nightly.checkbox(type="checkbox", name="nightly") 
+                | With nightly reminders about tomorrow.
+              label.checkbox
+                input#weekly.checkbox(type="checkbox", name="weekly")
+                | With weekly reminders about my upcoming week.
+              label.checkbox
+                input#important.checkbox(type="checkbox", name="important")
+                | For important events such as tests, quizes, and projects.
 
-
-  form(action="/setup_blocks", method="POST")
-    fieldset
-      .row-fluid
-        .span3
-          .control-group
-            label.control-label(for="aBlock") A block: 
-            .controls
-              input.input-large.block_input(type="Text", name="aBlock")
-        .span3
-          .control-group
-            label.control-label(for="bBlock") B block: 
-            .controls
-              input.block_input(type="Text", name="bBlock")
-        .span3
-          .control-group
-            label.control-label(for="cBlock") C block: 
-            .controls
-              input.block_input(type="Text", name="cBlock")
-        .span3
-          .control-group
-            label.control-label(for="dBlock") D block: 
-            .controls
-              input.block_input(type="Text", name="dBlock")
-      .row-fluid
-        .span3
-          .control-group
-            label.control-label(for="eBlock") E block: 
-            .controls
-              input.block_input(type="Text", name="eBlock")
-        .span3
-          .control-group
-            label.control-label(for="fBlock") F block: 
-            .controls
-              input.block_input(type="Text", name="fBlock")
-        .span3
-          .control-group
-            label.control-label(for="gBlock") G block: 
-            .controls
-              input.block_input(type="Text", name="gBlock")
-        .span3
-          .control-group
-            label.control-label(for="hBlock") H block:
-            .controls
-              input.block_input(type="Text", name="hBlock")
-      .form-actions
-        button.btn.btn-success(type="submit") Save
+        .form-actions
+          button.btn.btn-success(type="submit") Save
+      .span4
+        h3 Made for You
+        p
+        | Hopkins Planner is built around you. Use this screen to personalize it.

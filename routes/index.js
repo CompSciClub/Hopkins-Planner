@@ -51,6 +51,13 @@ function loadWeekly(req, res){
 
   // get every event for the current user in this week
   User.find({_id: req.session.userId}, function(err, users) {
+    if (err || users.length == 0){
+      console.log("no user");
+      console.log("Error finding user");
+      req.session.valid = false;
+      res.render("500", {title: "500", loggedIn: true, flash: req.flash(), name: req.session.displayName});
+      return;
+    }
     var user = users[0];
     var eventOwners = [req.session.userId];
     for(var i = 0; i < user.classes.length; i++) {
@@ -105,7 +112,8 @@ exports.createUser = function(req, res){
     name: req.body.name,
     is_teacher: (req.body.is_teacher == "on") ? true : false,
     classes: [],
-    blocks: [{}]
+    blocks: [{}],
+    emailSettings: [{}]
   });
 
   user.save(function(err){
@@ -137,9 +145,9 @@ exports.createUser = function(req, res){
 };
 
 /*
- * POST /setup_blocks
+ * POST /setup
  */
-exports.setupBlocks = function(req, res){
+exports.setPreferences = function(req, res){
   if (!req.session.valid){
     req.flash("error", "You have to login first.");
     res.redirect("/login");
@@ -158,14 +166,21 @@ exports.setupBlocks = function(req, res){
   };
 
   User.find({_id: req.session.userId}, function(err, users){
-    if (err){
-      console.log("Error finding user");
-      res.setHead(505, {"Content-Type": "application/json"});
-      res.end(JSON.stringify({err: 505, msg: "Unable to get user"}));
-    }
     var user = users[0];
+    if (err || !user){
+      console.log("Error finding user");
+      res.render("500", {title: "500", loggedIn: true, name: req.session.displayName});
+    }
     user.blocks = blocks;
+    user.grade  = req.body.grade;
+    user.name   = req.body.name;
+    user.emailSettings = {
+      nightly: req.body.nightly == "on",
+      weekly: req.body.weekly == "on",
+      important: req.body.important == "on"
+    };
     user.save();
+    req.session.displayName = req.body.name;
     res.redirect(req.body.redirect || "/weekly");
   });
 };
@@ -180,7 +195,19 @@ exports.setup = function(req, res){
     return;
   }
 
-  res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName});
+  User.find({_id: req.session.userId}, function(err, users){
+    var user = users[0];
+    if (err || users.length == 0 ){
+      console.log("no user");
+      console.log("Error finding user");
+      req.session.valid = false;
+      res.render("500", {title: "500", loggedIn: true, flash: req.flash(), name: req.session.displayName});
+      return;
+    }
+    res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName, grade: user.grade,
+                         nightly: user.emailSettings[0].nightly, weekly: user.emailSettings[0].weekly, important: user.emailSettings[0].important,
+                         blocks: user.blocks[0]});
+  });
 };
 
 /*
@@ -456,6 +483,10 @@ exports.createHoliday_page = function(req, res){
 
     res.render("addHoliday", {loggedIn: true, name: user.name, title: "Add Holiday"});
   });
+};
+
+exports.noPage = function(req, res){
+  res.render("404", {title: "Page not Found", loggedIn: req.session.valid, name: req.session.displayName});
 };
 
 // User releated functions we may want to move these to another file

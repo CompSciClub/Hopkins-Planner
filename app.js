@@ -22,8 +22,8 @@ mongoose.connection.on("open", function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(express.session( {store: new mongoStore({db: mongoose.connection.db}), cookie: {httpOnly: true, maxAge: 604800000}, secret: process.env.secret || "The computer science club will rise again... and reclaim B204" }));
-    app.use(app.router);
     app.use(express.static(__dirname + '/public'));
+    app.use(app.router);
   });
   app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
@@ -46,7 +46,7 @@ mongoose.connection.on("open", function(){
   app.post("/createAccount", routes.createUser);
   app.post("/login", routes.login);
 
-  app.post('/setup_blocks', routes.setupBlocks);
+  app.post('/setup', routes.setPreferences);
   app.get("/setup", routes.setup);
 
   // events
@@ -60,6 +60,8 @@ mongoose.connection.on("open", function(){
   // administrative tasks
   app.post("/holiday", routes.createHoliday);
   app.get("/holiday", routes.createHoliday_page);
+  
+  app.get("*", routes.noPage);
 
 
   app.listen(process.env.PORT || 3000);
