@@ -206,8 +206,8 @@ exports.setup = function(req, res){
     }
     var emailSettings = user.emailSettings[0] || {};
     res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName, grade: user.grade,
-                         nightly: emailSettings[0].nightly, weekly: emailSettings[0].weekly, important: emailSettings[0].important,
-                         blocks: user.blocks[0]});
+                         nightly: emailSettings.nightly, weekly: emailSettings.weekly, important: emailSettings.important,
+                         blocks: user.blocks});
   });
 };
 
