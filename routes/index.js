@@ -204,8 +204,9 @@ exports.setup = function(req, res){
       res.render("500", {title: "500", loggedIn: true, flash: req.flash(), name: req.session.displayName});
       return;
     }
+    var emailSettings = user.emailSettings[0] || {};
     res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName, grade: user.grade,
-                         nightly: user.emailSettings[0].nightly, weekly: user.emailSettings[0].weekly, important: user.emailSettings[0].important,
+                         nightly: emailSettings[0].nightly, weekly: emailSettings[0].weekly, important: emailSettings[0].important,
                          blocks: user.blocks[0]});
   });
 };
