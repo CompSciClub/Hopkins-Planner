@@ -32,7 +32,9 @@ exports.User = new Schema({
   blocks: [Blocks],
   admin: {type: Boolean, default: false},
   grade: {type: Number, default: 7},
-  emailSettings: [Emails]
+  emailSettings: [Emails],
+  valid: {type: Boolean, default: false},
+  token: String
 });
 
 exports.Event = new Schema({

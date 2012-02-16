@@ -105,6 +105,7 @@ exports.createAccount = function(req, res){
 exports.createUser = function(req, res){
   var salt     = createSalt();
   var password = Crypto.SHA256(req.body.password + salt); 
+  var token    = Crypto.SHA256(Math.random());
   var user  = new User({
     email: req.body.email,
     password: password,
@@ -113,7 +114,9 @@ exports.createUser = function(req, res){
     is_teacher: (req.body.is_teacher == "on") ? true : false,
     classes: [],
     blocks: [{}],
-    emailSettings: [{}]
+    emailSettings: [{}],
+    valid: false,
+    token: token
   });
 
   user.save(function(err){
@@ -140,6 +143,7 @@ exports.createUser = function(req, res){
       req.session.userId      = user._id;
       req.session.displayName = user.name;
       res.redirect(req.body.redirect || "/setup");
+
     }
   })
 };
