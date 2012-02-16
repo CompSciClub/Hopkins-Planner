@@ -175,9 +175,9 @@ exports.setPreferences = function(req, res){
     user.grade  = req.body.grade;
     user.name   = req.body.name;
     user.emailSettings = {
-      nightly: typeof req.body.nightly !== undefined && req.body.nightly == "on",
-      weekly: typeof req.body.weekly !== undefined && req.body.weekly == "on",
-      important: typeof req.body.important !== undefined && req.body.important == "on"
+      nightly: typeof req.body.nightly !== 'undefined' && req.body.nightly == "on",
+      weekly: typeof req.body.weekly !== 'undefined' && req.body.weekly == "on",
+      important: typeof req.body.important !== 'undefined' && req.body.important == "on"
     };
     user.save();
     req.session.displayName = req.body.name;
