@@ -152,6 +152,10 @@ exports.createUser = function(req, res){
   })
 };
 
+exports.verify = function(req, res){
+  var token = req.params.token;
+}
+
 /*
  * POST /setup
  */
