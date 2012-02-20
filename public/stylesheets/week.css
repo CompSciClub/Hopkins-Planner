@@ -87,6 +87,7 @@ font-family:"Lucida Console",monospace;
 
 #singleDay{
   display: none;
+  margin-top: 10px;
 }
 
 @media screen and (max-width:480px) {

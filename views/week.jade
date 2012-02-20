@@ -7,9 +7,13 @@ block scripts
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
+  <script src="jQuery.ui.datepicker.js"></script>
+  <script src="jquery.ui.datepicker.mobile.js"></script>
 
 block styles
   <link rel="stylesheet" href="/stylesheets/week.css">
+  <link rel="stylesheet" href="jquery.ui.datepicker.mobile.css" /> 
+
 
 block sidebar
   a.btn(href="/weekly/#{offset - 1}")
@@ -20,17 +24,25 @@ block sidebar
 block content
   .content
     center
+      label(for="date")Date:
+      input#date(type="date",name="date",value="")
       table(id="singleDay", class="table table-bordered", 
 style="width:100% !important")
-        colgroup
-          col.monday
-        tbody
-          style(type="text/css")
-            td{height:90px; width:150px}
-          tr
-            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
-            - date = addDay(date);
-          td
+        thead
+          td current day mother fucker
+          tbody
+           tr 
+              td Block 1
+           tr 
+              td Block 2
+           tr 
+              td Block 3
+           tr 
+              td Block 4
+           tr 
+              td Block 5
+           tr 
+              td Block 6
 
     center
       table(id="CalendarTable", class="table table-bordered", style="width:100% !important")
