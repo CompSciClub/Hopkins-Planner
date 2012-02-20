@@ -9,6 +9,8 @@ var express         = require('express')
   , mongoStore      = require("connect-mongodb")
   , schemas         = require("./schemas");
 
+URL = process.env.URL || "localhost:3000";
+
 var app        = module.exports = express.createServer();
 var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar";
 mongoose.connect(mongoURI);
@@ -22,8 +24,8 @@ mongoose.connection.on("open", function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(express.session( {store: new mongoStore({db: mongoose.connection.db}), cookie: {httpOnly: true, maxAge: 604800000}, secret: process.env.secret || "The computer science club will rise again... and reclaim B204" }));
-    app.use(app.router);
     app.use(express.static(__dirname + '/public'));
+    app.use(app.router);
   });
   app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
@@ -45,8 +47,9 @@ mongoose.connection.on("open", function(){
 
   app.post("/createAccount", routes.createUser);
   app.post("/login", routes.login);
+  app.get("/verify/:token", routes.verify);
 
-  app.post('/setup_blocks', routes.setupBlocks);
+  app.post('/setup', routes.setPreferences);
   app.get("/setup", routes.setup);
 
   // events
@@ -60,12 +63,14 @@ mongoose.connection.on("open", function(){
   // administrative tasks
   app.post("/holiday", routes.createHoliday);
   app.get("/holiday", routes.createHoliday_page);
+  
+  app.get("*", routes.noPage);
 
 
   app.listen(process.env.PORT || 3000);
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-
-
-
+  
 });
-// Configuration
+process.on("uncaughtException", function(err){
+  console.log("error", err);
+});

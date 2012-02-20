@@ -14,6 +14,11 @@ var Schema = mongoose.Schema,
       Saturday: {type: String, default: "Saturday"},
       Sunday: {type:String, default: "Sunday"},
       Activities: {type:String, default: "Activities"}
+    }),
+    Emails = new Schema({
+      nightly: {type: Boolean, default: false},
+      weekly: {type: Boolean, default: false},
+      important: {type: Boolean, default: true}
     });
 
 exports.User = new Schema({
@@ -25,7 +30,11 @@ exports.User = new Schema({
   classes: [String],
   user_id   : ObjectId,
   blocks: [Blocks],
-  admin: {type: Boolean, default: false}
+  admin: {type: Boolean, default: false},
+  grade: {type: Number, default: 7},
+  emailSettings: [Emails],
+  valid: {type: Boolean, default: false},
+  token: String
 });
 
 exports.Event = new Schema({

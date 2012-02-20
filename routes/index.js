@@ -1,6 +1,9 @@
 // for now all routes go in here. We will probbably break them up at some point
 
-var Crypto = require("ezcrypto").Crypto;
+var Crypto     = require("ezcrypto").Crypto;
+var fs         = require("fs");
+var nodemailer = require("nodemailer");
+var jade       = require("jade");
 
 /*
  * GET home page.
@@ -51,6 +54,13 @@ function loadWeekly(req, res){
 
   // get every event for the current user in this week
   User.find({_id: req.session.userId}, function(err, users) {
+    if (err || users.length == 0){
+      console.log("no user");
+      console.log("Error finding user");
+      req.session.valid = false;
+      res.render("500", {title: "500", loggedIn: true, flash: req.flash(), name: req.session.displayName});
+      return;
+    }
     var user = users[0];
     var eventOwners = [req.session.userId];
     for(var i = 0; i < user.classes.length; i++) {
@@ -98,6 +108,7 @@ exports.createAccount = function(req, res){
 exports.createUser = function(req, res){
   var salt     = createSalt();
   var password = Crypto.SHA256(req.body.password + salt); 
+  var token    = Crypto.SHA256(Math.random());
   var user  = new User({
     email: req.body.email,
     password: password,
@@ -105,7 +116,10 @@ exports.createUser = function(req, res){
     name: req.body.name,
     is_teacher: (req.body.is_teacher == "on") ? true : false,
     classes: [],
-    blocks: [{}]
+    blocks: [{}],
+    emailSettings: [{}],
+    valid: false,
+    token: token
   });
 
   user.save(function(err){
@@ -132,14 +146,20 @@ exports.createUser = function(req, res){
       req.session.userId      = user._id;
       req.session.displayName = user.name;
       res.redirect(req.body.redirect || "/setup");
+      console.log(req.body.email);
+      sendEmail("verficiation@hopkinsplanner.com", req.body.email, "Email Verification", "views/emails/verify.jade", {url: URL, token: token});
     }
   })
 };
 
+exports.verify = function(req, res){
+  var token = req.params.token;
+}
+
 /*
- * POST /setup_blocks
+ * POST /setup
  */
-exports.setupBlocks = function(req, res){
+exports.setPreferences = function(req, res){
   if (!req.session.valid){
     req.flash("error", "You have to login first.");
     res.redirect("/login");
@@ -158,14 +178,22 @@ exports.setupBlocks = function(req, res){
   };
 
   User.find({_id: req.session.userId}, function(err, users){
-    if (err){
-      console.log("Error finding user");
-      res.setHead(505, {"Content-Type": "application/json"});
-      res.end(JSON.stringify({err: 505, msg: "Unable to get user"}));
-    }
     var user = users[0];
+    if (err || !user){
+      console.log("Error finding user");
+      res.render("500", {title: "500", loggedIn: true, name: req.session.displayName});
+    }
     user.blocks = blocks;
+    user.grade  = req.body.grade;
+    user.name   = req.body.name;
+    user.emailSettings = {
+      nightly: typeof req.body.nightly !== 'undefined' && req.body.nightly == "on",
+      weekly: typeof req.body.weekly !== 'undefined' && req.body.weekly == "on",
+      important: typeof req.body.important !== 'undefined' && req.body.important == "on"
+    };
+    console.log(user.emailSettings);
     user.save();
+    req.session.displayName = req.body.name;
     res.redirect(req.body.redirect || "/weekly");
   });
 };
@@ -180,7 +208,20 @@ exports.setup = function(req, res){
     return;
   }
 
-  res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName});
+  User.find({_id: req.session.userId}, function(err, users){
+    var user = users[0];
+    if (err || users.length == 0 ){
+      console.log("no user");
+      console.log("Error finding user");
+      req.session.valid = false;
+      res.render("500", {title: "500", loggedIn: true, flash: req.flash(), name: req.session.displayName});
+      return;
+    }
+    var emailSettings = user.emailSettings[0] || {};
+    res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName, grade: user.grade,
+                         nightly: emailSettings.nightly, weekly: emailSettings.weekly, important: emailSettings.important,
+                         blocks: user.blocks[0]});
+  });
 };
 
 /*
@@ -322,11 +363,11 @@ exports.createEvent = function(req, res){
   var addEvent = function(type, owner) {
     var newEvent = new Event({
       type: type,
-      name: req.body.name,
+      name: escapeHtml(req.body.name),
       timestamp: req.body.timestamp,
       day: req.body.day,
       block: req.body.block,
-      description: req.body.description,
+      description: escapeHtml(req.body.description),
       class: req.body.bootClass,
       owner: owner
     });
@@ -458,6 +499,10 @@ exports.createHoliday_page = function(req, res){
   });
 };
 
+exports.noPage = function(req, res){
+  res.render("404", {title: "Page not Found", loggedIn: req.session.valid, name: req.session.displayName});
+};
+
 // User releated functions we may want to move these to another file
 function validateUser(req, id){
   /* req.sessions.regenerate(function(){
@@ -548,4 +593,35 @@ function escapeHtml(unsafe) {
 function addDay(date){
   date.setTime(date.getTime() + 86400000);
   return date;
+}
+function sendEmail(sendaddress, emailaddress, subject, directory, vars) {
+	var data = fs.readFile(directory, function(err, data){
+    if (err){
+      console.log("error", err);
+      return;
+    }
+		var jadeTemplate = jade.compile(data.toString("utf8"));
+    var html = jadeTemplate(vars);
+    nodemailer.SMTP = {
+      host: "smtp.mailgun.org",
+      port: 587,
+      ssl: false,
+      use_authentication: true,
+      user: process.env.MAILGUN_SMTP_LOGIN,
+      pass: process.env.MAILGUN_SMTP_PASSWORD,
+    };
+    console.log(nodemailer.SMTP);
+    nodemailer.send_mail(
+      {
+        sender: sendaddress,
+        to: emailaddress,
+        subject: subject,
+        html: html
+      }, function(error, success){
+        if (!success)
+          console.log("Error sending message", error);
+        else
+          console.log("Message sent");
+      });
+   });
 }
