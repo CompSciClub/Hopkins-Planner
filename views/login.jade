@@ -1,0 +1,69 @@
+extends noSidebarLayout
+
+block scripts
+  script(type="text/javascript", src="javascripts/sha.js")
+  script(type="text/javascript", src="javascripts/index.js")
+  script
+    $(document).ready(function(){
+      $("#forgotPassword").click(function(){
+        $("#passwordModal").modal({
+          keyboard: true,
+          backdrop: true,
+          show: true
+        });
+      });
+    });
+
+block styles
+  style
+    .hero-unit{
+      width: 280px;
+    }
+    .alert-message.error p{
+      font-size: 10px;
+    }
+    .alert-message.error{
+      width: 190px;
+    }
+    #loginButton{
+      text-align: center;
+    }
+    header .inner{
+      text-align: center;
+    }
+
+block content
+  header.largeHeader
+    .inner
+      h1 Login
+      p Please login to continue
+      span#errors
+        if flash.error
+          .fade.in.alert.alert-error(data-dismiss="alert")
+            a.close(href="#") x
+            p #{flash.error}
+  .row-fluid(style="text-align: center")
+    form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
+      .clearfix(class="#{flash.emailError}")
+        label(for="email") Email:
+        if !flash.email
+          - flash.email = ""
+        input(class="email_input #{flash.emailError}", type="text", name="email", value="#{flash.email}")
+      .clearfix(class="#{flash.passError}")
+        label(for="password") Password:
+        .input(style="margin-left: 40px")
+          input.password_input(type="password", name="password")
+          span.help-inline.link#forgotPassword Forget?
+      input.btn-success.btn#loginButton(type="submit", value="Login")
+
+  #passwordModal.modal.small.hide.fade
+    .modal-header
+      a.close(data-dismiss="modal") &times;
+      h3 Reset Password
+    .modal-body
+      form.form-stacked(action="/reset_password", method="POST", onsubmit="return passwordReset()")
+        .clearfix
+          label(for="email") Email:
+          input.emailRecover_input(type="text")
+        center
+          input.primary.btn(type="submit", value="Reset")

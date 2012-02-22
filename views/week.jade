@@ -14,36 +14,97 @@ block scripts
   $("#datepicker").datepicker({ autoSize: false } { onSelect: function(dateText, inst) });
   });
   </script>
+    var monday = #{date.getTime()};
+    var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
+    var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
+  script(type="text/javascript", src="/javascripts/index.js")
+  <script src="/javascripts/week.js"></script>
 
 block styles
-  <link rel="stylesheet" href="stylesheets/week.css">
+  <link rel="stylesheet" href="/stylesheets/week.css">
 
 block sidebar
     .sidebar
         h3
         <br/>
         <div id="datepicker"></div>
+  a.btn(href="/weekly/#{offset - 1}")
+    i.icon-arrow-left
+  a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+    i.icon-arrow-right
 
 block content
   .content
     center
-      table(id="CalendarTable", class="bordered-table", style="width:100% !important")
+      table(id="singleDay", class="table table-bordered", 
+style="width:100% !important")
+        colgroup
+          col.monday
         tbody
-          style(type="text/css")
-            td{height:90px; width:150px}
           tr
-            th Monday
-            th Tuesday
-            th Wednesday
-            th Thursday
-            th Friday
-          each day in week
+            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+          tr
+            td.block
+          tr
+            td.block
+          tr
+            td.block
+          tr
+            td.block
+
+    center
+      table(id="CalendarTable", class="table table-bordered", style="width:100% !important")
+        colgroup
+          col.monday
+          col.tuesday
+          col.wednesday
+          col.thursday
+          col.friday
+          col.weekend
+          col.weekend
+        tbody
+          tr
+            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Tuesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Wednesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Thursday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Friday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.weekend.block(colspan="2") 
+              | Weekend #{date.getMonth() + 1}/#{date.getDate()}
+              - date = addDay(date)
+              | - #{date.getMonth() + 1}/#{date.getDate()}
+          for period in week
             tr
-            each block in day 
-              td(class="#{block}block") #{block} Block
+              each block, day in period
+                - var rowspan = "1"
+                - if(day == 5 || day == 6 || block == "No School")
+                  - rowspan = "6"
+                - else if(block == "Activities")
+                  - rowspan = "2"
+                - var className = "";
+                - if(blocks[block])
+                  - className = blocks[block];
+                - else
+                  - className = block;
+                td(class="#{block} block", rowspan="#{rowspan}") #{className}
+                  if (events[day] && events[day][block])
+                    each eventObj in events[day][block]
+                      - var done = (eventObj.done) ? "done" : "";
+                      .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
+                          #{escapeHtml(eventObj.name)}
+                          if eventObj.done
+                            input.eventCheck(type="checkbox", checked="checked")
+                          else
+                            input.eventCheck(type="checkbox")
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
-        <a href="#" class="close">&times;</a>
+        <a data-dismiss="modal" class="close">&times;</a>
         <h3>
           <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
           <br />
@@ -61,17 +122,25 @@ block content
                 <textarea id="modalDescriptionBox">Description here</textarea>
               </td>
               <td class="noBorder">
-                <p><input name="modalRadio1" type="radio"> Options</p>
-                <p><input name="modalRadio1" type="radio"> and</p>
-                <p><input name="modalRadio1" type="radio"> Stuff</p>
+                <p><input name="modalRadio1" checked="true" type="radio"> Homework</p>
+                <p><input name="modalRadio1" type="radio"> Quiz</p>
+                <p><input name="modalRadio1" type="radio"> Test</p>
+                <p><input name="modalRadio1" type="radio"> Project</p>
+                <p><input name="modalRadio1" type="radio"> Reminder</p>
               </td>
             </tr>
           </table>
         </form>
       </div>
       <div class="modal-footer">
-        <input id="saveButton" type="submit" class="btn primary" value="Save">
-        <input id="cancelButton" type="submit" class="btn secondary" value="Cancel">
+        <a id="saveButton" class="btn btn-primary">
+          <i class="icon-ok icon-white"></i>
+          Save
+        </a>
+        <a id="cancelButton" class="btn btn-secondary">
+          <i class="icon-remove icon-black"></i>
+          Cancel
+        </a>
       </div>
     </div>
     <!-- End Modal Content -->

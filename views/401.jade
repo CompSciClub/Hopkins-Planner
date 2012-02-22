@@ -1,0 +1,15 @@
+extends noSidebarLayout
+
+block styles
+  link(rel="stylesheet", href="stylesheets/index.css")
+
+block content
+  header
+    .inner
+      .container
+        p.headerImage(style="margin-top: 50px;")
+          img(src="images/401.jpg");
+    p Sorry, you're not allowed to be here. Please 
+      a(href="/") click here
+      |  to leave.
+

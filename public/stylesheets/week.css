@@ -1,20 +1,69 @@
 /* Week.css */
 
-#CalendarTable td.Ablock{background-color: #998E69;}
-#CalendarTable td.Bblock{background-color: #F977A5;}
-#CalendarTable td.Cblock{background-color: #75F585;}
-#CalendarTable td.Dblock{background-color: #FFE37A;}
-#CalendarTable td.Eblock{background-color: #A59AF4;}
-#CalendarTable td.Fblock{background-color: #65926A;}
-#CalendarTable td.Gblock{background-color: #FB90B5;}
-#CalendarTable td.Hblock{background-color: #956777;}
+/*#CalendarTable td.A.block{background-color: #7b576b;}
+#CalendarTable td.B.block{background-color: #ffff73;}
+#CalendarTable td.C.block{background-color: #ff6161;}
+#CalendarTable td.D.block{background-color: #80ff80;}
+#CalendarTable td.E.block{background-color: #8484ff;}
+#CalendarTable td.F.block{background-color: #f29365;}
+#CalendarTable td.G.block{background-color: #;}
+#CalendarTable td.H.block{background-color: #;}*/
+/*#CalendarTable td.block{
+  opacity: 0.6;
+}*/
+
+td.block{
+  width: 16%;
+  height: 90px;
+}
+
+tr th.block{
+  text-align: center
+}
+
+td.Saturday.block{
+  width: 10%;
+}
+td.Sunday.block{
+  width: 10%;
+}
+
+.event{
+  width:100%;
+  margin-bottom:7px;
+  text-transform:none !important; /* by default label makes it all caps...we don't necessarily want that */
+  font-family: Verdana;
+  border-radius: 6px;
+  background-color: #242DA6;
+  padding-left: 5px;
+}
+.event.done{
+  opacity: 0.4;
+  zoom: 1;
+  filter: aplha(opactiy = 40);
+}
+.event.test{
+  background-color: #A62424;
+}
+.event.hw{
+  background-color: #242DA6;
+}
+.event.quiz{
+  background-color: #731308;
+}
+.event.project{
+  background-color: #4B89DB;
+}
+.event.reminder{
+  background-color: #997777;
+}
 
 .container{
   width: auto !important;
 }
 
 td{
-font-family:"Times New Roman",Times,serif;
+font-family:"Lucida Console",monospace;
 }
 
 #eventDate{
@@ -22,15 +71,20 @@ font-family:"Times New Roman",Times,serif;
   top: 3px;
 }
 
-.modal-header{
-  padding-bottom: 10px;
+.monday,.wednesday,.friday{background-color:#f9f9f9;}
+
+.eventCheck{
+  float: right;
+  margin-top: 4px !important;
 }
 
-#modalDescriptionBox{
-  max-height: 200px;
-  max-width: 250px;
+.row-fluid .span2{
+  text-align: center;
 }
 
+#CalendarTable{
+  display: table;
+}
 
 div.ui-datepicker {
     font-size: 70% !important;
@@ -40,4 +94,17 @@ div.ui-datepicker {
 
 div.ui-helper-clearfix::after {
         display: inline;
+}
+
+#singleDay{
+  display: none;
+}
+
+@media screen and (max-width:480px) {
+  #CalendarTable{
+    display: none;
+  }
+  #singleDay{
+    display: table;
+  }
 }
