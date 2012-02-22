@@ -161,6 +161,9 @@ function createEvent(){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
+  if (newEvent.description === "Description here"){
+    newEvent.description = "No description";
+  }
   newEvent.bootClass   = ""
   
   var radios = $('input[name=modalRadio1]:radio'); 

@@ -154,6 +154,27 @@ exports.createUser = function(req, res){
 
 exports.verify = function(req, res){
   var token = req.params.token;
+  if (!isLoggedIn(req, res)){
+    return false;
+  };
+
+  User.find({_id: req.session.userId}, function(err, users){
+    if (err || users.length == 0){
+      console.log("error finding user");
+      res.render("500", {title: "Uh-Oh", loggedIn: true, name: req.session.displayName});
+      return;
+    }
+    var user = users[0];
+    
+    if (token != user.token){
+      res.render("verification", {title: "Verify Email", loggedIn: true, name: req.session.displayName, 
+                                  error: "Sorry, that verification token is wrong."});
+    }else{
+      user.valid = true;
+      user.save();
+      res.redirect("/weekly");
+    }
+  });
 }
 
 /*

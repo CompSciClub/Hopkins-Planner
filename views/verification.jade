@@ -1,0 +1,10 @@
+extends noSidebarLayout
+
+block content
+  header
+    h1 Email Verification
+
+  if (error)
+    p.error #{error}
+  p Your email address needs to be validated. Please check your email for the code.
+    
