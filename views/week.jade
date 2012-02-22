@@ -11,11 +11,6 @@ block scripts
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-  <script>
-  $(document).ready(function() {
-  $("#datepicker").datepicker({ autoSize: false } { onSelect: function(dateText, inst) });
-  });
-  </script>
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
 
@@ -31,6 +26,13 @@ block sidebar
         i.icon-arrow-left
       a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
         i.icon-arrow-right
+  .arrows
+    a.btn(href="/weekly/#{offset - 1}")
+      i.icon-arrow-left
+    a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+      i.icon-arrow-right
+  br
+  #datepicker
 
 block content
   .content
@@ -132,6 +134,10 @@ style="width:100% !important")
         </form>
       </div>
       <div class="modal-footer">
+        <a id="deleteButton" class="btn btn-danger">
+          <i class="icon-trash icon-white"></i>
+          Delete
+        </a>
         <a id="saveButton" class="btn btn-primary">
           <i class="icon-ok icon-white"></i>
           Save

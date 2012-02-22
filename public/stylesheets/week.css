@@ -28,6 +28,18 @@ td.Sunday.block{
   width: 10%;
 }
 
+#datepicker{
+  width: 269px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.arrows{
+  width: 80px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .event{
   width:100%;
   margin-bottom:7px;
@@ -36,6 +48,7 @@ td.Sunday.block{
   border-radius: 6px;
   background-color: #242DA6;
   padding-left: 5px;
+  cursor:pointer;
 }
 .event.done{
   opacity: 0.4;
@@ -78,6 +91,10 @@ font-family:"Lucida Console",monospace;
   margin-top: 4px !important;
 }
 
+#deleteButton{
+  float: left;
+}
+
 .row-fluid .span2{
   text-align: center;
 }
@@ -106,5 +123,15 @@ div.ui-helper-clearfix::after {
   }
   #singleDay{
     display: table;
+#singleDay{
+  display: hidden;
+}
+
+@media (max-width: 480px){
+  #CalendarTable{
+    display: hidden;
+  }
+  #singleDay{
+    display: block;
   }
 }
