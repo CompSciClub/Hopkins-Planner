@@ -2,7 +2,9 @@ extends layout
 
 block scripts
   script(type="text/javascript")
-    var monday = #{date};
+    var monday = #{date.getTime()};
+    var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
+    var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   <script src="javascripts/week.js"></script>
   <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
@@ -14,9 +16,6 @@ block scripts
   $("#datepicker").datepicker({ autoSize: false } { onSelect: function(dateText, inst) });
   });
   </script>
-    var monday = #{date.getTime()};
-    var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
-    var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
 
@@ -28,10 +27,10 @@ block sidebar
         h3
         <br/>
         <div id="datepicker"></div>
-  a.btn(href="/weekly/#{offset - 1}")
-    i.icon-arrow-left
-  a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
-    i.icon-arrow-right
+      a.btn(href="/weekly/#{offset - 1}")
+        i.icon-arrow-left
+      a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+        i.icon-arrow-right
 
 block content
   .content
