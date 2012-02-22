@@ -19,6 +19,11 @@ $(document).ready(function(){
   lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
 
   /* EVENT HANDLERS: */
+
+  $( document ).bind( "mobileinit", function(){
+    $.mobile.page.prototype.options.degradeInputs.date = true;
+  });
+
   $("#CalendarTable td").hover(
     /* mouseenter */
     function(){
