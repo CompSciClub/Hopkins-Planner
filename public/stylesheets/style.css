@@ -1,16 +1,5 @@
-body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-html, body{
-  height: 100%
-}
-
 footer{
   height: 36px;
-}
-.topbar{
-  height: 15%;
 }
 .push{
   height: 54px;
@@ -19,13 +8,7 @@ footer{
   min-height: 85%;
   height: auto !important;
   height: 85%;
-  margin: 50 auto -54px;
-}
-.content, .sidebar{
-  padding-top: 50px;
-}
-* {
-  margin: 0;
+  margin: 50px auto -54px;
 }
 a {
   color: #00B7FF;
@@ -91,7 +74,8 @@ a {
 
 .modal.small{
   width: 250px;
-  left: 60%; /* HACK and a bad one at that */
+  left: 50%;
+  margin-left: -125px;
 }
 
 #createAccount_btn{
@@ -100,4 +84,35 @@ a {
 .link{
   cursor: pointer;
   text-decoration: underline;
+}
+.modal{
+  position: fixed !important;
+  max-height: 500px;
+  margin-top: -250px;
+  top: 50% !important;
+}
+.navbar ul.nav{
+  float: right;
+}
+
+header{
+  margin-top: 40px;
+}
+header.largeHeader h1{
+  font-size: 81px;
+  line-height: 1;
+}
+header.largeHeader p{
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 300;
+  margin-top: 5px;
+}
+header .inner{
+  text-align: center;
+}
+.footer {
+  margin-top: 45px;
+  padding: 35px 0 36px;
+  border-top: 1px solid #e5e5e5;
 }

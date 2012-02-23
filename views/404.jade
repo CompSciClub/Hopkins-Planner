@@ -1,0 +1,15 @@
+extends noSidebarLayout
+
+block styles
+  link(rel="stylesheet", href="stylesheets/index.css")
+
+block content
+  header
+    .inner
+      .container
+        p.headerImage(style="margin-top: 50px;")
+          img(src="http://boingboing.net/wp-content/uploads/2011/12/404.jpg");
+  p This is not the page you're looking for. 
+    a(href="/") Click here 
+    | to back home.
+

@@ -5,14 +5,49 @@
 }
 
 .btns{
-  width: 180px;
+  width: 200px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   top: -30px;
+}
+.btns .btn{
+  font-size: 20px;
+  display: inline-block;
 }
 
 #signUp_btn{
   margin-left: 15px;
 }
 
+#loginModal{
+  max-height: 300px;
+  margin-top: -150px;
+}
+
+.headerImage{
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 480px){
+  header{
+    margin-top: 0;
+  }
+  .btns .btn{
+    display: block;
+    font-size: 18px;
+  }
+  .btns{
+    width: auto;
+  }
+  #signUp_btn{
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .details.btn{
+    display: block;
+    font-size: 20px;
+  }
+}

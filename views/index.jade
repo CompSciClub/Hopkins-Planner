@@ -1,13 +1,11 @@
-extends layout
+extends noSidebarLayout
 
 block styles
   link(rel="stylesheet", href="stylesheets/index.css")
 
 block scripts
-  script(type="text/javascript", src="javascripts/bootstrap-alerts.js")
   script(type="text/javascript", src="javascripts/sha.js")
   script(type="text/javascript", src="javascripts/index.js")
-  script(type="text/javascript", src="javascripts/bootstrap-modal.js")
   if (flash.error)
     script(type="text/javascript")
       $(document).ready(function(){
@@ -19,54 +17,57 @@ block scripts
       });
 
 block content
-  .content
-    .hero-unit
-      p.heroImage
-        img(src="images/hop2.png", width="500px", height="169px")
+  header
+    .inner
+      p.headerImage
+        img(src="images/hop2.png", height="169px")
       p.btns
-        a#login_btn.btn.success.large Login
-        a#signUp_btn.btn.primary.large Sign Up
-    .row
-      .span6
-        h2 School Event
-        p Computer Science club creates a Windows support group for people traumatized by their OS.
-        p
-          a.btn(href="#") View details &raquo;
-      .span5
-        h2 Flag Day
-        p Every year Hopkins celebrates Flag Day, an opportunity to showcase our school’s ethnic diversity.
-        a.btn(href="http://www.hopkins.edu/podium/default.aspx?t=204&nid=751541") View details &raquo;
-      .span5
-        h2 School Event
-        p Massive outbreak of protesters for the game "Skyrim". Protesters say the game is offensive to Dragons.
-        a.btn(href="#") View details &raquo;
+        a#login_btn.btn.btn-success.btn-large Login
+        a#signUp_btn.btn.btn-primary.btn-large Sign Up
+  .row-fluid
+    .span4
+      h2 School Event
+      p Computer Science club creates a Windows support group for people traumatized by their OS.
+      p
+        a.details.btn.btn-large(href="#") View details &raquo;
+    .span4
+      h2 Flag Day
+      p Every year Hopkins celebrates Flag Day, an opportunity to showcase our school’s ethnic diversity.
+      p
+        a.details.btn.btn-large(href="http://www.hopkins.edu/podium/default.aspx?t=204&nid=751541") View details &raquo;
+    .span4
+      h2 School Event
+      p Massive outbreak of protesters for the game "Skyrim". Protesters say the game is offensive to Dragons.
+      p
+        a.details.btn.btn-large(href="#") View details &raquo;
 
-    hr
-    
-    .row
-      .span6
-        h2 School Event
-        p Facebook is re-banned after an experiment involving monkeys.
-        a.btn(href="#") View details &raquo;
-      .span5
-        h2 School Event
-        p Computer science club gets banned for offensive "forking action".
-        a.btn(href="#") View details &raquo;
-      .span5
-        h2 School Event
-        p Git dumped after "not being abble to commit due to conflicts".
-        a.btn(href="#") View details &raquo;
+  .row-fluid
+    .span4
+      h2 School Event
+      p Facebook is re-banned after an experiment involving monkeys.
+      p
+        a.details.btn.btn-large(href="#") View details &raquo;
+    .span4
+      h2 School Event
+      p Computer science club gets banned for offensive "forking action".
+      p
+        a.details.btn.btn-large(href="#") View details &raquo;
+    .span4
+      h2 School Event
+      p Git dumped after "not being abble to commit due to conflicts".
+      p
+        a.details.btn.btn-large(href="#") View details &raquo;
 
   // Modals
   #loginModal.modal.small.hide.fade
     .modal-header
-      a.close(href="#") &times;
+      a.close(data-dismiss="modal") &times;
       h3 Login
     .modal-body
       if (flash.error)
         span.errors
           .fade.in.alert-message.error
-            a.clse(href="#")x
+            a.close(href="#")x
             p #{flash.error}
       form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
         .clearfix
@@ -76,11 +77,11 @@ block content
           label(for="password") Password:
           input.password_input(type="password", name="password")
         center
-          input.success.btn(type="submit", value="Login")
+          input.btn-success.btn(type="submit", value="Login")
 
   #accountModal.modal.small.hide.fade
     .modal-header
-      a.close(href="#") &times;
+      a.close(data-dismiss="modal") &times;
       h3 Create Account
     .modal-body
       form.form-stacked(action="/createAccount", method="POST", onsubmit="return login(1)")
@@ -97,4 +98,4 @@ block content
           label(for="is_teacher") Teacher:
           input(name="is_teacher", type="checkbox")
         center
-          input#createAccount_btn.success.btn(type="submit", value="Create")
+          input#createAccount_btn.btn-success.btn(type="submit", value="Create")

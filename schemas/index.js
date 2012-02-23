@@ -14,6 +14,11 @@ var Schema = mongoose.Schema,
       Saturday: {type: String, default: "Saturday"},
       Sunday: {type:String, default: "Sunday"},
       Activities: {type:String, default: "Activities"}
+    }),
+    Emails = new Schema({
+      nightly: {type: Boolean, default: false},
+      weekly: {type: Boolean, default: false},
+      important: {type: Boolean, default: true}
     });
 
 exports.User = new Schema({
@@ -24,7 +29,12 @@ exports.User = new Schema({
   is_teacher: Boolean,
   classes: [String],
   user_id   : ObjectId,
-  blocks: [Blocks]
+  blocks: [Blocks],
+  admin: {type: Boolean, default: false},
+  grade: {type: Number, default: 7},
+  emailSettings: [Emails],
+  valid: {type: Boolean, default: false},
+  token: String
 });
 
 exports.Event = new Schema({
@@ -37,7 +47,8 @@ exports.Event = new Schema({
   description: String,
   owner: ObjectId,
   event_id: ObjectId,
-  done: {type: Boolean, default: false}
+  done: {type: Boolean, default: false},
+  admin: {type: Boolean, default: false} // right now the only way to become an admin is to set it manually in the database
 });
 
 exports.Class = new Schema({
@@ -49,11 +60,19 @@ exports.Class = new Schema({
   class_id: ObjectId
 });
 
+exports.Holiday = new Schema({
+  name: {type: String},
+  noSchool: {type: Boolean, default: true},
+  timestamp: Number,
+  day: Number
+});
+
 // Setup Database models
 User   = mongoose.model("User", exports.User);
 Event  = mongoose.model("Event", exports.Event);
 Class  = mongoose.model("Class", exports.Class);
 Blocks = mongoose.model("Blocks", Blocks);
+Holiday = mongoose.model("Holiday", exports.Holiday);
 
 function validatePresenceOf(value){
   return value && value.length;
