@@ -2,7 +2,6 @@
 
 var eventDate; // Date info for the event currently being created
 
-
 $(document).ready(function(){
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {
@@ -17,7 +16,9 @@ $(document).ready(function(){
 
   /* GLOBALS: */
   lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
-
+  modalTypeVar = "new"; // whether editing (old) or creating (new). New by default
+  currentEventLoc = [];
+  
   /** EVENT HANDLERS: */
   $("#CalendarTable td").hover(
     /* mouseenter */
@@ -49,6 +50,7 @@ $(document).ready(function(){
         eventDate.day  = getChildIndex(this);
         eventDate.node = this; // store the current element so we can put the event box in later
 
+      modalTypeVar = "new"; // set the edit type to new;
       createEventModal("new", block);
     });
   // event popovers
@@ -57,7 +59,9 @@ $(document).ready(function(){
   $(".eventCheck").click(checkboxClicked);
 
   $(".event").click(function(event){
+    console.log("event clicked"); // MDADD
     event.stopPropagation(); // stop from spreading
+    modalTypeVar = "old"; // set the edit type to old
     editEvent(this);
   });
   
@@ -74,7 +78,12 @@ $(document).ready(function(){
   $("#blockSelect").change(function(){
     $(".eventBlock").html($(this).val()); // change the block in the time string when they select a new block
   });
-  $("#saveButton").click(createEvent);
+  $("#saveButton").click(function(){
+      createEvent(modalTypeVar);
+  });
+  $("#deleteButton").click(function(){
+    deleteEvent();
+  });
 
   // if the input box has default text, select all of it to easily replace sample text
   $("input[value=\"Event Name\"], textarea").click(function(){
@@ -97,15 +106,92 @@ $(document).ready(function(){
 /** Events */
 
 function editEvent(node){
+  console.log("editEvent called"); // MDADD
   var blockNode = $(node).parent("td")[0];
-    var date = new Date(monday + (getChildIndex(blockNode) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
-      eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
-      eventDate.day  = getChildIndex(blockNode);
-      eventDate.node = blockNode; // store the current element so we can put the event box in later
+  getEventInfo(blockNode);
   var block = $(blockNode).attr('class').split(" ")[0];
   var thisEvent = events[eventDate.day][block][getChildIndex(node)-1];
+  thisEvent.node = node;
+  currentEventLoc = [eventDate.day, block, getChildIndex(node)-1];
+  eventDate._id = thisEvent._id;
   console.log(thisEvent);
   createEventModal("edit", block, thisEvent);
+}
+
+// Creates a new event from info in modal
+function createEvent(newOrOld){
+  // grab the current eventDate object which we will extend
+  var newEvent         = eventDate;
+  newEvent.name        = $("#eventNameInput").val();
+  newEvent.description = $("#modalDescriptionBox").val();
+  newEvent.bootClass   = ""
+  if (newOrOld == "old"){
+    newEvent._id = eventDate._id;
+   $($(eventDate.node).children("div[eventId="+ newEvent._id +"]")).remove();
+  }
+  
+  var radios = $('input[name=modalRadio1]:radio'); 
+  var bootClasses = getBootClasses();
+  for (var i = 0; i < radios.length; i++){
+    if (radios[i].checked){
+      newEvent.bootClass += bootClasses[i];
+    }
+  }
+   // now add the element to the UI
+    // TODO re-style these event boxes
+    $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
+    $(".eventCheck").unbind("click", checkboxClicked);
+    $(".eventCheck").click(checkboxClicked);
+    $(".event").popover({html: false});
+  
+  // now save the event on the server
+  newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
+  if (newOrOld == "new"){
+    $.ajax({
+      url: "/event",
+      type: "POST",
+      data: newEvent,
+      failure: function(err){
+        console.log(err);
+        error(err);
+      }
+    });
+    events[currentEventLoc[0]][currentEventLoc[1]].push(newEvent);
+  } else{
+    $.ajax({
+      url: "/event/:"+ newEvent._id,
+      type: "POST",
+      data: newEvent,
+      failure: function(err){
+        console.log(err);
+        error(err);
+      }
+    });
+    events[currentEventLoc[0]][currentEventLoc[1]][currentEventLoc[2]] = newEvent;
+  }  
+  closeDialog();
+  console.log(newEvent);
+}
+
+function deleteEvent(node){ // sends a "DELETE" ajax request, deletes event visually
+  // note: does not delete in local "events" variable...possible undo function?
+  $.ajax({
+      url: "/event/:"+ eventDate._id,
+      type: "DELETE",
+      failure: function(err){
+        console.log(err);
+        error(err);
+      }
+  });
+  $($(eventDate.node).children("div[eventId="+ eventDate._id +"]")).remove();
+  closeDialog();
+}
+
+function getEventInfo(blockNode){
+  var date = new Date(monday + (getChildIndex(blockNode) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
+  eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
+  eventDate.day  = getChildIndex(blockNode);
+  eventDate.node = blockNode; // store the current element so we can put the event box in later
 }
 
 function checkboxClicked (event){
@@ -125,44 +211,6 @@ function checkboxClicked (event){
   $(this).parent().toggleClass("done");
   event.stopPropagation();
 };
-
-// Creates a new event from info in modal
-function createEvent(){
-  // grab the current eventDate object which we will extend
-  var newEvent         = eventDate;
-  newEvent.name        = $("#eventNameInput").val();
-  newEvent.description = $("#modalDescriptionBox").val();
-  newEvent.bootClass   = ""
-  
-  var radios = $('input[name=modalRadio1]:radio'); 
-  var bootClasses = getBootClasses();
-  for (var i = 0; i < radios.length; i++){
-    if (radios[i].checked){
-      newEvent.bootClass += bootClasses[i];
-    }
-  }
-  
-  // now add the element to the UI
-  // TODO re-style these event boxes
- $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
- $(".eventCheck").unbind("click", checkboxClicked);
- $(".eventCheck").click(checkboxClicked);
- $(".event").popover({html: false});
-  
-  // now save the event on the server
-  newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
-  $.ajax({
-    url: "/event",
-    type: "POST",
-    data: newEvent,
-    failure: function(err){
-      console.log(err);
-      error(err);
-    }
-  });
-  closeDialog();
-  console.log(newEvent);
-}
 
 function getBootClasses(){
   return ["hw",
@@ -215,7 +263,9 @@ function createEventModal(modalType, block, thisEvent){
         $("#deleteButton").hide();
       }
     if (modalType == "edit") {
-      $("#eventNameInput").val("Event Name"); // make this actually the name
+      $("#eventNameInput").val(thisEvent.name);
+    } else {
+      
     }
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
