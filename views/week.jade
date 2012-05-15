@@ -82,7 +82,7 @@ style="width:100% !important")
                   if (events[day] && events[day][block])
                     each eventObj in events[day][block]
                       - var done = (eventObj.done) ? "done" : "";
-                      .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
+                      .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height: 20px", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
                           #{escapeHtml(eventObj.name)}
                           if eventObj.done
                             input.eventCheck(type="checkbox", checked="checked")
