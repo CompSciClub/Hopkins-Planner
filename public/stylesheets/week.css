@@ -52,6 +52,7 @@ td.Sunday.block{
   border-radius: 6px;
   background-color: #242DA6;
   padding-left: 5px;
+  cursor:pointer;
 }
 .event.done{
   opacity: 0.4;
@@ -123,4 +124,3 @@ font-family:"Arial Verdana",sans-serif;
     display: none;
   }
 }
-

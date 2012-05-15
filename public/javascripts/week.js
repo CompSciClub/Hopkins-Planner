@@ -2,7 +2,6 @@
 
 var eventDate; // Date info for the event currently being created
 
-
 $(document).ready(function(){
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {
@@ -24,6 +23,10 @@ $(document).ready(function(){
     $.mobile.page.prototype.options.degradeInputs.date = true;
   });
 
+  modalTypeVar = "new"; // whether editing (old) or creating (new). New by default
+  currentEventLoc = [];
+  
+  /** EVENT HANDLERS: */
   $("#CalendarTable td").hover(
     /* mouseenter */
     function(){
@@ -54,16 +57,19 @@ $(document).ready(function(){
         eventDate.day  = getChildIndex(this);
         eventDate.node = this; // store the current element so we can put the event box in later
 
-			createEventModal("new", block);
-		});
+      modalTypeVar = "new"; // set the edit type to new;
+      createEventModal("new", block);
+    });
   // event popovers
   $(".event").popover({html: false});
 
-	$(".eventCheck").click(checkboxClicked);
+  $(".eventCheck").click(checkboxClicked);
 
   $(".event").click(function(event){
-		event.stopPropagation(); // stop from spreading
-		editEvent(this);
+    console.log("event clicked"); // MDADD
+    event.stopPropagation(); // stop from spreading
+    modalTypeVar = "old"; // set the edit type to old
+    editEvent(this);
   });
   
   /* Modal releated events
@@ -79,7 +85,12 @@ $(document).ready(function(){
   $("#blockSelect").change(function(){
     $(".eventBlock").html($(this).val()); // change the block in the time string when they select a new block
   });
-  $("#saveButton").click(createEvent);
+  $("#saveButton").click(function(){
+      createEvent(modalTypeVar);
+  });
+  $("#deleteButton").click(function(){
+    deleteEvent();
+  });
 
   // if the input box has default text, select all of it to easily replace sample text
   $("input[value=\"Event Name\"], textarea").click(function(){
@@ -90,52 +101,98 @@ $(document).ready(function(){
   });
 });
 
-function createEventModal(modalType, block){
-	// inject the date 
-    // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventDate").html(eventDate.string);
 
-    //populateOptions();
-	
-    /* Populate the block selector */
+/*function populateOptions(){
+  var bootClasses = ["label success","label important","label notice"];
+  $("#options").html('');
+  for (var i = 0; i < 3; i++){
+    $("#options").append('<div class="options '+ bootClasses[i] +'" style="" >'+ '<input class="options" name="modalRadio1" type="radio" />   ' + $("#eventNameInput").val() +'</div> <br />');
+  }
+} // this is probably a smarter way to do this then just making them in jade, if we use a global bootClasses array */
 
-    $("#blockSelect").html(''); // clear the list
-    for (blockName in blocks){
-      if (blockName != "_id")
-        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
-    }
-
-    // add in other blocks
-    /* Set the block selector to the current block */
-    $("#blockSelect").val(blocks[block]);
-    $(".eventBlock").html(blocks[block]);
-    eventDate.block = block; // convert block to number and add block info to the eventDate object
-
-		if (modalType == "edit") {
-			$("#eventNameInput").val("Event Name"); // make this actually the name
-		}
-    /* Launch the Modal */
-    $("#eventCreatorModal").modal({
-      keyboard: true,
-      backdrop: true,
-      show: true
-    });  
-}
+/** Events */
 
 function editEvent(node){
-	var blockNode = $(node).parent("td")[0];
-    var date = new Date(monday + (getChildIndex(blockNode) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
-      eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
-      eventDate.day  = getChildIndex(blockNode);
-      eventDate.node = blockNode; // store the current element so we can put the event box in later
-	var block = $(blockNode).attr('class').split(" ")[0];
-	var thisEvent = events[eventDate.day][block][getChildIndex(node)-1];
-	console.log(thisEvent);
-	createEventModal("edit", block);
+  console.log("editEvent called"); // MDADD
+  var blockNode = $(node).parent("td")[0];
+  getEventInfo(blockNode);
+  var block = $(blockNode).attr('class').split(" ")[0];
+  var thisEvent = events[eventDate.day][block][getChildIndex(node)-1];
+  thisEvent.node = node;
+  currentEventLoc = [eventDate.day, block, getChildIndex(node)-1];
+  eventDate._id = thisEvent._id;
+  console.log(thisEvent);
+  createEventModal("edit", block, thisEvent);
+}
+
+// Creates a new event from info in modal
+function createEvent(newOrOld){
+  // grab the current eventDate object which we will extend
+  var newEvent         = eventDate;
+  newEvent.name        = $("#eventNameInput").val();
+  newEvent.description = $("#modalDescriptionBox").val();
+  newEvent.bootClass   = ""
+  if (newOrOld == "old"){
+    newEvent._id = eventDate._id;
+   $($(eventDate.node).children("div[eventId="+ newEvent._id +"]")).remove();
+  }
+  if (newEvent.description === "Description here"){
+    newEvent.description = "No description";
+  }
+  
+  var radios = $('input[name=modalRadio1]:radio'); 
+  var bootClasses = getBootClasses();
+  for (var i = 0; i < radios.length; i++){
+    if (radios[i].checked){
+      newEvent.bootClass += bootClasses[i];
+    }
+  }
+   // now add the element to the UI
+    // TODO re-style these event boxes
+    $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
+    $(".eventCheck").unbind("click", checkboxClicked);
+    $(".eventCheck").click(checkboxClicked);
+    $(".event").popover({html: false});
+  
+  // now save the event on the server
+  newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
+  var url = (newOrOld == "new") ? "/event" : "/event/" + newEvent._id;
+  $.ajax({
+    url: url,
+    type: "POST",
+    data: newEvent,
+    failure: function(err){
+      console.log(err);
+      error(err);
+    }
+  });
+  events[currentEventLoc[0]][currentEventLoc[1]].push(newEvent);
+  console.log(newEvent);
+  closeDialog();
+}
+
+function deleteEvent(node){ // sends a "DELETE" ajax request, deletes event visually
+  // note: does not delete in local "events" variable...possible undo function?
+  $.ajax({
+      url: "/event/"+ eventDate._id,
+      type: "DELETE",
+      failure: function(err){
+        console.log(err);
+        error(err);
+      }
+  });
+  $($(eventDate.node).children("div[eventId="+ eventDate._id +"]")).remove();
+  closeDialog();
+}
+
+function getEventInfo(blockNode){
+  var date = new Date(monday + (getChildIndex(blockNode) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
+  eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
+  eventDate.day  = getChildIndex(blockNode);
+  eventDate.node = blockNode; // store the current element so we can put the event box in later
 }
 
 function checkboxClicked (event){
-  console.log("checkbox", event);
   var done    = ($(this).attr("checked") == "checked");
   var eventId = $(this).parent().attr("eventId");
   $.ajax({
@@ -152,57 +209,67 @@ function checkboxClicked (event){
   event.stopPropagation();
 };
 
-/*function populateOptions(){
- 	var bootClasses = ["label success","label important","label notice"];
- 	$("#options").html('');
- 	for (var i = 0; i < 3; i++){
- 		$("#options").append('<div class="options '+ bootClasses[i] +'" style="" >'+ '<input class="options" name="modalRadio1" type="radio" />   ' + $("#eventNameInput").val() +'</div> <br />');
-	}
-} // this is probably a smarter way to do this then just making them in jade, if we use a global bootClasses array */
+function getBootClasses(){
+  return ["hw",
+           "quiz",
+           "test",
+           "project",
+           "reminder"]
+}
 
-// Creates a new event from info in modal
-function createEvent(){
-  // grab the current eventDate object which we will extend
-  var newEvent         = eventDate;
-  newEvent.name        = $("#eventNameInput").val();
-  newEvent.description = $("#modalDescriptionBox").val();
-  if (newEvent.description === "Description here"){
-    newEvent.description = "No description";
-  }
-  newEvent.bootClass   = ""
+/* We need to either fix the colors/fix this function, or get rid of it, because it isn't doing much of anything at the moment :P */
+function setDarkColor(color){
+  var lightColorsArray = new Array("","background-color:#f9f9f9","background-color:#EEB4B4");
+  var darkColorsArray = new Array("background-color:#f5f5f5","background-color:#f5f5f5","background-color:#BB8888");
+  var x = lightColorsArray.indexOf(color);
+  return darkColorsArray[x];
+}
+
+/** Modal Stuff */
+
+function createEventModal(modalType, block, thisEvent){
+  // inject the date 
+    // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
+    $(".eventDate").html(eventDate.string);
+
+    //populateOptions();
   
-  var radios = $('input[name=modalRadio1]:radio'); 
-  var bootClasses = ["hw",
-                     "quiz",
-                     "test",
-                     "project",
-                     "reminder"]
-  for (var i = 0; i < radios.length; i++){
-    if (radios[i].checked){
-      newEvent.bootClass += bootClasses[i];
+    /* Populate the block selector */
+
+    $("#blockSelect").html(''); // clear the list
+    for (blockName in blocks){
+      if (blockName != "_id")
+        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
     }
-  }
-  
-  // now add the element to the UI
-  // TODO re-style these event boxes
- $(eventDate.node).append('<div class="label success '+newEvent.bootClass+' event" data-rel="popup" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
- $(".eventCheck").unbind("click", checkboxClicked);
- $(".eventCheck").click(checkboxClicked);
- $(".event").popover({html: false});
-  
-  // now save the event on the server
-  newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
-  $.ajax({
-    url: "/event",
-    type: "POST",
-    data: newEvent,
-    failure: function(err){
-      console.log(err);
-      error(err);
+
+    // add in other blocks
+    /* Set the block selector to the current block */
+    $("#blockSelect").val(blocks[block]);
+    $(".eventBlock").html(blocks[block]);
+    eventDate.block = block; // convert block to number and add block info to the eventDate object
+      if (modalType == "edit") {
+        $("#eventNameInput").val(thisEvent.name);
+        $("#modalDescriptionBox").val(thisEvent.description);
+        var bootClasses = getBootClasses();
+        var x = $.inArray(thisEvent.class, bootClasses);
+        console.log(x);
+        var radios = $('input[name=modalRadio1]:radio');
+        radios[x].checked="true";
+        $("#deleteButton").show();
+      } else {
+        $("#deleteButton").hide();
+      }
+    if (modalType == "edit") {
+      $("#eventNameInput").val(thisEvent.name);
+    } else {
+      
     }
-  });
-  closeDialog();
-  console.log(newEvent);
+    /* Launch the Modal */
+    $("#eventCreatorModal").modal({
+      keyboard: true,
+      backdrop: "static",
+      show: true
+    });  
 }
 
 // closes and resets the modal dialog
@@ -215,16 +282,8 @@ function closeDialog(){
   // TODO reset the radio buttons, once we figure out what they're for
 }
 
+/** Other functions */
 
-/* We need to either fix the colors/fix this function, or get rid of it, because it isn't doing much of anything at the moment :P */
-function setDarkColor(color){
-  var lightColorsArray = new Array("","background-color:#f9f9f9","background-color:#EEB4B4");
-  var darkColorsArray = new Array("background-color:#f5f5f5","background-color:#f5f5f5","background-color:#BB8888");
-  var x = lightColorsArray.indexOf(color);
-  return darkColorsArray[x];
-}
-
-/* Modal Stuff */
 /* Get the current date in the form "Dec 19, 2011" (might not be necessary if we redo the UI a bit)*/
 function getCurrentDateString(dateObject){
   var date = dateObject.getDate();
@@ -276,12 +335,12 @@ function getChildIndex(child){
 }
 function escapeHtml(unsafe) {
   return unsafe
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/(\r\n|[\r\n])/g, "<br />")
-      .replace(/'/g, "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/(\r\n|[\r\n])/g, "<br />")
+    .replace(/'/g, "&#039;");
 }
 function error(msg){
   console.log("error", msg);
