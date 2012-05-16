@@ -305,23 +305,22 @@ exports.login = function(req, res){
  * POST /createClass
  */
 exports.createClass = function(req, res) {
-  User.find({email: req.body.teacher}, function(err, users) {
-    if(users.length == 0) {
-      req.flash("error", "Invalid teacher email");
-      req.flash("emailError", "error");
-      res.redirect("back");
-      return;
+  if(!isLoggedIn(req, res))
+    return;
+
+  User.find({_id: req.session.userId}, function(err, users) {
+    if (err || users.length == 0){
+      console.log("Error finding user");
+      res.render("500", {title: "500", loggedIn: true, name: req.session.displayName});
     }
     
     var teacher = users[0];
     if(!teacher.is_teacher) {
-      req.flash("error", "Email is not a teacher's email");
+      req.flash("error", "You are not a teacher");
       req.flash("emailError", "error");
       res.redirect("back");
       return;
     }
-    
-    //todo: add authentication
     
     var _class = new Class({
       name: req.body.name,
@@ -343,8 +342,12 @@ exports.createClass = function(req, res) {
   });
 }
 
+/*
+ * POST /addStudent
+ */
+
 exports.addStudent = function(req, res) {
-  Class.find({name: req.body.name}, function(err, classes) {
+  Class.find({name: req.body.className}, function(err, classes) {
     console.log(classes);
     if(classes.length == 0) {
       req.flash("error", "Could not find class");
