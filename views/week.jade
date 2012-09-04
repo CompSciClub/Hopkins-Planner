@@ -14,6 +14,7 @@ block scripts
   <script src="/javascripts/jquery.ui.datepicker.js"></script>
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
+<<<<<<< HEAD
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
   <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css" />
@@ -60,10 +61,14 @@ block scripts
           var date2 = new Date(date);
           return math.floor((date2-date1)/(1000*60*60*24*7).toFixed(2));
         }
+=======
+>>>>>>> 3166c4cd8b4d0f2d39508b46432a5d40e79c5cbb
 block styles
   link(rel="stylesheet", href="/stylesheets/week.css")
 
+
 block sidebar
+<<<<<<< HEAD
   .sidebar
     h3
     br
@@ -75,6 +80,11 @@ block sidebar
     a.btn(href="/weekly/#{offset - 1}")
       i.icon-arrow-left
     a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+=======
+  a.btn.arrow-left(href="/weekly/#{offset - 1}")
+    i.icon-arrow-left
+  a.btn.arrow-right(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+>>>>>>> 3166c4cd8b4d0f2d39508b46432a5d40e79c5cbb
     i.icon-arrow-right
     .arrows
       a.btn(href="/weekly/#{offset - 1}")
@@ -90,20 +100,22 @@ block content
     center
       table(id="singleDay", class="table table-bordered", 
 style="width:100% !important")
-        colgroup
-          col.monday
-        tbody
-          tr
-            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
-            - date = addDay(date);
-          tr
-            td.block
-          tr
-            td.block
-          tr
-            td.block
-          tr
-            td.block
+        thead
+          td.head
+            center 12/25
+          tbody
+           tr.block1
+              td Block 1
+           tr.block
+              td Block 2
+           tr.block1
+              td Block 3
+           tr.block
+              td Block 4
+           tr.block1 
+              td Block 5
+           tr.block 
+              td Block 6
 
     center
       table(id="CalendarTable", class="table table-bordered", style="width:100% !important")
@@ -148,7 +160,7 @@ style="width:100% !important")
                   if (events[day] && events[day][block])
                     each eventObj in events[day][block]
                       - var done = (eventObj.done) ? "done" : "";
-                      .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height:20", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
+                      .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height: 20px", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
                           #{escapeHtml(eventObj.name)}
                           if eventObj.done
                             input.eventCheck(type="checkbox", checked="checked")
@@ -185,8 +197,13 @@ style="width:100% !important")
         </form>
       </div>
       <div class="modal-footer">
+<<<<<<< HEAD
         <a id="deleteButton" class="btn btn-danger">
           <i class="icon-trash icon-white"></i>
+=======
+        <a id="deleteButton" style="float:left;" class="btn btn-danger">
+          <i class="icon-trash"></i>
+>>>>>>> 3166c4cd8b4d0f2d39508b46432a5d40e79c5cbb
           Delete
         </a>
         <a id="saveButton" class="btn btn-primary">

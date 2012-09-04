@@ -17,6 +17,22 @@ td.block{
   height: 90px;
 }
 
+td.head{
+  font-weight:bold;
+}
+
+tr.block{
+  width: 16%;
+  height: 90px;
+}
+
+tr.block1{
+  width: 16%;
+  height: 90px;
+  background-color:#f9f9f9;
+}
+
+
 tr th.block{
   text-align: center
 }
@@ -76,7 +92,7 @@ td.Sunday.block{
 }
 
 td{
-font-family:"Lucida Console",monospace;
+font-family:"Arial Verdana",sans-serif;
 }
 
 #eventDate{
@@ -123,15 +139,17 @@ div.ui-helper-clearfix::after {
   }
   #singleDay{
     display: table;
+  }
+  .btn.arrow-right{
+    display: none;
+  }
+  .btn.arrow-left{
+    display: none;
+  }
+  .btn ui-link{
+    display: none;
+  }
+}
 #singleDay{
   display: hidden;
-}
-
-@media (max-width: 480px){
-  #CalendarTable{
-    display: hidden;
-  }
-  #singleDay{
-    display: block;
-  }
 }
