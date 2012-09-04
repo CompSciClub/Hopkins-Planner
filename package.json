@@ -4,6 +4,7 @@
   , "private": true
   , "dependencies": {
       "express": "2.5.1"
+    , "mongoose": "2.6.x"
     , "jade": ">= 0.0.1"
     , "ezcrypto": ">=0.0.3"
     , "mongodb": ">=0.9.8"

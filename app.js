@@ -11,13 +11,10 @@ var express         = require('express')
 
 URL = process.env.URL || "localhost:3000";
 
-<<<<<<< HEAD
 var app        = module.exports = express.createServer();
 var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar";
 mongoose.connect(mongoURI);
 
-=======
->>>>>>> dfd9a88664005529bb2a541143150fa87036af31
 mongoose.connection.on("open", function(){
   app.configure(function(){
     app.set('views', __dirname + '/views');
@@ -70,15 +67,10 @@ mongoose.connection.on("open", function(){
   app.get("*", routes.noPage);
 
 
-<<<<<<< HEAD
   app.listen(process.env.PORT || 3000);
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
   
 });
 process.on("uncaughtException", function(err){
   console.log("error", err);
-=======
-  app.listen(process.env.PORT || process.env.C9_PORT || 3000);
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
->>>>>>> dfd9a88664005529bb2a541143150fa87036af31
 });
