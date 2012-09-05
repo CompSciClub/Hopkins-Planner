@@ -14,10 +14,6 @@ block scripts
   <script src="/javascripts/jquery.ui.datepicker.js"></script>
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
-<<<<<<< HEAD
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
-  <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css" />
   script(type="text/javascript")
     $(function() {
       var startDate;
@@ -61,14 +57,11 @@ block scripts
           var date2 = new Date(date);
           return math.floor((date2-date1)/(1000*60*60*24*7).toFixed(2));
         }
-=======
->>>>>>> 3166c4cd8b4d0f2d39508b46432a5d40e79c5cbb
 block styles
   link(rel="stylesheet", href="/stylesheets/week.css")
 
 
 block sidebar
-<<<<<<< HEAD
   .sidebar
     h3
     br
@@ -80,11 +73,9 @@ block sidebar
     a.btn(href="/weekly/#{offset - 1}")
       i.icon-arrow-left
     a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
-=======
   a.btn.arrow-left(href="/weekly/#{offset - 1}")
     i.icon-arrow-left
   a.btn.arrow-right(href="/weekly/#{offset + 1}", style="margin-left: 5px")
->>>>>>> 3166c4cd8b4d0f2d39508b46432a5d40e79c5cbb
     i.icon-arrow-right
     .arrows
       a.btn(href="/weekly/#{offset - 1}")
