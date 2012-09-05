@@ -1,17 +1,15 @@
-extends layout
-
+extends layout 
 block scripts
   script(type="text/javascript")
     var monday = #{date.getTime()};
     var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
-  <script type="text/javascript" src="javascripts/bootstrap-alerts.js"></script>
   <script src="javascripts/week.js"></script>
-  <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-modal.js"></script>
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-  <script src="/javascripts/jquery.ui.datepicker.js"></script>
+  // <script src="/javascripts/jquery.ui.datepicker.js"></script>
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
   script(type="text/javascript")
