@@ -70,13 +70,6 @@ block sidebar
     br
 
     .week-picker
-    a.btn(href="/weekly/#{offset - 1}")
-      i.icon-arrow-left
-    a.btn(href="/weekly/#{offset + 1}", style="margin-left: 5px")
-  a.btn.arrow-left(href="/weekly/#{offset - 1}")
-    i.icon-arrow-left
-  a.btn.arrow-right(href="/weekly/#{offset + 1}", style="margin-left: 5px")
-    i.icon-arrow-right
     .arrows
       a.btn(href="/weekly/#{offset - 1}")
         i.icon-arrow-left
@@ -184,13 +177,8 @@ style="width:100% !important")
         </form>
       </div>
       <div class="modal-footer">
-<<<<<<< HEAD
         <a id="deleteButton" class="btn btn-danger">
           <i class="icon-trash icon-white"></i>
-=======
-        <a id="deleteButton" style="float:left;" class="btn btn-danger">
-          <i class="icon-trash"></i>
->>>>>>> 3166c4cd8b4d0f2d39508b46432a5d40e79c5cbb
           Delete
         </a>
         <a id="saveButton" class="btn btn-primary">
