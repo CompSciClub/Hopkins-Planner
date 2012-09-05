@@ -2,6 +2,10 @@
     "name": "hopkins-planner"
   , "version": "0.0.1"
   , "private": true
+  , "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
   , "dependencies": {
       "express": "2.5.1"
     , "mongoose": "2.6.x"
@@ -9,6 +13,6 @@
     , "ezcrypto": ">=0.0.3"
     , "mongodb": ">=0.9.8"
     , "connect-mongodb": ">=1.1.2"
-    , "nodemailer": "0.2.x"
+    , "nodemailer": ">=0.2.4"
   }
 }
