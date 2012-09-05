@@ -9,6 +9,6 @@
     , "ezcrypto": ">=0.0.3"
     , "mongodb": ">=0.9.8"
     , "connect-mongodb": ">=1.1.2"
-    , "nodemailer": ">=0.2.4"
+    , "nodemailer": "0.2.x"
   }
 }
