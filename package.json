@@ -14,5 +14,7 @@
     , "mongodb": ">=0.9.8"
     , "connect-mongodb": ">=1.1.2"
     , "nodemailer": ">=0.2.4"
+    , "underscore": "1.4.x"
+    , "async": "0.1.x"
   }
 }
