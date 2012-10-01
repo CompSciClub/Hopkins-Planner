@@ -27,7 +27,7 @@
     if (_.has(dispatch, req.method)){
       return dispatch[req.method](req, res, next);
     }
-    return next(400);
+    return next(405);
   };
 
   module.exports = handler;
