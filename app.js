@@ -12,7 +12,7 @@ var express         = require('express')
 URL = process.env.URL || "localhost:3000";
 
 var app        = module.exports = express.createServer();
-var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/calendar";
+var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/planner";
 mongoose.connect(mongoURI);
 
 mongoose.connection.on("open", function(){
