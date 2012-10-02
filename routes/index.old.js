@@ -13,130 +13,6 @@ exports.monthly = function(req, res){
   res.render("calendar", {title: "Monthly Planner", loggedIn: req.session.valid});
 };
 
-/*
- * GET /weekly
- */
-
-exports.weekly = function(req, res){
-  if (!req.session.valid){
-    req.flash("error", "You have to log in to do that.");
-    res.render("login", {title: "Login", loggedIn: false, flash: req.flash()});
-    return;
-  }
-  loadWeekly(req, res);
-}
-
-function loadWeekly(req, res){
-  var offset = parseInt(req.params.offset || 0);
-  var date   = new Date(new Date().getTime() + (offset * 604800000)); // get the current date
-  date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
-
-  // set it to to the beginning of monday EST
-  date.setUTCHours(5); 
-  date.setUTCMinutes(0);
-  date.setUTCSeconds(0);
-  date.setUTCMilliseconds(0);
-
-  // get every event for the current user in this week
-  User.find({_id: req.session.userId}, function(err, users) {
-    if (err || users.length == 0){
-      console.log("no user");
-      console.log("Error finding user");
-      req.session.valid = false;
-      res.render("500", {title: "500", loggedIn: true, flash: req.flash(), name: req.session.displayName});
-      return;
-    }
-    var user = users[0];
-    var eventOwners = [req.session.userId];
-    for(var i = 0; i < user.classes.length; i++) {
-      eventOwners.push(user.classes[i].toString());
-    }
-    
-    Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
-      var eventsObj = {};
-      for (var i = 0; i < events.length; i++){
-        if (!eventsObj[events[i].day])
-          eventsObj[events[i].day] = {};
-
-        if (!eventsObj[events[i].day][events[i].block])
-          eventsObj[events[i].day][events[i].block] =[];
-
-        eventsObj[events[i].day][events[i].block].push(events[i]); // insert this event into the correct place in the event object
-      }
-      var blocks = user.blocks[0];
-      //blocks.lunch    = "Lunch";
-      blocks.Saturday   = "Saturday";
-      blocks.Activities = "Activities";
-      blocks.Sunday     = "Sunday";
-      console.log(blocks.Saturday);
-
-      getWeekStructure(date, function(week){
-        res.render("week", {title: "Hopkins Week", date: date, loggedIn: true, flash: req.flash(),
-                            week: week, events: eventsObj, name: req.session.displayName, escapeHtml: escapeHtml, blocks: blocks, offset: offset, addDay: addDay});
-      });
-    });
-  });
-}
-
-/*
- * GET /signup
- */
-
-exports.createAccount = function(req, res){
-  res.render("createAccount", {title: "Login", loggedIn: req.session.valid, 
-                               flash: req.flash()});
-}
-
-/*
- * POST /createAccount
- */
-exports.createUser = function(req, res){
-  var salt     = createSalt();
-  var password = Crypto.SHA256(req.body.password + salt); 
-  var token    = Crypto.SHA256(Math.random());
-  var user  = new User({
-    email: req.body.email,
-    password: password,
-    salt: salt,
-    name: req.body.name,
-    is_teacher: (req.body.is_teacher == "on") ? true : false,
-    classes: [],
-    blocks: [{}],
-    emailSettings: [{}],
-    valid: false,
-    token: token
-  });
-
-  user.save(function(err){
-    if (err){
-      if (err.type == undefined){ // this is a bad way to check for this
-        req.flash("error", "That email is already being used");
-        req.flash("errorContainer", "#accountModal");
-        req.flash("errorEmail", "error");
-        res.redirect("back");
-        return;
-      }
-      if (err.errors.email){
-        req.flash("error", "Please try again with a valid email address");
-        req.flash("errorContainer", "#accountModal");
-        req.flash("errorEmail", "error");
-      }else if (err.errors.password){
-        req.flash("error", "Password can not be empty");
-        req.flash("errorContainer", "#accountModal");
-        req.flash("errorPass", "error");
-      }
-      res.redirect("back");
-    }else{
-      req.session.valid       = true;
-      req.session.userId      = user._id;
-      req.session.displayName = user.name;
-      res.redirect(req.body.redirect || "/setup");
-      console.log(req.body.email);
-      sendEmail("verficiation@hopkinsplanner.com", req.body.email, "Email Verification", "views/emails/verify.jade", {url: URL, token: token});
-    }
-  })
-};
-
 exports.verify = function(req, res){
   var token = req.params.token;
   if (!isLoggedIn(req, res)){
@@ -481,16 +357,6 @@ function isLoggedIn(req, res){
   return true;
 }
 
-function createSalt(){
-  var string = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for( var i=0; i < 3; i++ ){
-    string += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return Crypto.SHA256(string);
-}
-
 function getWeekStructure(date, callback){
   var maroonWeek = [
     ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
@@ -549,35 +415,4 @@ function escapeHtml(unsafe) {
 function addDay(date){
   date.setTime(date.getTime() + 86400000);
   return date;
-}
-function sendEmail(sendaddress, emailaddress, subject, directory, vars) {
-	var data = fs.readFile(directory, function(err, data){
-    if (err){
-      console.log("error", err);
-      return;
-    }
-		var jadeTemplate = jade.compile(data.toString("utf8"));
-    var html = jadeTemplate(vars);
-    nodemailer.SMTP = {
-      host: "smtp.mailgun.org",
-      port: 587,
-      ssl: false,
-      use_authentication: true,
-      user: process.env.MAILGUN_SMTP_LOGIN,
-      pass: process.env.MAILGUN_SMTP_PASSWORD,
-    };
-    console.log(nodemailer.SMTP);
-    nodemailer.send_mail(
-      {
-        sender: sendaddress,
-        to: emailaddress,
-        subject: subject,
-        html: html
-      }, function(error, success){
-        if (!success)
-          console.log("Error sending message", error);
-        else
-          console.log("Message sent");
-      });
-   });
 }
