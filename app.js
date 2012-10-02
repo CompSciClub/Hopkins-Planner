@@ -60,10 +60,9 @@
     app.get("/monthly", routes.monthly);
 
     app.get("/logout", routes.logout);
-    app.get("/signup", routes.createAccount);
+    //app.get("/signup", routes.createAccount);
 
     app.post("/createAccount", routes.createUser);
-    //app.post("/login", routes.login);
     app.get("/verify/:token", routes.verify);
 
     app.post('/setup', routes.setPreferences);
