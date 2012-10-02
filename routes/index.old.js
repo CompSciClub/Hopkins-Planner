@@ -6,21 +6,6 @@ var nodemailer = require("nodemailer");
 var jade       = require("jade");
 
 /*
- * GET home page.
-/
-
-exports.index = function(req, res){
-  if (!req.session.valid){
-    res.render("index", {title: "Hopkins Planner", loggedIn: false,
-                       flash: req.flash()});
-  }else{
-    console.log("user", req.session.userId);
-    loadWeekly(req, res);
-  }
-};*/
-
-
-/*
  * GET monthly calendar page.
  */
 
@@ -244,50 +229,6 @@ exports.setup = function(req, res){
                          blocks: user.blocks[0]});
   });
 };
-
-/*
- * GET /login
- */
-exports.loginPage = function(req, res){
-  if (req.session.valid){
-    res.redirect("back");
-    return;
-  }
-  res.render("login", {title: "Login", name: req.session.displayName, loggedIn: req.session.valid, flash: req.flash()});
-}
-
-/* 
- * POST /login
- */
-exports.login = function(req, res){
-  email = req.body.email;
-  console.log(email);
-  User.find({email: email}, function(err, users){
-    user = users[0];
-
-    if (users.length == 0){
-      console.log("wrong email");
-      req.flash("error", "Invalid email");
-      req.flash("email", req.body.email);
-      req.flash("emailError", "error");
-      res.redirect("/login");
-      return;
-    }
-
-    if (Crypto.SHA256(req.body.password + user.salt) == user.password){
-      validateUser(req, user._id);
-      req.session.displayName = user.name;
-      console.log("logged in");
-      res.redirect(req.body.redirect || "/weekly");
-    }else{
-      console.log("wrong password");
-      req.flash("error", "Invalid password");
-      req.flash("passError", "error");
-      req.flash("email", req.body.email);
-      res.redirect("/login");
-    }
-  });
-}
 
 /*
  * GET /logout
@@ -526,15 +467,6 @@ exports.createHoliday_page = function(req, res){
 exports.noPage = function(req, res){
   res.render("404", {title: "Page not Found", loggedIn: req.session.valid, name: req.session.displayName});
 };
-
-// User releated functions we may want to move these to another file
-function validateUser(req, id){
-  /* req.sessions.regenerate(function(){
-  }) // I'm not sure that we want or need this */
-
-  req.session.valid = 1;
-  req.session.userId = id; 
-}
 
 function logout(req){
   req.session.destroy();

@@ -75,9 +75,7 @@
         blocks.Sunday     = "Sunday";
         console.log(blocks.Saturday);
       
-        console.log("getting week");
         Week.getWeekStructure(date, function(week){
-          console.log("got structure");
           var params = {
             week: week,
             events: eventsObj,

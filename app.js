@@ -58,14 +58,12 @@
     });
 
     app.get("/monthly", routes.monthly);
-    //app.get("/weekly/:offset?", routes.weekly);
 
     app.get("/logout", routes.logout);
-    app.get("/login", routes.loginPage);
     app.get("/signup", routes.createAccount);
 
     app.post("/createAccount", routes.createUser);
-    app.post("/login", routes.login);
+    //app.post("/login", routes.login);
     app.get("/verify/:token", routes.verify);
 
     app.post('/setup', routes.setPreferences);

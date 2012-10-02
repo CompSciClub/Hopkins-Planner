@@ -25,7 +25,6 @@
       function(cb) { doPrep(data, res, self, cb); },
       function(cb) { doPostPrep(data, self, cb); }
     ], function(err){
-      console.log('last', data.loggedIn);
       if (err){
         return cb(err);
       }
@@ -62,7 +61,7 @@
         cb( null, data );
       });
     }
-    data.loggedIn = res.loggedIn;
+    //data.loggedIn = res.loggedIn;
     cb( null, data ); //else no subctrls, just move along
   };
 
