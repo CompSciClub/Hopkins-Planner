@@ -13,7 +13,7 @@ block content
             div.class(data-alert="error", class="fade in alert-message error")
               a(class="close", href="#") x
               p #{flash.error}
-       form(method="post", action="/createAccount", onSubmit="return login()")
+       form(method="post", action="/signup", onSubmit="return login()")
          fieldset
           .clearfix(class="#{flash.errorEmail}")
              label(for="email") Email

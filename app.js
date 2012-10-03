@@ -12,7 +12,7 @@
     , _               = require("underscore")
     , schemas         = require("./schemas");
 
-  var URL = process.env.URL || "localhost:3000";
+  var URL = process.env.URL || "localhost:3000"; // UGH globals
 
   var app        = module.exports = express.createServer();
   var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/planner";
@@ -60,9 +60,7 @@
     app.get("/monthly", routes.monthly);
 
     app.get("/logout", routes.logout);
-    app.get("/signup", routes.createAccount);
 
-    app.post("/createAccount", routes.createUser);
     app.get("/verify/:token", routes.verify);
 
     app.post('/setup', routes.setPreferences);
