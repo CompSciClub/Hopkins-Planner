@@ -46,7 +46,7 @@
       }
       console.log("getting events");
       
-      Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, events){
+      Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lt: date.getTime() + 604800000}}, function(err, events){
         if (err){
           return cb(err);
         }
