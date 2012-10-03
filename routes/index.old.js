@@ -107,14 +107,6 @@ exports.setup = function(req, res){
 };
 
 /*
- * GET /logout
- */
- exports.logout = function(req, res){
-   logout(req);
-   res.redirect(req.body.redirect || "/");
- }
- 
-/*
  * Classes
  */
 
@@ -343,10 +335,6 @@ exports.createHoliday_page = function(req, res){
 exports.noPage = function(req, res){
   res.render("404", {title: "Page not Found", loggedIn: req.session.valid, name: req.session.displayName});
 };
-
-function logout(req){
-  req.session.destroy();
-}
 
 function isLoggedIn(req, res){
   if (!req.session.valid){

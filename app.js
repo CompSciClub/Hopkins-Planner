@@ -59,7 +59,6 @@
 
     app.get("/monthly", routes.monthly);
 
-    app.get("/logout", routes.logout);
 
     app.get("/verify/:token", routes.verify);
 
