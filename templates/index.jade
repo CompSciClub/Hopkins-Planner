@@ -84,7 +84,7 @@ block content
       a.close(data-dismiss="modal") &times;
       h3 Create Account
     .modal-body
-      form.form-stacked(action="/createAccount", method="POST", onsubmit="return login(1)")
+      form.form-stacked(action="/signup", method="POST", onsubmit="return login(1)")
         .clearfix
           label(for="email") Email:
           input.createEmail_input(type="text", name="email")

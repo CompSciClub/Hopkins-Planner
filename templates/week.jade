@@ -83,11 +83,11 @@ style="width:100% !important")
                     each eventObj in events[day][block]
                       - var done = (eventObj.done) ? "done" : "";
                       .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height: 20px", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
-                          #{escapeHtml(eventObj.name)}
-                          if eventObj.done
-                            input.eventCheck(type="checkbox", checked="checked")
-                          else
-                            input.eventCheck(type="checkbox")
+                        | #{escapeHtml(eventObj.name)}
+                        if eventObj.done
+                          input.eventCheck(type="checkbox", checked="checked")
+                        else
+                          input.eventCheck(type="checkbox")
     #eventCreatorModal.modal.hide.fade.
       <div class="modal-header">
         <a data-dismiss="modal" class="close">&times;</a>
@@ -98,24 +98,20 @@ style="width:100% !important")
       </div>
       <div class="modal-body">
         <form>
-          <table>
-            <tr>
-              <td class="noBorder" width="50%">
-                <select name="normalSelect" id="blockSelect">
-                </select>
-                <br />
-                <br />
-                <textarea id="modalDescriptionBox">Description here</textarea>
-              </td>
-              <td class="noBorder">
-                <p><input name="modalRadio1" checked="true" type="radio"> Homework</p>
-                <p><input name="modalRadio1" type="radio"> Quiz</p>
-                <p><input name="modalRadio1" type="radio"> Test</p>
-                <p><input name="modalRadio1" type="radio"> Project</p>
-                <p><input name="modalRadio1" type="radio"> Reminder</p>
-              </td>
-            </tr>
-          </table>
+          <div style="width:55%;float:left;">
+            <select name="normalSelect" id="blockSelect">
+            </select>
+            <br />
+            <br />
+            <textarea id="modalDescriptionBox">Description here</textarea>
+          </div>
+          <div>
+            <p><input name="modalRadio1" checked="true" type="radio"> Homework</p>
+            <p><input name="modalRadio1" type="radio"> Quiz</p>
+            <p><input name="modalRadio1" type="radio"> Test</p>
+            <p><input name="modalRadio1" type="radio"> Project</p>
+            <p><input name="modalRadio1" type="radio"> Reminder</p>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
