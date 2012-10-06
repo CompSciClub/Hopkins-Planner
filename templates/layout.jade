@@ -1,23 +1,28 @@
 !!!
 html
   head
-    title= title
+    title
+      | #{title} | Hopkins Planner
 
     // for IE6-8 support of HTML elements
     // if lt IE 9
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+   
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/stylesheets/bootstrap.min.css")
     link(rel="stylesheet", href="/stylesheets/bootstrap.min.responsive.css")
-    script(type="text/javascript", src="/javascripts/jquery.min.js")
+    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js")
     script(type="text/javascript", src="/javascripts/bootstrap.min.js")
 
     block scripts
+      script(type="text/javascript", src="/javascripts/bootstrap-alerts.js")
 
     link(rel="stylesheet", href="/stylesheets/style.css")
+    style
+      .brand {margin-left: 20px !important;}
     block styles
       
-  body
+  body(data-spy="scroll")
     block header
       .navbar.navbar-fixed-top
         .navbar-inner
@@ -33,9 +38,13 @@ html
                     a(href="/logout") Logout
                   li
                     a(href="/setup") Preferences
-    .container
-      block content
+    .container-fluid
+      .row-fluid
+        .span2
+          block sidebar
+        .span10
+          block content
       .push
       block footer
-        footer(class="footer")
+        footer.footer
           p Brought to you by the Hopkins Computer Science Club.
