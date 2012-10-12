@@ -73,7 +73,7 @@ $(document).ready(function(){
   });
   
   /* Modal releated events
-     I moved them out of the click handler to be more memory effecient because the elements are never deleated
+     I moved them out of the click handler to be more memory effecient because the elements are never deleted
   */
   /* Once the modal is loaded, focus on the "Event name" box */
   $('#eventCreatorModal').bind('shown', function () {
