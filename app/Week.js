@@ -23,7 +23,7 @@
       ["F", "G", "Activities", "G", "G"],
       ["H", "H", "H", "H"]
     ];
-    var week = (getWeek(date) === "maroon") ? maroonWeek.slice(0) : grayWeek;
+    var week = (getWeek(date) === "maroon") ? grayWeek.slice(0) : maroonWeek ;
     Holiday.find({timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, holidays){
       if (err){
         console.log("error getting holidays", err);
