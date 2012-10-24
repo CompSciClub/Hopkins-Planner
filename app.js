@@ -67,8 +67,6 @@
 
     // events
     app.post("/event", routes.createEvent);
-    app.post("/event/:eventId", routes.modifyEvent);
-    app["delete"]("/event/:eventId", routes.deleteEvent);
 
     app.post("/createClass", routes.createClass);
     app.post("/addStudent", routes.addStudent);
@@ -85,6 +83,6 @@
     console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
   });
   process.on("uncaughtException", function(err){
-    console.log("error", err);
+    console.trace(err);
   });
 }());
