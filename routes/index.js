@@ -6,7 +6,8 @@
     Weekly: require("./Weekly"),
     Login: require("./Login"),
     Signup: require("./Signup"),
-    Logout: require("./Logout")
+    Logout: require("./Logout"),
+    Setup: require("./Setup")
   };
 
   // route, function, mongo, auth level, methods
@@ -16,7 +17,8 @@
     ["/",                Routes.Root,         0, 0, ["get"        ]],
     ["/weekly/:offset?", Routes.Weekly,       1, 1, ["get"        ]],
     ["/login",           Routes.Login,        1, 0, ["get", "post"]],
-    ["/logout",          Routes.Logout,       0, 1, ["get"        ]]
+    ["/logout",          Routes.Logout,       0, 1, ["get"        ]],
+    ['/setup',           Routes.Setup,        1, 1, ["get", "post"]]
   ];
 
   exports.list = routeList;

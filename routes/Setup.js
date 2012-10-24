@@ -14,17 +14,14 @@
       res.redirect("/login");
       return;
     }
+
+    var params = {
+      flash: req.flash(),
+      name: req.session.displayName
+    };
     
     var control = new ControllerClass();
-    control.setupUserGet(function(err, user){
-                        if (err){
-                          req.flash("error", "Something went wrong.")
-                          return res.redirect("/login")
-                        }
-                        
-                        return res.redirect(req.body.redirect || "/weekly");
-                        });
-                       
+    control.renderView(res, params, {});
   };
 
   handlePost = function(req, res, next){
@@ -44,14 +41,20 @@
       G: req.body.gBlock,
       H: req.body.hBlock
     };
-    control.setupUserPost(blocks, function(err, user){
-                      if (err){
-                        req.flash("error", "Something went wrong.")
-                        return res.redirect("/login")
-                      }
-                      
-                      return res.redirect(req.body.redirect || "/weekly");
-                      });
+    var emailSettings = {
+      nightly: typeof req.body.nightly !== 'undefined' && req.body.nightly === "on",
+      weekly: typeof req.body.weekly !== 'undefined' && req.body.weekly === "on",
+      important: typeof req.body.important !== 'undefined' && req.body.important === "on"
+    };
+    control.setupUserPost(req.body.grade, req.body.name, blocks, emailSettings, function(err, user){
+      if (err){
+        req.flash("error", "Something went wrong.");
+        return res.redirect("/login");
+      }
+      req.session.displayName = user.name;
+      
+      return res.redirect(req.body.redirect || "/weekly");
+    });
   };
 
   dispatch = {GET: handleGet, POST: handlePost};

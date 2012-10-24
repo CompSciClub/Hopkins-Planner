@@ -62,8 +62,8 @@
 
     app.get("/verify/:token", routes.verify);
 
-    app.post('/setup', routes.setPreferences);
-    app.get("/setup", routes.setup);
+    /*app.post('/setup', routes.setPreferences);
+    app.get("/setup", routes.setup);*/
 
     // events
     app.post("/event", routes.createEvent);

@@ -1,16 +1,21 @@
-function(){
+/*global User*/
+(function(){
   "use strict";
 
-  var base = require("./base.js"),
-      Crypto =require("ezcrypto").Crypto,
-      ViewClass = require("../views/Login.js");
+  var base       = require("./base.js"),
+      Crypto     = require("ezcrypto").Crypto,
+      _          = require("underscore"),
+      ViewClass  = require("../views/Login.js");
 
   var SetupCtrl, _ptype;
 
-  SetupCtrl = function(){
+  SetupCtrl = function(uid){
     this.payload = {
-      title: "Setup"
+      title: "Setup",
+      loggedIn: true
     };
+
+    this.uid = uid;
     
     this._view = new ViewClass();
   };
@@ -18,44 +23,51 @@ function(){
   _ptype = SetupCtrl.prototype = base.getProto("std");
   _ptype._name = "Setup";
   
-  _ptype.setupUserGet(cb){
-    User.find({_id: req.session.userId}, function(err, users){
-              var user = users[0];
-              if (err || users.length == 0 ){
-              console.log("no user");
-              console.log("Error finding user");
-              req.session.valid = false;
-              res.render("500", {title: "500", loggedIn: true, flash: req.flash(), name: req.session.displayName});
-              return;
-              }
-              var emailSettings = user.emailSettings[0] || {};
-              res.render("setup", {title: "Setup", loggedIn: true, flash: req.flash(), name: req.session.displayName, grade: user.grade,
-                         nightly: emailSettings.nightly, weekly: emailSettings.weekly, important: emailSettings.important,
-                         blocks: user.blocks[0]});
-              });
-  }
+  _ptype.prePrep = function(data, cb){
+    var self = this;
+    User.find({_id: self.uid}, function(err, users){
+      var user = users[0];
+      if (err || users.length === 0 ){
+        console.log("no user");
+        console.log("Error finding user");
+        return cb({
+          statusCode: 500
+        });
+      }
+
+      console.log("got user");
+      var emailSettings = user.emailSettings[0] || {};
+      var params = {
+        grade: user.grade,
+        nightly: emailSettings.nightly,
+        weekly: emailSettings.weekly,
+        important: emailSettings.important,
+        blocks: user.blocks[0]
+      };
+
+      data = _.extend(data, params);
+      cb();
+    });
+  };
   
-  _ptype.setupUserPost(blocks, cb){
-    User.find({_id: req.session.userId}, function(err, users){
-              var user = users[0];
-              if (err || !user){
-                console.log("Error finding user");
-                res.render("500", {title: "500", loggedIn: true, name: req.session.displayName});
-              }
-              user.blocks = blocks;
-              user.grade  = req.body.grade;
-              user.name   = req.body.name;
-              user.emailSettings = {
-                nightly: typeof req.body.nightly !== 'undefined' && req.body.nightly == "on",
-                weekly: typeof req.body.weekly !== 'undefined' && req.body.weekly == "on",
-                important: typeof req.body.important !== 'undefined' && req.body.important == "on"
-              };
-              console.log(user.emailSettings);
-              user.save();
-              req.session.displayName = req.body.name;
-              res.redirect(req.body.redirect || "/weekly");
-              });
-  }
+  _ptype.setupUserPost = function(grade, name, blocks, emailSettings, cb){
+    var self = this;
+    User.find({_id: self.uid}, function(err, users){
+      var user = users[0];
+      if (err || !user){
+        console.log("Error finding user");
+        return cb(true);
+      }
+
+      user.blocks = blocks;
+      user.grade  = grade;
+      user.name   = name;
+      user.emailSettings = emailSettings;
+      console.log(user.emailSettings);
+
+      user.save(cb);
+    });
+  };
   
   module.exports = SetupCtrl;
 }());

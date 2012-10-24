@@ -272,7 +272,7 @@ exports.modifyEvent = function(req, res){
       e.done = (req.body.done === "true"); // different for this one because it's a boolean
     }
     e.save(function(error){
-      console.log(error);
+      console.log("error saving event", error);
       if (!error){
         res.end(JSON.stringify({error: 0, msg: "Event modified"}));
       }else{
