@@ -30,7 +30,7 @@
       res.redirect("/login");
       return;
     }
-    var control = new ControllerClass();
+    var control = new ControllerClass(req.session.userId);
     var blocks = {
       A: req.body.aBlock,
       B: req.body.bBlock,
