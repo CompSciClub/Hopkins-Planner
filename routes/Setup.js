@@ -9,10 +9,10 @@
   handleGet, handlePost;
 
   handleGet = function(req, res, next){
+    console.log("setting up", req.session.valid);
     if (!req.session.valid){
       req.flash("error", "You have to login first.");
-      res.redirect("/login");
-      return;
+      return res.redirect("/login");
     }
 
     var params = {
@@ -20,7 +20,7 @@
       name: req.session.displayName
     };
     
-    var control = new ControllerClass();
+    var control = new ControllerClass(req.session.userId);
     control.renderView(res, params, {});
   };
 

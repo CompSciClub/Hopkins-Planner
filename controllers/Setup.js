@@ -5,7 +5,7 @@
   var base       = require("./base.js"),
       Crypto     = require("ezcrypto").Crypto,
       _          = require("underscore"),
-      ViewClass  = require("../views/Login.js");
+      ViewClass  = require("../views/Setup.js");
 
   var SetupCtrl, _ptype;
 
@@ -26,6 +26,7 @@
   _ptype.prePrep = function(data, cb){
     var self = this;
     User.find({_id: self.uid}, function(err, users){
+      console.log("found user");
       var user = users[0];
       if (err || users.length === 0 ){
         console.log("no user");
@@ -35,7 +36,6 @@
         });
       }
 
-      console.log("got user");
       var emailSettings = user.emailSettings[0] || {};
       var params = {
         grade: user.grade,
@@ -46,6 +46,7 @@
       };
 
       data = _.extend(data, params);
+      console.log("calling back", data);
       cb();
     });
   };
