@@ -217,6 +217,7 @@ exports.createEvent = function(req, res){
   }
   
   if(req.body.class_name) {
+    console.log("class name");
     Class.find({name: req.body.class_name}, function(err, classes) {
       if(classes.length == 0) {
         res.writeHead(200, {"Content-Type": "application/json"});
@@ -230,6 +231,7 @@ exports.createEvent = function(req, res){
       _class.save();
     });
   } else {
+    console.log("not class name");
     addEvent("individual", req.session.userId);
   }
 }

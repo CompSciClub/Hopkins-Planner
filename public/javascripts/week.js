@@ -61,7 +61,7 @@ $(document).ready(function(){
       createEventModal("new", block);
     });
   // event popovers
-  $(".event").popover({html: false});
+  $(".event").popover({html: false, trigger: "hover"});
 
   $(".eventCheck").click(checkboxClicked);
 
@@ -152,7 +152,7 @@ function createEvent(newOrOld){
     $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
     $(".eventCheck").unbind("click", checkboxClicked);
     $(".eventCheck").click(checkboxClicked);
-    $(".event").popover({html: false});
+    $(".event").popover({html: false, trigger: "hover"});
   
   // now save the event on the server
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
