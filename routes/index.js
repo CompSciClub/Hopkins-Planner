@@ -20,7 +20,7 @@
     ["/login",           Routes.Login,        1, 0, ["get", "post"          ]],
     ["/logout",          Routes.Logout,       0, 1, ["get"                  ]],
     ['/setup',           Routes.Setup,        1, 1, ["get", "post"          ]],
-    ["/event/:eventId", Routes.Event,        1, 1, [       "post", "delete"]]
+    ["/event/:eventId?", Routes.Event,        1, 1, [       "post", "delete"]]
   ];
 
   exports.list = routeList;

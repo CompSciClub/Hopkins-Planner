@@ -1,4 +1,4 @@
-/*globals Event*/
+/*globals Event Class*/
 (function(){
   "use strict";
 
@@ -35,9 +35,41 @@
     });
   };
 
+  _ptype.createEvent = function(e, type,  cb){
+    var self = this;
+    var newEvent = new Event({
+      type: type,
+      name: e.name,
+      timestamp: e.timestamp,
+      day: e.day,
+      block: e.block,
+      description: e.description,
+      "class": e["class"],
+      owner: e.owner || self.uid
+    });
+    newEvent.save(cb);
+  };
+
+  _ptype.createClassEvent = function(e, class_name, cb){
+    var self = this;
+    Class.find({name: class_name}, function(err, classes) {
+      if(classes.length === 0) {
+        cb(true);
+      }
+      
+      var _class = classes[0];
+      e.owner = _class._id;
+      self.creatEvent(e, "class", function(err, event){
+        _class.events.push(event._id.toString());
+        _class.save(cb);
+       });
+    });
+  };
+
   _ptype.deleteEvent = function(eid, cb){
     Event.remove({owner: this.uid, _id: eid}, cb);
   };
+
 
   module.exports = EventCtrl;
 }());

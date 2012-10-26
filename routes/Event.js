@@ -14,29 +14,48 @@
       res.redirect("/login");
       return;
     }
-
+    var control = new ControllerClass(req.session.userId);
     var e = {
       name        : req.body.name          || null,
       timestamp   : req.body.timestamp     || null,
       day         : req.body.day           || null,
       block       : req.body.block         || null,
       description : req.body.description   || null,
-      "class"     : req.body.bootClass     || null,
-      id          : req.params.eventId,
-      done        : (typeof req.body.done !== "undefined") ? req.body.done === "true" : null
+      "class"     : req.body.bootClass     || null
     };
 
-    var control = new ControllerClass(req.session.userId);
-    control.modifyEvent(e, function(error, e){
-      if (!error){
-        res.end(JSON.stringify({error: 0, msg: "Event modified"}));
-      }else{
-        return next(500);
-        /*res.writeHead(400, {"Content-Type": "application/json"});
-        res.end(JSON.stringify({error: 400, msg: error}));
-        console.log("error saving event", error);*/
+    if (!_.isUndefined(req.params.eventId)){ // this is an edit request
+
+      e.id   = req.params.eventId;
+      e.done = (typeof req.body.done !== "undefined") ? req.body.done === "true" : null;
+      control.modifyEvent(e, function(error, e){
+        if (!error){
+          res.end(JSON.stringify({error: 0, msg: "Event modified"}));
+        }else{
+          return next(500);
+        }
+      });
+    } else { // making a new event
+
+      var eventCallback = function(err, e){ // callback for once the event is created
+        console.log("event saved");
+        if (err){
+          return next(500);
+        }
+        res.json({
+          error: 0,
+          msg: "Event added"
+        });
+      };
+
+      if (req.body.class_name){
+        console.log("class event");
+        control.createClassEvent(e, req.body.class_name, eventCallback);
+      } else {
+        console.log("regular");
+        control.createEvent(e, "individual", eventCallback);
       }
-    });
+    }
   };
 
   handleDelete = function(req, res, next){
