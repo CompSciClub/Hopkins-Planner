@@ -149,7 +149,7 @@ function createEvent(newOrOld){
   }
    // now add the element to the UI
     // TODO re-style these event boxes
-    $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'">' + newEvent.name + '<input type="checkbox" class="eventCheck"></div>');
+    $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
     $(".eventCheck").unbind("click", checkboxClicked);
     $(".eventCheck").click(checkboxClicked);
     $(".event").popover({html: false, trigger: "hover"});
