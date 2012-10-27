@@ -166,8 +166,10 @@ function createEvent(newOrOld){
       error(err);
     }
   });
-  events[currentEventLoc[0]][currentEventLoc[1]].push(newEvent);
-  console.log(newEvent);
+  if (newOrOld == "old"){
+    events[currentEventLoc[0]][currentEventLoc[1]].push(newEvent);
+    console.log(newEvent);
+  }
   closeDialog();
 }
 
