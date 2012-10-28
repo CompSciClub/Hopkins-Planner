@@ -38,13 +38,13 @@
     } else { // making a new event
 
       var eventCallback = function(err, e){ // callback for once the event is created
-        console.log("event saved");
         if (err){
           return next(500);
         }
         res.json({
           error: 0,
-          msg: "Event added"
+          msg: "Event added",
+          event: e
         });
       };
 
