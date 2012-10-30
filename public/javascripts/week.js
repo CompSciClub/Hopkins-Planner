@@ -16,7 +16,7 @@ $(document).ready(function(){
 
   /* GLOBALS: */
   lastCalendarStyle = ""; // this String will record the color of the td that was moused-over
-
+  classesToday = [];
   /* EVENT HANDLERS: */
 
   $( document ).bind( "mobileinit", function(){
@@ -65,12 +65,7 @@ $(document).ready(function(){
 
   $(".eventCheck").click(checkboxClicked);
 
-  $(".event").click(function(event){
-    console.log("event clicked"); // MDADD
-    event.stopPropagation(); // stop from spreading
-    modalTypeVar = "old"; // set the edit type to old
-    editEvent(this);
-  });
+  updateEventClickHandler();
   
   /* Modal releated events
      I moved them out of the click handler to be more memory effecient because the elements are never deleted
@@ -86,6 +81,14 @@ $(document).ready(function(){
     $(".eventBlock").html($(this).val()); // change the block in the time string when they select a new block
   });
   $("#saveButton").click(function(){
+    var i = 0;
+	  for (i = 0; i < classesToday.length; i++){
+		if (blocks[classesToday[i]] == $("#blockSelect").val()){
+			break;
+		}
+	  }
+	  eventDate.block = classesToday[i];
+	  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
       createEvent(modalTypeVar);
   });
   $("#deleteButton").click(function(){
@@ -101,6 +104,14 @@ $(document).ready(function(){
   });
 });
 
+function updateEventClickHandler(){
+	$(".event").click(function(event){
+		console.log("event clicked"); // MDADD
+		event.stopPropagation(); // stop from spreading
+		modalTypeVar = "old"; // set the edit type to old
+		editEvent(this);
+	});
+}
 
 /*function populateOptions(){
   var bootClasses = ["label success","label important","label notice"];
@@ -117,7 +128,14 @@ function editEvent(node){
   var blockNode = $(node).parent("td")[0];
   getEventInfo(blockNode);
   var block = $(blockNode).attr('class').split(" ")[0];
-  var thisEvent = events[eventDate.day][block][getChildIndex(node)-1];
+  if (events[eventDate.day] && events[eventDate.day][block] && events[eventDate.day][block][getChildIndex(node)-1]){
+	var thisEvent = events[eventDate.day][block][getChildIndex(node)-1];
+  } else {
+	var thisEvent = {};
+	thisEvent.description = $(node).attr("data-content");
+	thisEvent.name = $(node).attr("data-original-title");
+	thisEvent.class = $(node).attr("class").split(" ")[2];
+  }
   thisEvent.node = node;
   currentEventLoc = [eventDate.day, block, getChildIndex(node)-1];
   eventDate._id = thisEvent._id;
@@ -236,11 +254,32 @@ function createEventModal(modalType, block, thisEvent){
 
     //populateOptions();
   
+    classesToday = [];
+	
+	var mainTableRows = $("#CalendarTable tr");
+	for (var i = 1; i < mainTableRows.length; i++){
+		if (eventDate.day < 5){ // hard code weekends
+			if (i == 6 && eventDate.day > 2){
+				var output = $(mainTableRows[i]).children("td")[eventDate.day-1];
+			} else if (eventDate.day != 2 || i != 6){
+				var output = $(mainTableRows[i]).children("td")[eventDate.day];
+			} else {
+				break;
+			}
+			output = $(output).attr("class").split(" ")[0];
+			classesToday.push(output);
+		} else if (eventDate.day == 5){
+			classesToday = ["Saturday"];
+		} else if (eventDate.day == 6){
+			classesToday = ["Sunday"];
+		}
+	}
+	
     /* Populate the block selector */
 
     $("#blockSelect").html(''); // clear the list
     for (blockName in blocks){
-      if (blockName != "_id")
+      if (blockName != "_id" && $.inArray(blockName, classesToday) != -1)
         $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
     }
 
@@ -263,9 +302,7 @@ function createEventModal(modalType, block, thisEvent){
       }
     if (modalType == "edit") {
       $("#eventNameInput").val(thisEvent.name);
-    } else {
-      
-    }
+    } 
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
       keyboard: true,
@@ -282,6 +319,7 @@ function closeDialog(){
   $("#eventNameInput").val("Event Name");
   $("#modalDescriptionBox").val("Description here");
   // TODO reset the radio buttons, once we figure out what they're for
+  updateEventClickHandler();
 }
 
 /** Other functions */
