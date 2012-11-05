@@ -1,12 +1,18 @@
+var centerContainer;
 $(document).ready(function(){
+  centerContainer();
 
-  $("#login_btn").click(function(){
-    $("#loginModal").modal({
+  $(window).resize(centerContainer);
+
+/*  $("#learnmore").click(function(){
+    /*$("html,body").animate({
+      scrollTop: ($(window).height() - 41) // scroll to the container. Make sure to subtract height of header
+    }, 600);
+    $(".page-two").modal({
       keyboard: true,
-      backdrop: true,
       show: true
     });
-  });
+  });*/
 
   $("#signUp_btn").click(function(){
     $("#accountModal").modal({
@@ -19,10 +25,12 @@ $(document).ready(function(){
 });
 
 function login(type){
-  if(type == 0)
+  if(type == 0){
     var email = $(".email_input"), pass = $(".password_input");
-  else
+  }
+  else{
     var email = $(".createEmail_input"), pass = $(".createPassword_input");
+  }
 
   var errors = [], errorElements = [];
   if (email.val() == ""){
@@ -59,4 +67,15 @@ function error(msgs, elements){
 if (typeof console === "undefined" || typeof console.log === "undefined") {
   console = {};
   console.log = function() {};
+}
+
+centerContainer = function(){
+  var height = $(window).height(); //finds the height of the window
+  var containerHeight = $("#firstContent").height();
+  console.log("height ", height);
+  $(".container.content").css("margin-top", ((height / 2) - containerHeight / 2) + "px"); //centers the container verticaly
+  $(".page-two").css("top", ((height))+"px");
+
+  var pHeight = $(".white").height();
+  $(".white").css("margin-top", (containerHeight / 2) - pHeight / 2 + "px");
 }
