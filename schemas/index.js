@@ -67,6 +67,12 @@ exports.Holiday = new Schema({
   day: Number
 });
 
+exports.Event.pre("save", function(next){
+  this.name = escapeHtml(this.name);
+  this.description = escapeHtml(this.description);
+  next();
+});
+
 // Setup Database models
 User   = mongoose.model("User", exports.User);
 Event  = mongoose.model("Event", exports.Event);
@@ -74,6 +80,15 @@ Class  = mongoose.model("Class", exports.Class);
 Blocks = mongoose.model("Blocks", Blocks);
 Holiday = mongoose.model("Holiday", exports.Holiday);
 
+function escapeHtml(unsafe) {
+  return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/(\r\n|[\r\n])/g, "<br />")
+      .replace(/'/g, "&#039;");
+}
 function validatePresenceOf(value){
   return value && value.length;
 }

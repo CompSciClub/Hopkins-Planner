@@ -217,6 +217,7 @@ exports.createEvent = function(req, res){
   }
   
   if(req.body.class_name) {
+    console.log("class name");
     Class.find({name: req.body.class_name}, function(err, classes) {
       if(classes.length == 0) {
         res.writeHead(200, {"Content-Type": "application/json"});
@@ -230,6 +231,7 @@ exports.createEvent = function(req, res){
       _class.save();
     });
   } else {
+    console.log("not class name");
     addEvent("individual", req.session.userId);
   }
 }
@@ -272,7 +274,7 @@ exports.modifyEvent = function(req, res){
       e.done = (req.body.done === "true"); // different for this one because it's a boolean
     }
     e.save(function(error){
-      console.log(error);
+      console.log("error saving event", error);
       if (!error){
         res.end(JSON.stringify({error: 0, msg: "Event modified"}));
       }else{
