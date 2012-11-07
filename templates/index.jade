@@ -17,69 +17,58 @@ block scripts
       });
 
 block content
-  header
-    .inner
-      p.headerImage
-        img(src="images/hop2.png", height="169px")
-      p.btns
-        a#login_btn.btn.btn-success.btn-large Login
-        a#signUp_btn.btn.btn-primary.btn-large Sign Up
-  .row-fluid
-    .span4
-      h2 School Event
-      p Computer Science club creates a Windows support group for people traumatized by their OS.
-      p
-        a.details.btn.btn-large(href="#") View details &raquo;
-    .span4
-      h2 Flag Day
-      p Every year Hopkins celebrates Flag Day, an opportunity to showcase our school’s ethnic diversity.
-      p
-        a.details.btn.btn-large(href="http://www.hopkins.edu/podium/default.aspx?t=204&nid=751541") View details &raquo;
-    .span4
-      h2 School Event
-      p Massive outbreak of protesters for the game "Skyrim". Protesters say the game is offensive to Dragons.
-      p
-        a.details.btn.btn-large(href="#") View details &raquo;
-
-  .row-fluid
-    .span4
-      h2 School Event
-      p Facebook is re-banned after an experiment involving monkeys.
-      p
-        a.details.btn.btn-large(href="#") View details &raquo;
-    .span4
-      h2 School Event
-      p Computer science club gets banned for offensive "forking action".
-      p
-        a.details.btn.btn-large(href="#") View details &raquo;
-    .span4
-      h2 School Event
-      p Git dumped after "not being abble to commit due to conflicts".
-      p
-        a.details.btn.btn-large(href="#") View details &raquo;
-
-  // Modals
-  #loginModal.modal.small.hide.fade
+  .container.content
+  #firstContent.row.offset
+      img#bgImage(src='images/photo.jpg')
+      .span5.white
+        h3 Welcome to the Hopkins Online Planner
+        p
+          | Organize all your work in one place online, so you never miss a thing.
+      .span3.offset2(style='')
+        .well.sideBox
+          .row-fluid
+            form.form#loginForm(action='/login', method='post', onsubmit="return login(0)")
+              input.span12.email_input(type='text', name='email', placeholder='Email')
+              br
+              input.span8.password_input(type='password', name='password', placeholder='Password')
+              input#login_btn.btn.btn-primary.span4(type='submit', value='Login')
+        .well.sideBox
+          h3  Don't have an account yet?
+          .row-fluid
+            a#signUp_btn.btn.btn-success.btn-large.span6(href='#signup', type='submit') Sign Up
+            a#learnmore.btn.btn-primary.btn-large.span6(href='#more', data-toggle="modal", data-target="#learnMore_modal", type='button', value='Learn More') Learn More
+  // Page 2
+  #learnMore_modal.modal.hide.fade.in.page-two(role="dialog")
     .modal-header
       a.close(data-dismiss="modal") &times;
-      h3 Login
+      h3 How it Works
     .modal-body
-      if (flash.error)
-        span.errors
-          .fade.in.alert-message.error
-            a.close(href="#")x
-            p #{flash.error}
-      form(action="/login", method="POST", id="loginForm", onsubmit="return login(0)", class="form-stacked")
-        .clearfix
-          label(for="email") Email:
-          input(class="email_input", type="text", name="email")
-        .clearfix
-          label(for="password") Password:
-          input.password_input(type="password", name="password")
-        center
-          input.btn-success.btn(type="submit", value="Login")
+      .media
+        a.pull-left(href="#")
+          img.media-object.img-rounded(src='images/photo2.jpg', width="128px", height="128px")
+        .media-body(style='')
+          h4.media-heading(style='color: #800000;') What it is
+          p
+            | The online planner brings you an easy way of regulating your events and keeping track of work. It sends
+            | you email reminders about tests, projects, and other homework. Furthermore, it can send you the agenda for
+            | each day during a given night in a week. The planner is compeletely customizable and is designed with only
+            | you in mind.
+      #secondParagraph
+        .media
+          a.pull-right(href="#")
+            img.img-rounded.media-object(src='images/photo3.jpg', width="128px", height="128px")
+          .media-body
+          h4.media-heading(style='color: #800000;') How to use it
+          p
+            | The Hopkins planner is a simple, yet tremendously convenient tool. Upon creating your acount, you will be
+            | prompted with your classes in order to organize your weeks. From then on, you will be able to create 'events'
+            | that will remind you of tests, projects, and homework.Teacher accounts are also available, so everyone is
+            | encouraged to sign up!
+    .modal-footer
+       button.btn.btn-large.btn-success(data-dismiss="modal", aria-hidden="true") Got it. Thanks!
 
-  #accountModal.modal.small.hide.fade
+
+  #accountModal.modal.small.hide.fade.in
     .modal-header
       a.close(data-dismiss="modal") &times;
       h3 Create Account
@@ -94,8 +83,5 @@ block content
         .clearfix
           label(for="name") Name:
           input(name="name", type="text")
-        .clearfix
-          label(for="is_teacher") Teacher:
-          input(name="is_teacher", type="checkbox")
         center
           input#createAccount_btn.btn-success.btn(type="submit", value="Create")

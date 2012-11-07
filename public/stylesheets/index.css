@@ -4,22 +4,6 @@
   margin-right: auto;
 }
 
-.btns{
-  width: 200px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  top: -30px;
-}
-.btns .btn{
-  font-size: 20px;
-  display: inline-block;
-}
-
-#signUp_btn{
-  margin-left: 15px;
-}
-
 #loginModal{
   max-height: 300px;
   margin-top: -150px;
@@ -50,4 +34,61 @@
     display: block;
     font-size: 20px;
   }
+}
+
+.container.content {
+	margin-top: 50px;
+}
+
+.well.span12{
+  margin-left: 0;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+#picture{
+  width: 600;
+  height: 400;
+}
+
+.center{
+  text-align: center;
+}
+
+#bgImage{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+  height: 100%;
+}
+
+.sideBox{
+  min-width: 270px;
+}
+
+.white{
+  color: #FFFFFF;
+}
+
+.white h3{
+  font-size: 25px;
+  line-height: 20px;
+}
+
+.white p{
+  font-size :18px;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+#secondParagraph{
+  margin-top: 20px;
+}
+
+.media .pull-left{
+  margin-right: 10px;
 }
