@@ -259,12 +259,10 @@ function createEventModal(modalType, block, thisEvent){
 	var mainTableRows = $("#CalendarTable tr");
 	for (var i = 1; i < mainTableRows.length; i++){
 		if (eventDate.day < 5){ // hard code weekends
-			if (i == 6 && eventDate.day > 2){
+			if (i == 6 && eventDate.day == 3 || eventDate.day == 4){
 				var output = $(mainTableRows[i]).children("td")[eventDate.day-1];
-			} else if (eventDate.day != 2 || i != 6){
-				var output = $(mainTableRows[i]).children("td")[eventDate.day];
 			} else {
-				break;
+				var output = $(mainTableRows[i]).children("td")[eventDate.day];
 			}
 			output = $(output).attr("class").split(" ")[0];
 			classesToday.push(output);
