@@ -88,7 +88,11 @@ $(document).ready(function(){
 		}
 	  }
 	  eventDate.block = classesToday[i];
-	  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+	  if (i+1 == 6 && (eventDate.day == 3 || eventDate.day == 4)){
+		eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day-1];
+	  } else {
+		eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+	  }
       createEvent(modalTypeVar);
   });
   $("#deleteButton").click(function(){
@@ -152,7 +156,9 @@ function createEvent(newOrOld){
   newEvent.bootClass   = ""
   if (newOrOld == "old"){
     newEvent._id = eventDate._id;
-   $($(eventDate.node).children("div[eventId="+ newEvent._id +"]")).remove();
+   $($("#CalendarTable td").children("div[eventId="+ newEvent._id +"]")).remove();
+    delete events[currentEventLoc[0]][currentEventLoc[1]][currentEventLoc[2]];
+	events[currentEventLoc[0]][currentEventLoc[1]].length -= 1;
   }
   if (newEvent.description === "Description here"){
     newEvent.description = "No description";
@@ -185,7 +191,10 @@ function createEvent(newOrOld){
     }
   });
   if (newOrOld == "old"){
-    events[currentEventLoc[0]][currentEventLoc[1]].push(newEvent);
+	if (!events[currentEventLoc[0]][newEvent.block]){
+		events[currentEventLoc[0]][newEvent.block] = [];
+	}
+    events[currentEventLoc[0]][newEvent.block].push(newEvent);
     console.log(newEvent);
   }
   closeDialog();
