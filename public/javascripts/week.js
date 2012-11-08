@@ -153,7 +153,7 @@ function createEvent(newOrOld){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
-  newEvent.bootClass   = ""
+  newEvent.class   = ""
   if (newOrOld == "old"){
     newEvent._id = eventDate._id;
    $($("#CalendarTable td").children("div[eventId="+ newEvent._id +"]")).remove();
@@ -168,7 +168,7 @@ function createEvent(newOrOld){
   var bootClasses = getBootClasses();
   for (var i = 0; i < radios.length; i++){
     if (radios[i].checked){
-      newEvent.bootClass += bootClasses[i];
+      newEvent.class += bootClasses[i];
     }
   }
    // now add the element to the UI
