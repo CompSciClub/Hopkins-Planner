@@ -81,6 +81,9 @@ block content
                   - className = blocks[block];
                 - else
                   - className = block;
+                if (day == 2 && block == "H"){
+                  td(class="", style="display:none")
+                }
                 td(class="#{block} block", rowspan="#{rowspan}") #{className}
                   if (events[day] && events[day][block])
                     each eventObj in events[day][block]
