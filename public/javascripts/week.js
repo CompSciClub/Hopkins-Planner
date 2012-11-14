@@ -3,9 +3,12 @@
 var eventDate,  // Date info for the event currently being created
     setupDatepicker;
 
-$(document).ready(function(){
+$(window).load(function(){
   setupDatepicker();
   $("#datepicker").datepicker('show');
+});
+
+$(document).ready(function(){
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(obj, start) {
