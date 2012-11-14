@@ -81,6 +81,7 @@ td.Sunday.block{
   text-overflow: ellipsis;
   width: 80%;
   float: left;
+  cursor: pointer;
 }
 
 .container{

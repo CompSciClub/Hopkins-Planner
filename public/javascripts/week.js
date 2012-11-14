@@ -11,7 +11,6 @@ $(document).ready(function(){
       }
       return -1;
     }
-    console.log("you suck, internet explorer");
   }
 
   /* GLOBALS: */
@@ -51,7 +50,6 @@ $(document).ready(function(){
     /** Modal Stuff */
 
     // get the date and information
-    console.log(getChildIndex(this));
     var date = new Date(monday + (getChildIndex(this) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
         eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
         eventDate.day  = getChildIndex(this);
@@ -59,6 +57,7 @@ $(document).ready(function(){
 
       modalTypeVar = "new"; // set the edit type to new;
       createEventModal("new", block);
+	  currentEventLoc = [eventDate.day , block, -1];
     });
   // event popovers
   $(".event").popover({html: false, trigger: "hover"});
@@ -88,7 +87,11 @@ $(document).ready(function(){
 		}
 	  }
 	  eventDate.block = classesToday[i];
-	  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+	  if (i+1 == 6 && (eventDate.day == 3 || eventDate.day == 4)){
+		eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day-1];
+	  } else {
+		eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+	  }
       createEvent(modalTypeVar);
   });
   $("#deleteButton").click(function(){
@@ -97,7 +100,6 @@ $(document).ready(function(){
 
   // if the input box has default text, select all of it to easily replace sample text
   $("input[value=\"Event Name\"], textarea").click(function(){
-    console.log("focus");
     if (($(this).attr('id')=="modalDescriptionBox" && $(this).val()=="Description here") || ($(this).attr('id')=="eventNameInput" && $(this).val()=="Event Name")){
       $(this).select();
     }
@@ -106,7 +108,6 @@ $(document).ready(function(){
 
 function updateEventClickHandler(){
 	$(".event").click(function(event){
-		console.log("event clicked"); // MDADD
 		event.stopPropagation(); // stop from spreading
 		modalTypeVar = "old"; // set the edit type to old
 		editEvent(this);
@@ -124,13 +125,14 @@ function updateEventClickHandler(){
 /** Events */
 
 function editEvent(node){
-  console.log("editEvent called"); // MDADD
   var blockNode = $(node).parent("td")[0];
   getEventInfo(blockNode);
   var block = $(blockNode).attr('class').split(" ")[0];
-  if (events[eventDate.day] && events[eventDate.day][block] && events[eventDate.day][block][getChildIndex(node)-1]){
-	var thisEvent = events[eventDate.day][block][getChildIndex(node)-1];
+  if (getEvents(eventDate.day,block,getChildIndex(node)-1)){
+	var thisEvent = getEvents(eventDate.day,block,getChildIndex(node)-1);
+	console.log("this Event found");
   } else {
+	console.log("this Event NOT found");
 	var thisEvent = {};
 	thisEvent.description = $(node).attr("data-content");
 	thisEvent.name = $(node).attr("data-original-title");
@@ -139,7 +141,6 @@ function editEvent(node){
   thisEvent.node = node;
   currentEventLoc = [eventDate.day, block, getChildIndex(node)-1];
   eventDate._id = thisEvent._id;
-  console.log(thisEvent);
   createEventModal("edit", block, thisEvent);
 }
 
@@ -149,10 +150,11 @@ function createEvent(newOrOld){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
-  newEvent.bootClass   = ""
+  newEvent.class   = ""
   if (newOrOld == "old"){
     newEvent._id = eventDate._id;
-   $($(eventDate.node).children("div[eventId="+ newEvent._id +"]")).remove();
+	removeEventNode(newEvent._id);
+	removeEvents(currentEventLoc[0],currentEventLoc[1],currentEventLoc[2]);
   }
   if (newEvent.description === "Description here"){
     newEvent.description = "No description";
@@ -162,12 +164,12 @@ function createEvent(newOrOld){
   var bootClasses = getBootClasses();
   for (var i = 0; i < radios.length; i++){
     if (radios[i].checked){
-      newEvent.bootClass += bootClasses[i];
+      newEvent.class += bootClasses[i];
     }
   }
    // now add the element to the UI
     // TODO re-style these event boxes
-    $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
+    $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.class+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
     $(".eventCheck").unbind("click", checkboxClicked);
     $(".eventCheck").click(checkboxClicked);
     $(".event").popover({html: false, trigger: "hover"});
@@ -184,10 +186,9 @@ function createEvent(newOrOld){
       error(err);
     }
   });
-  if (newOrOld == "old"){
-    events[currentEventLoc[0]][currentEventLoc[1]].push(newEvent);
-    console.log(newEvent);
-  }
+  addToEvents(currentEventLoc[0], newEvent.block, newEvent);
+  console.log(getEvents(currentEventLoc[0], newEvent.block, 0));
+  console.log(newEvent);
   closeDialog();
 }
 
@@ -201,7 +202,8 @@ function deleteEvent(node){ // sends a "DELETE" ajax request, deletes event visu
         error(err);
       }
   });
-  $($(eventDate.node).children("div[eventId="+ eventDate._id +"]")).remove();
+  removeEventNode(eventDate._id);
+  removeEvents(currentEventLoc[0], currentEventLoc[1], currentEventLoc[2]);
   closeDialog();
 }
 
@@ -259,12 +261,10 @@ function createEventModal(modalType, block, thisEvent){
 	var mainTableRows = $("#CalendarTable tr");
 	for (var i = 1; i < mainTableRows.length; i++){
 		if (eventDate.day < 5){ // hard code weekends
-			if (i == 6 && eventDate.day > 2){
+			if (i == 6 && eventDate.day == 3 || eventDate.day == 4){
 				var output = $(mainTableRows[i]).children("td")[eventDate.day-1];
-			} else if (eventDate.day != 2 || i != 6){
-				var output = $(mainTableRows[i]).children("td")[eventDate.day];
 			} else {
-				break;
+				var output = $(mainTableRows[i]).children("td")[eventDate.day];
 			}
 			output = $(output).attr("class").split(" ")[0];
 			classesToday.push(output);
@@ -293,7 +293,6 @@ function createEventModal(modalType, block, thisEvent){
         $("#modalDescriptionBox").val(thisEvent.description);
         var bootClasses = getBootClasses();
         var x = $.inArray(thisEvent.class, bootClasses);
-        console.log(x);
         var radios = $('input[name=modalRadio1]:radio');
         radios[x].checked="true";
         $("#deleteButton").show();
@@ -384,4 +383,42 @@ function escapeHtml(unsafe) {
 }
 function error(msg){
   console.log("error", msg);
+}
+/* The Following Three Functions are for getting, adding, and removing events from the client-side events variable */
+function getEvents(day,block,index){
+	try {
+		console.log("event exists ", events[day][block][index])
+		return events[day][block][index];
+	}
+	catch (err){
+		console.log("there is no event at ["+day+"]["+block+"]["+index+"]")
+		console.log(err);
+	}
+}
+function addToEvents(day, block, event){
+	console.log("addToEvents called");
+	if (!events[day]){
+		events[day] = {};
+		console.log("new Day Created");
+	}
+	if (!events[day][block]){
+		events[day][block] = [];
+		console.log("new Block Created");
+	}
+	events[day][block].push(event); // save the event to the client-side events variable
+	console.log(event, " pushed to ", day, block);
+}
+function removeEvents(day, block, index){
+	console.log(day, block, index);
+	try{
+		var l = events[day][block].length - 1;
+		delete events[day][block][index];
+		if (l >= 0) events[day][block].length = l;
+	}catch (err){
+		console.log(events[day][block][index]);
+	}
+}
+function removeEventNode(id){
+	$($("#CalendarTable td").children("div[eventId="+ id +"]")).remove();
+	console.log("Event " +id+ " removed");
 }
