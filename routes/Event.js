@@ -9,11 +9,6 @@
   var ControllerClass = require("../controllers/Event.js");
 
   handlePost = function(req, res, next){
-    if (!req.session.valid){
-      req.flash("error", "You have to login first.");
-      res.redirect("/login");
-      return;
-    }
     var control = new ControllerClass(req.session.userId);
     var e = {
       name        : req.body.name          || null,
@@ -59,12 +54,6 @@
   };
 
   handleDelete = function(req, res, next){
-    if (!req.session.valid){
-      req.flash("error", "You have to login first.");
-      res.redirect("/login");
-      return;
-    }
-
     var control = new ControllerClass(req.session.userId);
     control.deleteEvent(req.params.eventId, function(err){
       if (err){

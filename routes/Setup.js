@@ -9,12 +9,6 @@
   handleGet, handlePost;
 
   handleGet = function(req, res, next){
-    console.log("setting up", req.session.valid);
-    if (!req.session.valid){
-      req.flash("error", "You have to login first.");
-      return res.redirect("/login");
-    }
-
     var params = {
       flash: req.flash(),
       name: req.session.displayName
@@ -25,11 +19,6 @@
   };
 
   handlePost = function(req, res, next){
-    if (!req.session.valid){
-      req.flash("error", "You have to login first.");
-      res.redirect("/login");
-      return;
-    }
     var control = new ControllerClass(req.session.userId);
     var blocks = {
       A: req.body.aBlock,
@@ -49,7 +38,7 @@
     control.setupUserPost(req.body.grade, req.body.name, blocks, emailSettings, function(err, user){
       if (err){
         req.flash("error", "Something went wrong.");
-        return res.redirect("/login");
+        return res.redirect("/setup");
       }
       req.session.displayName = user.name;
       

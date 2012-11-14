@@ -46,6 +46,7 @@
       req.session.displayName = user.name;
       req.session.valid       = 1;
       req.session.userId      = user._id;
+      req.session.teacher     = user.is_teacher;
       return res.redirect(req.body.redirect || "/weekly");
     });
   };

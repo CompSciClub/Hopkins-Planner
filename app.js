@@ -9,6 +9,7 @@
     , routeList       = require("./routes/index.js")
     , mongoose        = require("mongoose")
     , MongoStore      = require("connect-mongodb")
+    , auth            = require("./app/auth")
     , _               = require("underscore")
     , schemas         = require("./schemas");
 
@@ -53,6 +54,10 @@
         params.push(auth(conf, confVar));*/
         // add in ordrinApi
 
+        if (route[3]){
+          params.push(auth(null, route[3]));
+        }
+
         app[method](route[0], params, route[1]);
       });
     });
@@ -63,7 +68,6 @@
     app.get("/verify/:token", routes.verify);
 
     // events
-    app.post("/event", routes.createEvent);
 
     app.post("/createClass", routes.createClass);
     app.post("/addStudent", routes.addStudent);
