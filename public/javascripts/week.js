@@ -93,11 +93,7 @@ $(document).ready(function(){
 		}
 	  }
 	  eventDate.block = classesToday[i];
-	  if (i+1 == 6 && (eventDate.day == 3 || eventDate.day == 4)){
-		eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day-1];
-	  } else {
-		eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
-	  }
+	  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
       createEvent(modalTypeVar);
   });
   $("#deleteButton").click(function(){
@@ -267,11 +263,7 @@ function createEventModal(modalType, block, thisEvent){
 	var mainTableRows = $("#CalendarTable tr");
 	for (var i = 1; i < mainTableRows.length; i++){
 		if (eventDate.day < 5){ // hard code weekends
-			if (i == 6 && eventDate.day == 3 || eventDate.day == 4){
-				var output = $(mainTableRows[i]).children("td")[eventDate.day-1];
-			} else {
-				var output = $(mainTableRows[i]).children("td")[eventDate.day];
-			}
+			var output = $(mainTableRows[i]).children("td")[eventDate.day];
 			output = $(output).attr("class").split(" ")[0];
 			classesToday.push(output);
 		} else if (eventDate.day == 5){
@@ -305,9 +297,7 @@ function createEventModal(modalType, block, thisEvent){
       } else {
         $("#deleteButton").hide();
       }
-    if (modalType == "edit") {
-      $("#eventNameInput").val(thisEvent.name);
-    } 
+	
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
       keyboard: true,
