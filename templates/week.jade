@@ -5,9 +5,11 @@ block scripts
     var monday = #{date.getTime()};
     var blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}"));
     var events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
+  script(type="text/javascript", src="/javascripts/bootstrap-datepicker.js")
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
 block styles
+  link(rel="stylesheet", href="/stylesheets/datepicker.css")
   <link rel="stylesheet" href="/stylesheets/week.css">
 
 
@@ -17,11 +19,12 @@ block sidebar
   a.btn.arrow-right(href="/weekly/#{offset + 1}", style="margin-left: 5px")
     i.icon-arrow-right
 
+  #datepicker.date
+
 block content
   .content
     center
-      table(id="singleDay", class="table table-bordered", 
-style="width:100% !important")
+      table(id="singleDay", class="table table-bordered", style="width:100% !important")
         thead
           td.head
             center 12/25

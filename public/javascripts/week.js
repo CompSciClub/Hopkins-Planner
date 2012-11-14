@@ -1,8 +1,11 @@
 /* Week.js */
 
-var eventDate; // Date info for the event currently being created
+var eventDate,  // Date info for the event currently being created
+    setupDatepicker;
 
 $(document).ready(function(){
+  setupDatepicker();
+  $("#datepicker").datepicker('show');
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(obj, start) {
@@ -422,3 +425,11 @@ function removeEventNode(id){
 	$($("#CalendarTable td").children("div[eventId="+ id +"]")).remove();
 	console.log("Event " +id+ " removed");
 }
+setupDatepicker = function(){
+  var now = new Date();
+  $("#datepicker").attr("data-date", now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear());
+  $("#datepicker").datepicker({perm: true})
+    .on("changeDate", function(ev){
+      var date = (ev.date.getMonth() + 1) + "/" + ev.date.getDate();
+    });
+};
