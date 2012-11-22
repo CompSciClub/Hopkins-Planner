@@ -16,7 +16,7 @@
       day         : req.body.day           || null,
       block       : req.body.block         || null,
       description : req.body.description   || null,
-      "class"     : req.body.bootClass     || null
+      "class"     : req.body.class     || null
     };
 
     if (!_.isUndefined(req.params.eventId)){ // this is an edit request
