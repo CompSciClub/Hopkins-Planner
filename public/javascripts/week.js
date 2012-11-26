@@ -442,7 +442,7 @@ setupDatepicker = function(){
       }
       var diff = thenInMs - nowInMs;
       if (dif >= 0){
-        if (dayThen - dayNow > 0){
+        if (dayThen - dayNow >= 0){
           toWeek = Math.floor(diff/ow);
         }
         else {
@@ -450,7 +450,7 @@ setupDatepicker = function(){
         }
       }
       else if (dif < 0){
-        if (dayThen - dayNow > 0){
+        if (dayThen - dayNow >= 0){
           toWeek = Math.ceil(diff/ow);
         }
         else {
