@@ -441,7 +441,7 @@ setupDatepicker = function(){
         var dayThen = ev.date.getDay();
       }
       var diff = thenInMs - nowInMs;
-      if (dif >= 0){
+      if (diff >= 0){
         if (dayThen - dayNow >= 0){
           toWeek = Math.floor(diff/ow);
         }
@@ -449,7 +449,7 @@ setupDatepicker = function(){
           toWeek = Math.ceil(diff/ow);
         }
       }
-      else if (dif < 0){
+      else if (diff < 0){
         if (dayThen - dayNow >= 0){
           toWeek = Math.ceil(diff/ow);
         }
@@ -457,8 +457,7 @@ setupDatepicker = function(){
           toWeek = Math.floor(diff/ow);
         }
       }
-      var appendage = "http://hopkins-planner.jit.su/weekly/" + String(toWeek);
+      var appendage = window.location.host + "/weekly/" + String(toWeek);
       window.location.href = appendage;
     });
-  });
-};
+  };
