@@ -457,7 +457,7 @@ setupDatepicker = function(){
           toWeek = Math.floor(diff/ow);
         }
       }
-      var appendage = window.location.host + "/weekly/" + String(toWeek);
+      var appendage = window.location.protocol + "//" + window.location.host + "/weekly/" + String(toWeek);
       window.location.href = appendage;
     });
   };

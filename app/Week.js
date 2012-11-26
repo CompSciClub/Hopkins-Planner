@@ -50,7 +50,7 @@
     });
   };
   getWeek = function(date){
-    return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? "maroon" : "gray";
+    return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? "gray" : "maroon";
   };
 
   // given a date object, this reutrns the beginning of monday
