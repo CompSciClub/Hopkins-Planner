@@ -442,7 +442,7 @@ setupDatepicker = function(){
       }
       var diff = thenInMs - nowInMs;
       if (diff >= 0){
-        if (dayThen - dayNow >= 0){
+        if (dayThen - dayNow > 0){
           toWeek = Math.floor(diff/ow);
         }
         else {
@@ -450,11 +450,11 @@ setupDatepicker = function(){
         }
       }
       else if (diff < 0){
-        if (dayThen - dayNow >= 0){
-          toWeek = Math.ceil(diff/ow);
+        if (dayThen - dayNow > 0){
+          toWeek = Math.floor(diff/ow);
         }
         else {
-          toWeek = Math.floor(diff/ow);
+          toWeek = Math.ceil(diff/ow);
         }
       }
       var appendage = window.location.protocol + "//" + window.location.host + "/weekly/" + String(toWeek);
