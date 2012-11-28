@@ -92,3 +92,8 @@ h3 {
 .media .pull-left{
   margin-right: 10px;
 }
+
+#login_btn {
+  margin-top: -10px;
+  margin-left: 5px;
+}
