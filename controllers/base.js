@@ -61,7 +61,7 @@
         cb( null, data );
       });
     }
-    //data.loggedIn = res.loggedIn;
+    data.loggedIn = res.loggedIn;
     cb( null, data ); //else no subctrls, just move along
   };
 

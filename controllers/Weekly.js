@@ -17,7 +17,7 @@
 
     this.payload = {
       title: "Your Week",
-      loggedIn: true // hold over until auth is better
+      offset: offset
     };
 
     this._view = new ViewClass();
