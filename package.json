@@ -1,14 +1,23 @@
 {
-    "name": "hopkins-planner"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.5.1"
-    , "mongoose": ">=2.6.3"
-    , "jade": ">= 0.0.1"
-    , "ezcrypto": ">=0.0.3"
-    , "mongodb": ">=0.9.8"
-    , "connect-mongodb": ">=1.1.2"
-    , "nodemailer": ">=0.2.4"
+  "name": "hopkins-planner",
+  "version": "0.0.2-1",
+  "private": true,
+  "engines": {
+    "node": "0.6.x",
+    "npm": "1.1.9"
+  },
+  "dependencies": {
+    "express": "2.5.1",
+    "mongoose": ">=2.6.3",
+    "jade": ">= 0.0.1",
+    "ezcrypto": ">=0.0.3",
+    "connect-mongodb": ">=1.1.2",
+    "nodemailer": ">=0.2.4",
+    "underscore": "1.4.x",
+    "async": "0.1.x"
+  },
+  "subdomain": "hopkins-planner",
+  "scripts": {
+    "start": "app.js"
   }
 }
