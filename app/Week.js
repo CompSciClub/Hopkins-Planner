@@ -13,7 +13,7 @@
       ["D", "D", "E", "D", "C"],
       ["E", "F", "F", "E", "F"],
       ["F", "G", "Activities", "G", "G"],
-      ["G", "H", "H", "H"]
+      ["G", "H", "BLANK", "H", "H"]
     ];
     var grayWeek = [
       ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
@@ -21,7 +21,7 @@
       ["D", "D", "E", "D", "D"],
       ["E", "E", "F", "E", "F"],
       ["F", "G", "Activities", "G", "G"],
-      ["H", "H", "H", "H"]
+      ["H", "H", "BLANK", "H", "H"]
     ];
     var week = (getWeek(date) === "maroon") ? maroonWeek.slice(0) : grayWeek;
     Holiday.find({timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, holidays){
