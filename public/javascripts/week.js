@@ -1,7 +1,8 @@
 /* Week.js */
 
 var eventDate,  // Date info for the event currently being created
-    setupDatepicker;
+    setupDatepicker, 
+    changeWeek;
 
 $(window).load(function(){
   setupDatepicker();
@@ -421,43 +422,45 @@ function removeEventNode(id){
 setupDatepicker = function(){
   var now = new Date(monday);
   $("#datepicker").attr("data-date", now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear());
-  $("#datepicker").datepicker({perm: true, weekStart: 1})
-    .on("changeDate", function(ev){
-      var date = (ev.date.getMonth() + 1) + "/" + ev.date.getDate();
-      var ow = 1000*60*60*24*7;
-      var toWeek = 0;
-      var nowInMs = now.getTime();
-      var thenInMs = ev.date.getTime();
-      if (now.getDay() == 0){
-        var dayNow = 7;
-      }
-      else {
-        var dayNow = now.getDay();
-      }
-      if (ev.date.getDay() == 0){
-        var dayThen = 7;
-      }
-      else {
-        var dayThen = ev.date.getDay();
-      }
-      var diff = thenInMs - nowInMs;
-      if (diff >= 0){
-        if (dayThen - dayNow > 0){
-          toWeek = Math.floor(diff/ow);
-        }
-        else {
-          toWeek = Math.ceil(diff/ow);
-        }
-      }
-      else if (diff < 0){
-        if (dayThen - dayNow > 0){
-          toWeek = Math.floor(diff/ow);
-        }
-        else {
-          toWeek = Math.ceil(diff/ow);
-        }
-      }
-      var appendage = window.location.protocol + "//" + window.location.host + "/weekly/" + String(toWeek + weekOffset);
-      window.location.href = appendage;
-    });
-  };
+  $("#datepicker").datepicker({perm: true, weekStart: 1}).on("changeDate", changeWeek);
+};
+
+changeWeek = function(ev){
+  var now = new Date(monday);
+  var date = (ev.date.getMonth() + 1) + "/" + ev.date.getDate();
+  var ow = 1000*60*60*24*7;
+  var toWeek = 0;
+  var nowInMs = now.getTime();
+  var thenInMs = ev.date.getTime();
+  if (now.getDay() == 0){
+    var dayNow = 7;
+  }
+  else {
+    var dayNow = now.getDay();
+  }
+  if (ev.date.getDay() == 0){
+    var dayThen = 7;
+  }
+  else {
+    var dayThen = ev.date.getDay();
+  }
+  var diff = thenInMs - nowInMs;
+  if (diff >= 0){
+    if (dayThen - dayNow > 0){
+      toWeek = Math.floor(diff/ow);
+    }
+    else {
+      toWeek = Math.ceil(diff/ow);
+    }
+  }
+  else if (diff < 0){
+    if (dayThen - dayNow > 0){
+      toWeek = Math.floor(diff/ow);
+    }
+    else {
+      toWeek = Math.ceil(diff/ow);
+    }
+  }
+  var appendage = window.location.protocol + "//" + window.location.host + "/weekly/" + String(toWeek + weekOffset);
+  window.location.href = appendage;
+};
