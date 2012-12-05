@@ -101,7 +101,7 @@ font-family:"Arial Verdana",sans-serif;
 
 .eventCheck{
   float: right;
-  margin-top: 4px !important;
+  margin-top: 0px !important;
   width: 20% !important;
 }
 
