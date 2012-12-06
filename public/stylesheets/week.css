@@ -153,3 +153,7 @@ font-family:"Arial Verdana",sans-serif;
 .datepicker::before, .datepicker::after{
   content: none !important;
 }
+
+#eventType input{
+  margin-top: 0 !important;
+}
