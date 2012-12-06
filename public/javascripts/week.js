@@ -193,8 +193,6 @@ function createEvent(newOrOld){
           $(".eventCheck").click(checkboxClicked);
           $(".event").popover({html: false, trigger: "hover"});
           addToEvents(currentEventLoc[0], newEvent.block, newEvent);
-          console.log(getEvents(currentEventLoc[0], newEvent.block, 0));
-          console.log(newEvent);
           closeDialog();
     }
   });
@@ -413,9 +411,7 @@ function addToEvents(day, block, event){
 function removeEvents(day, block, index){
 	console.log(day, block, index);
 	try{
-		var l = events[day][block].length - 1;
-		delete events[day][block][index];
-		if (l >= 0) events[day][block].length = l;
+		Array.prototype.splice.call(events[day][block],index,1); // a convoluted way to remove an event
 	}catch (err){
 		console.log(events[day][block][index]);
 	}
