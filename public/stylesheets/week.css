@@ -101,7 +101,7 @@ font-family:"Arial Verdana",sans-serif;
 
 .eventCheck{
   float: right;
-  margin-top: 0px !important;
+  margin-top: 4px !important;
   width: 20% !important;
 }
 
@@ -134,6 +134,11 @@ font-family:"Arial Verdana",sans-serif;
   .btn ui-link{
     display: none;
   }
+}
+
+#eventType{
+  float: right;
+  margin-top : -4px; !important;
 }
 
 #datepicker{
