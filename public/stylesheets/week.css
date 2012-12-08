@@ -136,6 +136,11 @@ font-family:"Arial Verdana",sans-serif;
   }
 }
 
+#eventType{
+  float: right;
+  margin-top : -4px; !important;
+}
+
 #datepicker{
   text-align: center;
   margin-top: 50px;

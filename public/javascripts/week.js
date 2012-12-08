@@ -170,14 +170,9 @@ function createEvent(newOrOld){
       newEvent.class += bootClasses[i];
     }
   }
-   // now add the element to the UI
-    // TODO re-style these event boxes
-    $(eventDate.node).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.class+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
-    $(".eventCheck").unbind("click", checkboxClicked);
-    $(".eventCheck").click(checkboxClicked);
-    $(".event").popover({html: false, trigger: "hover"});
   
   // now save the event on the server
+  var myNode = eventDate.node; //store node for later reference
   newEvent.node = null; // remove node because it's waaay too big to transfer and is unnecessary
   var url = (newOrOld == "new") ? "/event" : "/event/" + newEvent._id;
   $.ajax({
@@ -187,12 +182,20 @@ function createEvent(newOrOld){
     failure: function(err){
       console.log(err);
       error(err);
+    },
+    success: function(data){
+        eventDate._id = data.event._id;
+        newEvent._id = eventDate._id;
+        // now add the element to the UI
+          // TODO re-style these event boxes
+          $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.class+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
+          $(".eventCheck").unbind("click", checkboxClicked);
+          $(".eventCheck").click(checkboxClicked);
+          $(".event").popover({html: false, trigger: "hover"});
+          addToEvents(currentEventLoc[0], newEvent.block, newEvent);
+          closeDialog();
     }
   });
-  addToEvents(currentEventLoc[0], newEvent.block, newEvent);
-  console.log(getEvents(currentEventLoc[0], newEvent.block, 0));
-  console.log(newEvent);
-  closeDialog();
 }
 
 function deleteEvent(node){ // sends a "DELETE" ajax request, deletes event visually
@@ -408,9 +411,7 @@ function addToEvents(day, block, event){
 function removeEvents(day, block, index){
 	console.log(day, block, index);
 	try{
-		var l = events[day][block].length - 1;
-		delete events[day][block][index];
-		if (l >= 0) events[day][block].length = l;
+		Array.prototype.splice.call(events[day][block],index,1); // a convoluted way to remove an event
 	}catch (err){
 		console.log(events[day][block][index]);
 	}

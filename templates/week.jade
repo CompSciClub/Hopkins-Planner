@@ -84,6 +84,8 @@ block content
                   - className = block;
                 if (day == 2 && block == "H")
                   td(class="", style="display:none")
+                - if (day >= 2 && block == "H")
+                  - day += 1
                 
                 td(class="#{block} block", rowspan="#{rowspan}") #{className}
                   if (events[day] && events[day][block])
