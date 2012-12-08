@@ -28,7 +28,6 @@
 
   _ptype.prePrep = function(data, cb){
     var self = this, date, blocks;
-    console.log("preprep");
     date   = new Date(new Date().getTime() + (this.offset * 604800000)); // get the current date
     date   = Week.getMonday(date);
 
@@ -44,7 +43,6 @@
       for(var i = 0; i < user.classes.length; i++) {
         eventOwners.push(user.classes[i].toString());
       }
-      console.log("getting events");
       
       Event.find({owner: {$in: eventOwners}, timestamp: {$gte: date.getTime(), $lt: date.getTime() + 604800000}}, function(err, events){
         if (err){
@@ -52,9 +50,7 @@
         }
 
         var eventsObj = {};
-        console.log("checking for events");
         if (!(_.isNull(events) || _.isUndefined(events) || events.length === 0)){
-          console.log("got events");
           // got events
           for (var i = 0; i < events.length; i++){
             if (!eventsObj[events[i].day]){
@@ -73,7 +69,6 @@
         blocks.Saturday   = "Saturday";
         blocks.Activities = "Activities";
         blocks.Sunday     = "Sunday";
-        console.log(blocks.Saturday);
       
         Week.getWeekStructure(date, function(week){
           var params = {

@@ -72,7 +72,7 @@ block content
           for period in week
             tr
               each block, day in period
-                - var rowspan = "1"
+                - var rowspan = "1", realDay = day 
                 - if(day == 5 || day == 6 || block == "No School")
                   - rowspan = "6"
                 - else if(block == "Activities")
@@ -82,14 +82,12 @@ block content
                   - className = blocks[block];
                 - else
                   - className = block;
-                if (day == 2 && block == "H")
-                  td(class="", style="display:none")
                 - if (day >= 2 && block == "H")
-                  - day += 1
+                  - realDay += 1
                 
                 td(class="#{block} block", rowspan="#{rowspan}") #{className}
-                  if (events[day] && events[day][block])
-                    each eventObj in events[day][block]
+                  if (events[realDay] && events[realDay][block])
+                    each eventObj in events[realDay][block]
                       - var done = (eventObj.done) ? "done" : "";
                       .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height: 20px", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
                         .eventText #{escapeHtml(eventObj.name)}

@@ -51,7 +51,7 @@ $(document).ready(function(){
       }
     }
   ); // end td hover
-  $("#CalendarTable td").click(function(){
+  $("#CalendarTable td").click(function(e){
     // create a new event
     var block = $(this).attr('class').split(" ")[0]; // figure out which block the event is
     /** Modal Stuff */
@@ -63,7 +63,7 @@ $(document).ready(function(){
         eventDate.node = this; // store the current element so we can put the event box in later
 
       modalTypeVar = "new"; // set the edit type to new;
-      createEventModal("new", block);
+      createEventModal("new", block, e);
 	  currentEventLoc = [eventDate.day , block, -1];
     });
   // event popovers
@@ -266,15 +266,22 @@ function createEventModal(modalType, block, thisEvent){
 	
 	var mainTableRows = $("#CalendarTable tr");
 	for (var i = 1; i < mainTableRows.length; i++){
-		if (eventDate.day < 5){ // hard code weekends
+    if (i === mainTableRows.length - 1 && eventDate.day > 2){ // worst hack ever.... to deal with only 4 last periods
+			var output = $(mainTableRows[i]).children("td")[eventDate.day - 1];
+			output = $(output).attr("class").split(" ")[0];
+			classesToday.push(output);
+    }
+		else if (eventDate.day < 5){ // hard code weekends
 			var output = $(mainTableRows[i]).children("td")[eventDate.day];
 			output = $(output).attr("class").split(" ")[0];
 			classesToday.push(output);
-		} else if (eventDate.day == 5){
+		}
+    else if (eventDate.day == 5){
 			classesToday = ["Saturday"];
 		} else if (eventDate.day == 6){
 			classesToday = ["Sunday"];
-		}
+		} else if (block === "H"){
+    }
 	}
 	
     /* Populate the block selector */
