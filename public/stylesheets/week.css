@@ -136,11 +136,6 @@ font-family:"Arial Verdana",sans-serif;
   }
 }
 
-#eventType{
-  float: right;
-  margin-top : -4px; !important;
-}
-
 #datepicker{
   text-align: center;
   margin-top: 50px;
@@ -161,4 +156,16 @@ font-family:"Arial Verdana",sans-serif;
 
 #eventType input{
   margin-top: 0 !important;
+}
+
+#blockSelectorContainer textarea{
+  width: 90%;
+}
+
+#eventType input{
+  margin-right: 5px;
+}
+
+#eventCreatorModal{
+  width: 500px;
 }

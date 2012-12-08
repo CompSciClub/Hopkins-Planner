@@ -305,9 +305,11 @@ function createEventModal(modalType, block, thisEvent){
     /* Launch the Modal */
     $("#eventCreatorModal").modal({
       keyboard: true,
-      backdrop: "static",
-      show: true
+      backdrop: "static"
     });  
+
+    $("#eventCreatorModal").modal("show");
+    
 }
 
 // closes and resets the modal dialog

@@ -97,45 +97,69 @@ block content
                           input.eventCheck(type="checkbox", checked="checked")
                         else
                           input.eventCheck(type="checkbox")
-    #eventCreatorModal.modal.hide.fade.in.
-      <div class="modal-header">
-        <a data-dismiss="modal" class="close">&times;</a>
-        <h3>
-          <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
-          <br />
-          <small id="eventDate"><span class="eventBlock"></span> on <span class="eventDate"></span></small>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div style="width:55%;float:left;height:130px;">
-            <select name="normalSelect" id="blockSelect">
-            </select>
-            <br />
-            <br />
-            <textarea id="modalDescriptionBox">Description here</textarea>
-          </div>
-          <div id="eventType">
-            <p><input name="modalRadio1" checked="true" type="radio"> Homework</p>
-            <p><input name="modalRadio1" type="radio"> Quiz</p>
-            <p><input name="modalRadio1" type="radio"> Test</p>
-            <p><input name="modalRadio1" type="radio"> Project</p>
-            <p><input name="modalRadio1" type="radio"> Reminder</p>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <a id="deleteButton" style="float:left;" class="btn btn-danger">
-          <i class="icon-trash"></i>
-          Delete
-        </a>
-        <a id="saveButton" class="btn btn-primary">
-          <i class="icon-ok icon-white"></i>
-          Save
-        </a>
-        <a id="cancelButton" class="btn btn-secondary">
-          <i class="icon-remove icon-black"></i>
-          Cancel
-        </a>
-      </div>
-    </div>
-    <!-- End Modal Content -->
+    <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+    // start modal content
+    div.
+      <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Modal header</h3>
+        </div>
+        <div class="modal-body">
+          <p>One fine body…</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button class="btn btn-primary">Save changes</button>
+        </div>
+      </div> 
+    #eventCreatorModal.modal.hide.fade(role="dialog")
+      .modal-header
+        a.close(data-dismiss="modal") &times;
+        h3
+          input#eventNameInput.xlarge(type="text", value="Event Name")
+          br
+          small#eventDate
+            span.eventBlock
+            |  on 
+            span.eventDate
+
+      .modal-body
+        form
+          .row-fluid
+            .span6
+              #blockSelectorContainer
+                select#blockSelect(name="normalSelect")
+                br
+                br
+                textarea#modalDescriptionBox Description here
+            .span4.offset2
+              #eventType
+                p(style="margin-left: 0")
+                  input(name="modalRadio1", checked="true", type="radio") 
+                  | Homework
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Quiz
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Test
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Project
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Reminder
+
+      .modal-footer
+        a#deleteButton.btn.btn-danger(style='float: left;')
+          i.icon-trash
+          | Delete
+        a#saveButton.btn.btn-primary
+          i.icon-ok.icon-white
+          | Save
+        a#cancelButton.btn.btn-secondary
+          i.icon-remove.icon-black
+          | Cancel
+
+    // End Modal Content

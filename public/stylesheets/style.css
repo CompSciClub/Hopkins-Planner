@@ -64,11 +64,6 @@ a {
   padding-bottom: 10px;
 }
 
-#modalDescriptionBox{
-  max-height: 200px;
-  max-width: 250px;
-}
-
 .modal.small{
   width: 250px;
   left: 50%;
@@ -81,12 +76,6 @@ a {
 .link{
   cursor: pointer;
   text-decoration: underline;
-}
-.modal{
-  position: fixed !important;
-  max-height: 500px;
-  margin-top: -250px;
-  top: 50% !important;
 }
 .navbar ul.nav{
   float: right;
