@@ -139,7 +139,7 @@ function editEvent(node){
 	var thisEvent = {};
 	thisEvent.description = $(node).attr("data-content");
 	thisEvent.name = $(node).attr("data-original-title");
-	thisEvent.class = $(node).attr("class").split(" ")[2];
+	thisEvent.bootClass = $(node).attr("class").split(" ")[2];
   }
   thisEvent.node = node;
   currentEventLoc = [eventDate.day, block, getChildIndex(node)-1];
@@ -153,7 +153,7 @@ function createEvent(newOrOld){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
-  newEvent.class   = ""
+  newEvent.bootClass   = ""
   if (newOrOld == "old"){
     newEvent._id = eventDate._id;
 	removeEventNode(newEvent._id);
@@ -167,7 +167,7 @@ function createEvent(newOrOld){
   var bootClasses = getBootClasses();
   for (var i = 0; i < radios.length; i++){
     if (radios[i].checked){
-      newEvent.class += bootClasses[i];
+      newEvent.bootClass += bootClasses[i];
     }
   }
   
@@ -188,7 +188,7 @@ function createEvent(newOrOld){
         newEvent._id = eventDate._id;
         // now add the element to the UI
           // TODO re-style these event boxes
-          $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.class+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
+          $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
           $(".eventCheck").unbind("click", checkboxClicked);
           $(".eventCheck").click(checkboxClicked);
           $(".event").popover({html: false, trigger: "hover"});
