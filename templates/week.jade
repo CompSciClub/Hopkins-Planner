@@ -1,0 +1,163 @@
+extends layout
+
+block scripts
+  script(type="text/javascript")
+    var monday = #{date.getTime()},
+        blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}")),
+        weekOffset = #{offset},
+        events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
+  script(type="text/javascript", src="/javascripts/bootstrap-datepicker.js")
+  script(type="text/javascript", src="/javascripts/index.js")
+  <script src="/javascripts/week.js"></script>
+block styles
+  link(rel="stylesheet", href="/stylesheets/datepicker.css")
+  <link rel="stylesheet" href="/stylesheets/week.css">
+
+
+block sidebar
+  a.btn.arrow-left(href="/weekly/#{offset - 1}")
+    i.icon-arrow-left
+  a.btn.arrow-right(href="/weekly/#{offset + 1}", style="margin-left: 5px")
+    i.icon-arrow-right
+
+  #datepicker.date
+
+block content
+  .content
+    center
+      table(id="singleDay", class="table table-bordered", style="width:100% !important")
+        thead
+          td.head
+            center 12/25
+          tbody
+           tr.block1
+              td Block 1
+           tr.block
+              td Block 2
+           tr.block1
+              td Block 3
+           tr.block
+              td Block 4
+           tr.block1 
+              td Block 5
+           tr.block 
+              td Block 6
+
+    center
+      table(id="CalendarTable", class="table table-bordered", style="width:100% !important")
+        colgroup
+          col.monday
+          col.tuesday
+          col.wednesday
+          col.thursday
+          col.friday
+          col.weekend
+          col.weekend
+        tbody
+          tr
+            th.block Monday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Tuesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Wednesday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Thursday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.block Friday #{date.getMonth() + 1}/#{date.getDate()}
+            - date = addDay(date);
+            th.weekend.block(colspan="2") 
+              | Weekend #{date.getMonth() + 1}/#{date.getDate()}
+              - date = addDay(date)
+              | - #{date.getMonth() + 1}/#{date.getDate()}
+          for period in week
+            tr
+              each block, day in period
+                - var rowspan = "1", realDay = day 
+                - if(day == 5 || day == 6 || block == "No School")
+                  - rowspan = "6"
+                - else if(block == "Activities")
+                  - rowspan = "2"
+                - var className = "";
+                - if(blocks[block])
+                  - className = blocks[block];
+                - else
+                  - className = block;
+                - if (day >= 2 && block == "H")
+                  - realDay += 1
+                
+                td(class="#{block} block", rowspan="#{rowspan}") #{className}
+                  if (events[realDay] && events[realDay][block])
+                    each eventObj in events[realDay][block]
+                      - var done = (eventObj.done) ? "done" : "";
+                      .label.success.event(class="#{eventObj.class} #{done}", eventId = eventObj._id, style="height: 20px", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
+                        .eventText #{escapeHtml(eventObj.name)}
+                        if eventObj.done
+                          input.eventCheck(type="checkbox", checked="checked")
+                        else
+                          input.eventCheck(type="checkbox")
+    <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+    // start modal content
+    div.
+      <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Modal header</h3>
+        </div>
+        <div class="modal-body">
+          <p>One fine body…</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button class="btn btn-primary">Save changes</button>
+        </div>
+      </div> 
+    #eventCreatorModal.modal.hide.fade(role="dialog")
+      .modal-header
+        a.close(data-dismiss="modal") &times;
+        h3
+          input#eventNameInput.xlarge(type="text", value="Event Name")
+          br
+          small#eventDate
+            span.eventBlock
+            |  on 
+            span.eventDate
+
+      .modal-body
+        form
+          .row-fluid
+            .span6
+              #blockSelectorContainer
+                select#blockSelect(name="normalSelect")
+                br
+                br
+                textarea#modalDescriptionBox Description here
+            .span4.offset2
+              #eventType
+                p(style="margin-left: 0")
+                  input(name="modalRadio1", checked="true", type="radio") 
+                  | Homework
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Quiz
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Test
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Project
+                p
+                  input(name='modalRadio1', type='radio')
+                  | Reminder
+
+      .modal-footer
+        a#deleteButton.btn.btn-danger(style='float: left;')
+          i.icon-trash
+          | Delete
+        a#saveButton.btn.btn-primary
+          i.icon-ok.icon-white
+          | Save
+        a#cancelButton.btn.btn-secondary
+          i.icon-remove.icon-black
+          | Cancel
+
+    // End Modal Content

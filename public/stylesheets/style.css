@@ -54,9 +54,6 @@ a {
   padding-bottom: 0;
 }
 
-#signUp_btn{
-  margin-top:0px;
-}
 
 .heroImage{
   width: 500px;
@@ -65,11 +62,6 @@ a {
 }
 .modal-header{
   padding-bottom: 10px;
-}
-
-#modalDescriptionBox{
-  max-height: 200px;
-  max-width: 250px;
 }
 
 .modal.small{
@@ -84,12 +76,6 @@ a {
 .link{
   cursor: pointer;
   text-decoration: underline;
-}
-.modal{
-  position: fixed !important;
-  max-height: 500px;
-  margin-top: -250px;
-  top: 50% !important;
 }
 .navbar ul.nav{
   float: right;

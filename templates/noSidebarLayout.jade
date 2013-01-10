@@ -1,7 +1,8 @@
 !!!
 html
   head
-    title= title
+    title
+      |  #{title} | Hopkins Planner
 
     // for IE6-8 support of HTML elements
     // if lt IE 9
@@ -9,7 +10,7 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/stylesheets/bootstrap.min.css")
     link(rel="stylesheet", href="/stylesheets/bootstrap.min.responsive.css")
-    script(type="text/javascript", src="/javascripts/jquery.min.js")
+    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
     script(type="text/javascript", src="/javascripts/bootstrap.min.js")
 
     block scripts
@@ -36,6 +37,7 @@ html
     .container
       block content
       .push
-      block footer
-        footer(class="footer")
-          p Brought to you by the Hopkins Computer Science Club.
+      if title != "Hopkins Planner"
+        block footer
+          footer(class="footer")
+            p Brought to you by the Hopkins Computer Science Club.

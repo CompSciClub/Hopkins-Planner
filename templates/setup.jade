@@ -26,40 +26,40 @@ block content
   form.form-horizontal(action="/setup", method="POST")
     h3 Your Classes
     .row
-      .span8
+      .span9
         fieldset
-            .control-group
-              label.control-label(for="aBlock") A block:
-              .controls
-                input.input-large.block_input(type="Text", name="aBlock", value="#{blocks.A || ""}")
-            .control-group
-              label.control-label(for="bBlock") B block:
-              .controls
-                input.block_input(type="Text", name="bBlock", value="#{blocks.B || ""}")
-            .control-group
-              label.control-label(for="cBlock") C block:
-              .controls
-                input.block_input(type="Text", name="cBlock", value="#{blocks.C || ""}")
-            .control-group
-              label.control-label(for="dBlock") D block:
-              .controls
-                input.block_input(type="Text", name="dBlock", value="#{blocks.D || ""}")
-            .control-group
-              label.control-label(for="eBlock") E block:
-              .controls
-                input.block_input(type="Text", name="eBlock", value="#{blocks.E || ""}")
-            .control-group
-              label.control-label(for="fBlock") F block:
-              .controls
-                input.block_input(type="Text", name="fBlock", value="#{blocks.F || ""}")
-            .control-group
-              label.control-label(for="gBlock") G block:
-              .controls
-                input.block_input(type="Text", name="gBlock", value="#{blocks.G || ""}")
-            .control-group
-              label.control-label(for="hBlock") H block:
-              .controls
-                input.block_input(type="Text", name="hBlock", value="#{blocks.H || ""}")
+          .control-group
+            label.control-label(for="aBlock") A block:
+            .controls
+              input.input-large.block_input(type="Text", name="aBlock", value="#{blocks.A || ""}")
+          .control-group
+            label.control-label(for="bBlock") B block:
+            .controls
+              input.block_input(type="Text", name="bBlock", value="#{blocks.B || ""}")
+          .control-group
+            label.control-label(for="cBlock") C block:
+            .controls
+              input.block_input(type="Text", name="cBlock", value="#{blocks.C || ""}")
+          .control-group
+            label.control-label(for="dBlock") D block:
+            .controls
+              input.block_input(type="Text", name="dBlock", value="#{blocks.D || ""}")
+          .control-group
+            label.control-label(for="eBlock") E block:
+            .controls
+              input.block_input(type="Text", name="eBlock", value="#{blocks.E || ""}")
+          .control-group
+            label.control-label(for="fBlock") F block:
+            .controls
+              input.block_input(type="Text", name="fBlock", value="#{blocks.F || ""}")
+          .control-group
+            label.control-label(for="gBlock") G block:
+            .controls
+              input.block_input(type="Text", name="gBlock", value="#{blocks.G || ""}")
+          .control-group
+            label.control-label(for="hBlock") H block:
+            .controls
+              input.block_input(type="Text", name="hBlock", value="#{blocks.H || ""}")
         h3 About You
         fieldset
           .control-group
@@ -90,12 +90,12 @@ block content
                 | With weekly reminders about my upcoming week.
               label.checkbox
                 input#important.checkbox(type="checkbox", name="important")
-                | For important events such as tests, quizes, and projects.
+                | For important events such as tests, quizzes, and projects.
 
         .form-actions
           button.btn.btn-success(type="submit") Save
           button.btn(href="/", style="margin-left: 10px;") Cancel
-      .span4
+      .span3
         h3 Made for You
         p
         | Hopkins Planner is built around you. Use this screen to personalize it.

@@ -44,18 +44,6 @@ td.Sunday.block{
   width: 10%;
 }
 
-#datepicker{
-  width: 269px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.arrows{
-  width: 80px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
 .event{
   width:100%;
   margin-bottom:7px;
@@ -87,6 +75,15 @@ td.Sunday.block{
   background-color: #997777;
 }
 
+.eventText{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80%;
+  float: left;
+  cursor: pointer;
+}
+
 .container{
   width: auto !important;
 }
@@ -105,10 +102,7 @@ font-family:"Arial Verdana",sans-serif;
 .eventCheck{
   float: right;
   margin-top: 4px !important;
-}
-
-#deleteButton{
-  float: left;
+  width: 20% !important;
 }
 
 .row-fluid .span2{
@@ -117,16 +111,7 @@ font-family:"Arial Verdana",sans-serif;
 
 #CalendarTable{
   display: table;
-}
-
-div.ui-datepicker {
-    font-size: 70% !important;
-    z-index: 1;
-    position: absolute;
-}
-
-div.ui-helper-clearfix::after {
-        display: inline;
+  table-layout: fixed;
 }
 
 #singleDay{
@@ -150,6 +135,37 @@ div.ui-helper-clearfix::after {
     display: none;
   }
 }
-#singleDay{
-  display: hidden;
+
+#datepicker{
+  text-align: center;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 224px;
+}
+
+.datepicker.dropdown-menu{
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.datepicker::before, .datepicker::after{
+  content: none !important;
+}
+
+#eventType input{
+  margin-top: 0 !important;
+}
+
+#blockSelectorContainer textarea{
+  width: 90%;
+}
+
+#eventType input{
+  margin-right: 5px;
+}
+
+#eventCreatorModal{
+  width: 500px;
 }

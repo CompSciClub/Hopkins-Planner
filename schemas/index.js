@@ -24,8 +24,8 @@ var Schema = mongoose.Schema,
 exports.User = new Schema({
   email     : {type: String, validate: [validateEmail, 'an email is required'], index: { unique: true }},
   password  : {type: String, validate: [validatePresenceOf, 'a password is required']},
+  name: {type: String, validate: [validatePresenceOf, 'a name is required']},
   salt: {type: String},
-  name: String,
   is_teacher: Boolean,
   classes: [String],
   user_id   : ObjectId,
@@ -67,6 +67,12 @@ exports.Holiday = new Schema({
   day: Number
 });
 
+exports.Event.pre("save", function(next){
+  this.name = escapeHtml(this.name);
+  this.description = escapeHtml(this.description);
+  next();
+});
+
 // Setup Database models
 User   = mongoose.model("User", exports.User);
 Event  = mongoose.model("Event", exports.Event);
@@ -74,6 +80,15 @@ Class  = mongoose.model("Class", exports.Class);
 Blocks = mongoose.model("Blocks", Blocks);
 Holiday = mongoose.model("Holiday", exports.Holiday);
 
+function escapeHtml(unsafe) {
+  return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/(\r\n|[\r\n])/g, "<br />")
+      .replace(/'/g, "&#039;");
+}
 function validatePresenceOf(value){
   return value && value.length;
 }
