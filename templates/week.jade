@@ -75,15 +75,11 @@ block content
                 - var rowspan = "1", realDay = day 
                 - if(day == 5 || day == 6 || block == "No School")
                   - rowspan = "6"
-                - else if(block == "Activities")
-                  - rowspan = "2"
                 - var className = "";
                 - if(blocks[block])
                   - className = blocks[block];
                 - else
                   - className = block;
-                - if (day >= 2 && block == "H")
-                  - realDay += 1
                 
                 td(class="#{block} block", rowspan="#{rowspan}") #{className}
                   if (events[realDay] && events[realDay][block])
@@ -95,22 +91,6 @@ block content
                           input.eventCheck(type="checkbox", checked="checked")
                         else
                           input.eventCheck(type="checkbox")
-    <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
-    // start modal content
-    div.
-      <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h3 id="myModalLabel">Modal header</h3>
-        </div>
-        <div class="modal-body">
-          <p>One fine body…</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-          <button class="btn btn-primary">Save changes</button>
-        </div>
-      </div> 
     #eventCreatorModal.modal.hide.fade(role="dialog")
       .modal-header
         a.close(data-dismiss="modal") &times;

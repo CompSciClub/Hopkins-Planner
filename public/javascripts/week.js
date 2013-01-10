@@ -6,11 +6,10 @@ var eventDate,  // Date info for the event currently being created
 
 $(window).load(function(){
   setupDatepicker();
-  $("#datepicker").datepicker('show');
+  $("#datepicker").datepicker("show");
 });
 
 $(document).ready(function(){
-      $("#datepicker").datepicker({ autoSize: false }, { onSelect: function(dateText, inst){} });
   /* For IE Compatibility */
   if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(obj, start) {
@@ -267,17 +266,10 @@ function createEventModal(modalType, block, thisEvent){
 	
 	var mainTableRows = $("#CalendarTable tr");
 	for (var i = 1; i < mainTableRows.length; i++){
-    if (i === mainTableRows.length - 1 && eventDate.day > 2){ // worst hack ever.... to deal with only 4 last periods
-			var output = $(mainTableRows[i]).children("td")[eventDate.day - 1];
-			output = $(output).attr("class").split(" ")[0];
-			classesToday.push(output);
-    }
-		else if (eventDate.day < 5){ // hard code weekends
-			var output = $(mainTableRows[i]).children("td")[eventDate.day];
-			output = $(output).attr("class").split(" ")[0];
-			classesToday.push(output);
-		}
-    else if (eventDate.day == 5){
+    var output = $(mainTableRows[i]).children("td")[eventDate.day];
+    output = $(output).attr("class").split(" ")[0];
+    classesToday.push(output);
+    if (eventDate.day == 5){
 			classesToday = ["Saturday"];
 		} else if (eventDate.day == 6){
 			classesToday = ["Sunday"];
@@ -433,7 +425,7 @@ function removeEventNode(id){
 setupDatepicker = function(){
   var now = new Date(monday);
   $("#datepicker").attr("data-date", now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear());
-  $("#datepicker").datepicker({perm: true, weekStart: 1}).on("changeDate", changeWeek);
+  $("#datepicker").datepicker({perm: true, weekStart: 1, autoSize: false}).on("changeDate", changeWeek);
 };
 
 changeWeek = function(ev){
