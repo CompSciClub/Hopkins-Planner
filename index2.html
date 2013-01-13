@@ -1,0 +1,44 @@
+<!DOCTYPE html><html><head><title>Your Week | Hopkins Planner</title><!-- for IE6-8 support of HTML elements--><!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/stylesheets/bootstrap.min.css"><script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script><script type="text/javascript" src="/javascripts/bootstrap.min.js"></script><script type="text/javascript">var monday = 1356325200000,
+    blocks = JSON.parse(decodeURIComponent("%7B%22A%22%3A%22French%22%2C%22B%22%3A%22Math%22%2C%22C%22%3A%22Orchestra%22%2C%22D%22%3A%22AC2%22%2C%22E%22%3A%22Study%20Hall%22%2C%22F%22%3A%22Chemistry%22%2C%22G%22%3A%22Weight%20Training%22%2C%22H%22%3A%22English%22%2C%22_id%22%3A%2250bfd721cd3ca00000000005%22%2C%22Activities%22%3A%22Activities%22%2C%22Sunday%22%3A%22Sunday%22%2C%22Saturday%22%3A%22Saturday%22%7D")),
+    weekOffset = 0,
+    events = JSON.parse(decodeURIComponent("%7B%223%22%3A%7B%22H%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22Event%20Name%22%2C%22timestamp%22%3A1356584400000%2C%22day%22%3A3%2C%22block%22%3A%22H%22%2C%22description%22%3A%22No%20description%22%2C%22class%22%3A%22hw%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%2250d9da65e92ec682dd00001a%22%2C%22__v%22%3A0%2C%22admin%22%3Afalse%2C%22done%22%3Afalse%7D%5D%7D%2C%225%22%3A%7B%22Saturday%22%3A%5B%7B%22type%22%3A%22individual%22%2C%22name%22%3A%22testing%22%2C%22timestamp%22%3A1356757200000%2C%22day%22%3A5%2C%22block%22%3A%22Saturday%22%2C%22description%22%3A%22No%20description%22%2C%22class%22%3A%22hw%22%2C%22owner%22%3A%224f1f51f287f4c3010000005a%22%2C%22_id%22%3A%2250e06541e92ec682dd00001b%22%2C%22__v%22%3A0%2C%22admin%22%3Afalse%2C%22done%22%3Afalse%7D%5D%7D%7D"));</script><script type="text/javascript" src="/javascripts/bootstrap-datepicker.js"></script><script type="text/javascript" src="/javascripts/index.js"></script><script src="/javascripts/week.js"></script><link rel="stylesheet" href="/stylesheets/style.css"><style>.brand {margin-left: 20px !important;}</style><link rel="stylesheet" href="/stylesheets/datepicker.css"><link rel="stylesheet" href="/stylesheets/week.css"></head><body data-spy="scroll"><div class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container"><a href="/" class="brand">Matt Dailis's Planner</a><div class="nav-collapse"><ul class="nav"><li><a href="/logout">Logout</a></li><li><a href="/setup">Preferences</a></li></ul></div></div></div></div><div class="container-fluid"><div class="row-fluid"><div class="span2"><a href="/weekly/-1" class="btn arrow-left"><i class="icon-arrow-left"></i></a><a href="/weekly/1" style="margin-left: 5px" class="btn arrow-right"><i class="icon-arrow-right"></i></a><div id="datepicker" class="date"></div></div><div class="span10"><div class="content"><center><table id="singleDay" style="width:100% !important" class="table table-bordered"><thead><td class="head"><center>12/25</center></td><tbody><tr class="block1"><td>Block 1</td></tr><tr class="block"><td>Block 2</td></tr><tr class="block1"><td>Block 3</td></tr><tr class="block"><td>Block 4</td></tr><tr class="block1"> <td>Block 5</td></tr><tr class="block"> <td>Block 6</td></tr></tbody></thead></table></center><center><table id="CalendarTable" style="width:100% !important" class="table table-bordered"><colgroup><col class="monday"><col class="tuesday"><col class="wednesday"><col class="thursday"><col class="friday"><col class="weekend"><col class="weekend"></colgroup><tbody><tr><th class="block">Monday 12/24</th><th class="block">Tuesday 12/25</th><th class="block">Wednesday 12/26</th><th class="block">Thursday 12/27</th><th class="block">Friday 12/28</th><th colspan="2" class="weekend block"> 
+Weekend 12/29- 12/30</th></tr><tr><td rowspan="1" class="A block">French</td><td rowspan="1" class="B block">Math</td><td rowspan="1" class="A block">French</td><td rowspan="1" class="B block">Math</td><td rowspan="1" class="B block">Math</td><td rowspan="6" class="Saturday block">Saturday<div eventId="50e06541e92ec682dd00001b" style="height: 20px" rel="popover" data-content="No description" data-original-title="testing" class="label success event hw "><div class="eventText">testing</div><input type="checkbox" class="eventCheck"></div></td><td rowspan="6" class="Sunday block">Sunday</td></tr><tr><td rowspan="1" class="C block">Orchestra</td><td rowspan="1" class="C block">Orchestra</td><td rowspan="1" class="B block">Math</td><td rowspan="1" class="C block">Orchestra</td><td rowspan="1" class="A block">French</td></tr><tr><td rowspan="1" class="D block">AC2</td><td rowspan="1" class="D block">AC2</td><td rowspan="1" class="E block">Study Hall</td><td rowspan="1" class="D block">AC2</td><td rowspan="1" class="D block">AC2</td></tr><tr><td rowspan="1" class="E block">Study Hall</td><td rowspan="1" class="E block">Study Hall</td><td rowspan="1" class="F block">Chemistry</td><td rowspan="1" class="E block">Study Hall</td><td rowspan="1" class="F block">Chemistry</td></tr><tr><td rowspan="1" class="F block">Chemistry</td><td rowspan="1" class="G block">Weight Training</td><td rowspan="2" class="Activities block">Activities</td><td rowspan="1" class="G block">Weight Training</td><td rowspan="1" class="G block">Weight Training</td></tr><tr><td rowspan="1" class="H block">English</td><td rowspan="1" class="H block">English</td><td style="display:none" class=""></td><td rowspan="1" class="H block">English</td><td rowspan="1" class="H block">English<div eventId="50d9da65e92ec682dd00001a" style="height: 20px" rel="popover" data-content="No description" data-original-title="Event Name" class="label success event hw "><div class="eventText">Event Name</div><input type="checkbox" class="eventCheck"></div></td></tr></tbody></table></center><div id="eventCreatorModal" class="modal hide fade in"><div class="modal-header">
+  <a data-dismiss="modal" class="close">&times;</a>
+  <h3>
+    <input id="eventNameInput" class="xlarge" type="text" value="Event Name">
+    <br />
+    <small id="eventDate"><span class="eventBlock"></span> on <span class="eventDate"></span></small>
+</div>
+<div class="modal-body">
+  <form>
+    <div style="width:55%;float:left;height:130px;">
+      <select name="normalSelect" id="blockSelect">
+      </select>
+      <br />
+      <br />
+      <textarea id="modalDescriptionBox">Description here</textarea>
+    </div>
+    <div id="eventType">
+      <p><input name="modalRadio1" checked="true" type="radio"> Homework</p>
+      <p><input name="modalRadio1" type="radio"> Quiz</p>
+      <p><input name="modalRadio1" type="radio"> Test</p>
+      <p><input name="modalRadio1" type="radio"> Project</p>
+      <p><input name="modalRadio1" type="radio"> Reminder</p>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <a id="deleteButton" style="float:left;" class="btn btn-danger">
+    <i class="icon-trash"></i>
+    Delete
+  </a>
+  <a id="saveButton" class="btn btn-primary">
+    <i class="icon-ok icon-white"></i>
+    Save
+  </a>
+  <a id="cancelButton" class="btn btn-secondary">
+    <i class="icon-remove icon-black"></i>
+    Cancel
+  </a>
+</div></div></div>
+<!-- End Modal Content --></div></div></div><div class="push"></div><footer class="footer"><p>Brought to you by the Hopkins Computer Science Club.</p></footer></div></body></html>
