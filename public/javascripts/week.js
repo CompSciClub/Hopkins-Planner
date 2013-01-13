@@ -5,8 +5,12 @@ var eventDate,  // Date info for the event currently being created
     changeWeek;
 
 $(window).load(function(){
+  var now = new Date(monday);
+  var ds = now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear()
+  $(".row-fluid").children(".span2").append('<div id="datepicker2" style="display:none" class="input-append date" id="dp3" data-date="'+ ds +'" data-date-format="mm/dd/yyyy"><input style="width:80%" size="16" type="text" value="'+ ds +'" readonly>				<span class="add-on"><i class="icon-calendar"></i></span>			  </div>');
   setupDatepicker();
   $("#datepicker").datepicker("show");
+  placeDatePicker()
 });
 
 $(document).ready(function(){
@@ -108,6 +112,22 @@ $(document).ready(function(){
     }
   });
 });
+
+$(window).resize(placeDatePicker);
+
+function placeDatePicker(){
+	var width = $(window).width();
+	console.log(width)
+	if (width < 1360){
+		$(".datepicker, .dropdown-menu").hide();
+		$("#datepicker2").show();
+		$("#datepicker2").datepicker({weekStart: 1, autoSize: false}).on("changeDate", changeWeek);
+	} else{
+		$(".datepicker, .dropdown-menu").show();
+		$("#datepicker2").hide()
+		$("#datepicker2").datepicker("hide")
+	}
+}
 
 function updateEventClickHandler(){
 	$(".event").click(function(event){
