@@ -1,0 +1,171 @@
+/* Week.css */
+
+/*#CalendarTable td.A.block{background-color: #7b576b;}
+#CalendarTable td.B.block{background-color: #ffff73;}
+#CalendarTable td.C.block{background-color: #ff6161;}
+#CalendarTable td.D.block{background-color: #80ff80;}
+#CalendarTable td.E.block{background-color: #8484ff;}
+#CalendarTable td.F.block{background-color: #f29365;}
+#CalendarTable td.G.block{background-color: #;}
+#CalendarTable td.H.block{background-color: #;}*/
+/*#CalendarTable td.block{
+  opacity: 0.6;
+}*/
+
+td.block{
+  width: 16%;
+  height: 90px;
+}
+
+td.head{
+  font-weight:bold;
+}
+
+tr.block{
+  width: 16%;
+  height: 90px;
+}
+
+tr.block1{
+  width: 16%;
+  height: 90px;
+  background-color:#f9f9f9;
+}
+
+
+tr th.block{
+  text-align: center
+}
+
+td.Saturday.block{
+  width: 10%;
+}
+td.Sunday.block{
+  width: 10%;
+}
+
+.event{
+  width:100%;
+  margin-bottom:7px;
+  text-transform:none !important; /* by default label makes it all caps...we don't necessarily want that */
+  font-family: Verdana;
+  border-radius: 6px;
+  background-color: #242DA6;
+  padding-left: 5px;
+  cursor:pointer;
+}
+.event.done{
+  opacity: 0.4;
+  zoom: 1;
+  filter: aplha(opactiy = 40);
+}
+.event.test{
+  background-color: #A62424;
+}
+.event.hw{
+  background-color: #242DA6;
+}
+.event.quiz{
+  background-color: #731308;
+}
+.event.project{
+  background-color: #4B89DB;
+}
+.event.reminder{
+  background-color: #997777;
+}
+
+.eventText{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80%;
+  float: left;
+  cursor: pointer;
+}
+
+.container{
+  width: auto !important;
+}
+
+td{
+font-family:"Arial Verdana",sans-serif;
+}
+
+#eventDate{
+  position: relative;
+  top: 3px;
+}
+
+.monday,.wednesday,.friday{background-color:#f9f9f9;}
+
+.eventCheck{
+  /*float: right;*/
+  /*margin-top: 4px !important;*/
+  width: 20% !important;
+}
+
+.row-fluid .span2{
+  text-align: center;
+}
+
+#CalendarTable{
+  display: table;
+  table-layout: fixed;
+}
+
+#singleDay{
+  display: none;
+}
+
+@media screen and (max-width:480px) {
+  #CalendarTable{
+    display: none;
+  }
+  #singleDay{
+    display: table;
+  }
+  .btn.arrow-right{
+    display: none;
+  }
+  .btn.arrow-left{
+    display: none;
+  }
+  .btn ui-link{
+    display: none;
+  }
+}
+
+#datepicker{
+  text-align: center;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 224px;
+}
+
+.datepicker.dropdown-menu{
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.datepicker::before, .datepicker::after{
+  content: none !important;
+}
+
+#eventType input{
+  margin-top: 0 !important;
+}
+
+#blockSelectorContainer textarea{
+  width: 90%;
+}
+
+#eventType input{
+  margin-right: 5px;
+}
+
+#eventCreatorModal{
+  width: 500px;
+}
