@@ -7,7 +7,7 @@ var eventDate,  // Date info for the event currently being created
 $(window).load(function(){
   var now = new Date(monday);
   var ds = now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear()
-  $(".row-fluid").children(".span2").append('<div id="datepicker2" style="display:none" class="input-append date" id="dp3" data-date="'+ ds +'" data-date-format="mm/dd/yyyy"><input style="width:80%" size="16" type="text" value="'+ ds +'" readonly>				<span class="add-on"><i class="icon-calendar"></i></span>			  </div>');
+  $(".row-fluid").children(".span2").append('<div id="datepicker2" style="display:none" class="input-append date" id="dp3" data-date="'+ ds +'" data-date-format="mm/dd/yyyy"><input style="width:100px" size="16" type="text" value="'+ ds +'" readonly>				<span class="add-on"><i class="icon-calendar"></i></span>			  </div>');
   setupDatepicker();
   $("#datepicker").datepicker("show");
   placeDatePicker()
