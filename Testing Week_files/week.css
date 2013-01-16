@@ -134,6 +134,16 @@ font-family:"Arial Verdana",sans-serif;
   .btn ui-link{
     display: none;
   }
+  #eventCreatorModal{
+    width: 85% !important;
+  }
+  #blockSelect{
+	width: 75% !important;
+  }
+  #eventNameInput{
+	width: 75% !important;
+  }
+
 }
 
 #datepicker{

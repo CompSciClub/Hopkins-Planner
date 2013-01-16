@@ -4,6 +4,9 @@ var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
     changeWeek;
 
+eventDate = getCurrentDateString(new Date(monday));
+eventDate.day = 1;
+	
 $(window).load(function(){
   var now = new Date(monday);
   var ds = now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear()
@@ -35,6 +38,21 @@ $(document).ready(function(){
 
   modalTypeVar = "new"; // whether editing (old) or creating (new). New by default
   currentEventLoc = [];
+  
+  /** for Mobile screen */
+  $("#singleDay thead td center").html(eventDate.string);
+  var ct = getClassesToday(eventDate.day-1);
+  var j = 1;
+  console.log(ct)
+  for (blockName in blocks){
+      if ($.inArray(blockName, ct) != -1){
+        $("#mobileBlock" + j + '').html(blocks[blockName]);
+		$("#mobileBlock" + j + '').click(mobileTDClick);
+		j += 1;
+	  }
+  }
+  
+  
   
   /** EVENT HANDLERS: */
   $("#CalendarTable td").hover(
@@ -112,6 +130,14 @@ $(document).ready(function(){
     }
   });
 });
+
+function mobileTDClick(event){
+    var block = getClassesToday(eventDate.day)[$("#singleDay tbody").index($(this).parent())]; // figure out which block the event is
+	eventDate.node = this; // store the current element so we can put the event box in later
+    modalTypeVar = "new"; // set the edit type to new;
+	currentEventLoc = [eventDate.day , block, -1];
+    createEventModal("new", block, event);
+}
 
 $(window).resize(placeDatePicker);
 
@@ -284,18 +310,7 @@ function createEventModal(modalType, block, thisEvent){
   
     classesToday = [];
 	
-	var mainTableRows = $("#CalendarTable tr");
-	for (var i = 1; i < mainTableRows.length; i++){
-    var output = $(mainTableRows[i]).children("td")[eventDate.day];
-    output = $(output).attr("class").split(" ")[0];
-    classesToday.push(output);
-    if (eventDate.day == 5){
-			classesToday = ["Saturday"];
-		} else if (eventDate.day == 6){
-			classesToday = ["Sunday"];
-		} else if (block === "H"){
-    }
-	}
+	classesToday = getClassesToday(eventDate.day);
 	
     /* Populate the block selector */
 
@@ -447,6 +462,22 @@ setupDatepicker = function(){
   $("#datepicker").attr("data-date", now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear());
   $("#datepicker").datepicker({perm: true, weekStart: 1, autoSize: false}).on("changeDate", changeWeek);
 };
+
+function getClassesToday(day){
+	var classesToday = []
+	var mainTableRows = $("#CalendarTable tr");
+	for (var i = 1; i < mainTableRows.length; i++){
+		var output = $(mainTableRows[i]).children("td")[day];
+		output = $(output).attr("class").split(" ")[0];
+		classesToday.push(output);
+		if (day == 5){
+				classesToday = ["Saturday"];
+			} else if (day == 6){
+				classesToday = ["Sunday"];
+			}
+	}
+	return classesToday;
+}
 
 changeWeek = function(ev){
   var now = new Date(monday);
