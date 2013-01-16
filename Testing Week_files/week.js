@@ -329,7 +329,7 @@ function createEventModal(modalType, block, thisEvent){
         $("#eventNameInput").val(thisEvent.name);
         $("#modalDescriptionBox").val(thisEvent.description);
         var bootClasses = getBootClasses();
-        var x = $.inArray(thisEvent.class, bootClasses);
+        var x = $.inArray(thisEvent.bootClass, bootClasses);
         var radios = $('input[name=modalRadio1]:radio');
         radios[x].checked="true";
         $("#deleteButton").show();
