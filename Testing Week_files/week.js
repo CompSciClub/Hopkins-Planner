@@ -40,17 +40,7 @@ $(document).ready(function(){
   currentEventLoc = [];
   
   /** for Mobile screen */
-  $("#singleDay thead td center").html(eventDate.string);
-  var ct = getClassesToday(eventDate.day-1);
-  var j = 1;
-  console.log(ct)
-  for (blockName in blocks){
-      if ($.inArray(blockName, ct) != -1){
-        $("#mobileBlock" + j + '').html(blocks[blockName]);
-		$("#mobileBlock" + j + '').click(mobileTDClick);
-		j += 1;
-	  }
-  }
+  updateMobileScreen();
   
   
   
@@ -132,11 +122,27 @@ $(document).ready(function(){
 });
 
 function mobileTDClick(event){
-    var block = getClassesToday(eventDate.day)[$("#singleDay tbody").index($(this).parent())]; // figure out which block the event is
-	eventDate.node = this; // store the current element so we can put the event box in later
+    var block = getClassesToday(eventDate.day)[$("#singleDay tbody").children("tr").children("td").index(this)]; // figure out which block the event is
+	var weekNum = $("#singleDay tbody").children("tr").children("td").index(this); 
+	eventDate.node = $($("#CalendarTable tbody tr")[weekNum + 1]).children("td")[eventDate.day-1]; // store the current element so we can put the event box in later
+	console.log(eventDate.node);
     modalTypeVar = "new"; // set the edit type to new;
 	currentEventLoc = [eventDate.day , block, -1];
     createEventModal("new", block, event);
+}
+
+function updateMobileScreen(){
+  $("#singleDay thead td center").html(eventDate.string);
+  var ct = getClassesToday(eventDate.day-1);
+  var j = 1;
+  console.log(ct)
+  for (blockName in blocks){
+      if ($.inArray(blockName, ct) != -1){
+        $("#mobileBlock" + j + '').html(blocks[blockName]);
+		$("#mobileBlock" + j + '').click(mobileTDClick);
+		j += 1;
+	  }
+  }
 }
 
 $(window).resize(placeDatePicker);
@@ -310,7 +316,7 @@ function createEventModal(modalType, block, thisEvent){
   
     classesToday = [];
 	
-	classesToday = getClassesToday(eventDate.day);
+	classesToday = getClassesToday(eventDate.day-1);
 	
     /* Populate the block selector */
 
@@ -464,19 +470,19 @@ setupDatepicker = function(){
 };
 
 function getClassesToday(day){
-	var classesToday = []
+	var cltd = []
 	var mainTableRows = $("#CalendarTable tr");
 	for (var i = 1; i < mainTableRows.length; i++){
 		var output = $(mainTableRows[i]).children("td")[day];
 		output = $(output).attr("class").split(" ")[0];
-		classesToday.push(output);
+		cltd.push(output);
 		if (day == 5){
-				classesToday = ["Saturday"];
+				cltd = ["Saturday"];
 			} else if (day == 6){
-				classesToday = ["Sunday"];
+				cltd = ["Sunday"];
 			}
 	}
-	return classesToday;
+	return cltd;
 }
 
 changeWeek = function(ev){
