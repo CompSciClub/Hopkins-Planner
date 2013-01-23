@@ -35,32 +35,34 @@ block content
         .well.sideBox
           h3  Don't have an account yet?
           .row-fluid
-            a#signUp_btn.btn.btn-success.btn-large.span6(href='#signup', type='submit') Sign Up
-            a#learnmore.btn.btn-primary.btn-large.span6(href='#more', data-toggle="modal", data-target="#learnMore_modal", type='button', value='Learn More') Learn More
+            a#signUp_btn.btn.btn-success.btn-large.span5(href='#signup', type='submit') Sign Up
+            a#learnmore.btn.btn-primary.btn-large.span7(href='#more', data-toggle="modal", data-target="#learnMore_modal", type='button', value='Learn More') Learn More
   // Page 2
-  #learnMore_modal.modal.hide.fade.in.page-two(role="dialog")
+  #learnMore_modal.modal.hide.fade.in.page-one(role="dialog")
     .modal-header
       a.close(data-dismiss="modal") &times;
       h3 How it Works
     .modal-body
       .media
         a.pull-left(href="#")
+          <div style="height:30px"></div>
           img.media-object.img-rounded(src='images/photo2.jpg', width="128px", height="128px")
         .media-body(style='')
           h4.media-heading(style='color: #800000;') What it is
           p
             | The online planner brings you an easy way of regulating your events and keeping track of work. It sends
             | you email reminders about tests, projects, and other homework. Furthermore, it can send you the agenda for
-            | each day during a given night in a week. The planner is compeletely customizable and is designed with only
+            | each day during a given night in a week. The planner is completely customizable and is designed with only
             | you in mind.
       #secondParagraph
         .media
           a.pull-right(href="#")
+            <div style="height:30px"></div>
             img.img-rounded.media-object(src='images/photo3.jpg', width="128px", height="128px")
           .media-body
           h4.media-heading(style='color: #800000;') How to use it
           p
-            | The Hopkins planner is a simple, yet tremendously convenient tool. Upon creating your acount, you will be
+            | The Hopkins planner is a simple, yet tremendously convenient tool. Upon creating your account, you will be
             | prompted with your classes in order to organize your weeks. From then on, you will be able to create 'events'
             | that will remind you of tests, projects, and homework.Teacher accounts are also available, so everyone is
             | encouraged to sign up!
