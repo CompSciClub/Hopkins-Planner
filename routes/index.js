@@ -23,6 +23,5 @@
     ["/event/:eventId?", Routes.Event,        1, 1, [       "post", "delete"]]
     //["/createClass",     Routes.Class,        1, 2, [       "post"          ]]
   ];
-
   exports.list = routeList;
 }());

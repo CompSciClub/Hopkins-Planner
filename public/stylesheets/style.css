@@ -26,7 +26,7 @@ a {
 }
 
 .sidebar{
-  position: fixed;
+  /*position: fixed;*/
 }
 .sidebar .clearfix input{
   width: 170px;

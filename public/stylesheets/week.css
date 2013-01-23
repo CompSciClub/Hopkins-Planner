@@ -100,8 +100,8 @@ font-family:"Arial Verdana",sans-serif;
 .monday,.wednesday,.friday{background-color:#f9f9f9;}
 
 .eventCheck{
-  float: right;
-  margin-top: 4px !important;
+  /*float: right;*/
+  /*margin-top: 4px !important;*/
   width: 20% !important;
 }
 
