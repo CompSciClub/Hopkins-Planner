@@ -151,16 +151,18 @@ function editEvent(node){
   var blockNode = $(node).parent("td")[0];
   getEventInfo(blockNode);
   var block = $(blockNode).attr('class').split(" ")[0];
+
   if (getEvents(eventDate.day,block,getChildIndex(node)-1)){
-	var thisEvent = getEvents(eventDate.day,block,getChildIndex(node)-1);
-	console.log("this Event found");
+    var thisEvent = getEvents(eventDate.day,block,getChildIndex(node)-1);
+    console.log("this Event found");
   } else {
-	console.log("this Event NOT found");
-	var thisEvent = {};
-	thisEvent.description = $(node).attr("data-content");
-	thisEvent.name = $(node).attr("data-original-title");
-	thisEvent.bootClass = $(node).attr("class").split(" ")[2];
+    console.log("this Event NOT found");
+    var thisEvent = {};
+    thisEvent.description = $(node).attr("data-content");
+    thisEvent.name = $(node).attr("data-original-title");
+    thisEvent.bootClass = $(node).attr("class").split(" ")[2];
   }
+
   thisEvent.node = node;
   currentEventLoc = [eventDate.day, block, getChildIndex(node)-1];
   eventDate._id = thisEvent._id;
@@ -314,7 +316,7 @@ function createEventModal(modalType, block, thisEvent){
         $("#eventNameInput").val(thisEvent.name);
         $("#modalDescriptionBox").val(thisEvent.description);
         var bootClasses = getBootClasses();
-        var x = $.inArray(thisEvent.class, bootClasses);
+        var x = $.inArray(thisEvent.bootClass, bootClasses);
         var radios = $('input[name=modalRadio1]:radio');
         radios[x].checked="true";
         $("#deleteButton").show();

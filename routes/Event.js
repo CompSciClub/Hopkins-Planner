@@ -16,7 +16,7 @@
       day         : req.body.day           || null,
       block       : req.body.block         || null,
       description : req.body.description   || null,
-      "class"     : req.body.class     || null
+      bootClass   : req.body.bootClass     || null
     };
 
     if (!_.isUndefined(req.params.eventId)){ // this is an edit request
@@ -25,7 +25,11 @@
       e.done = (typeof req.body.done !== "undefined") ? req.body.done === "true" : null;
       control.modifyEvent(e, function(error, e){
         if (!error){
-          res.end(JSON.stringify({error: 0, msg: "Event modified"}));
+          res.json({
+            error: 0,
+            msg: "Event modified",
+            event: e
+          });
         }else{
           return next(500);
         }

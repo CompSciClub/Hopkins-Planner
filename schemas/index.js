@@ -39,7 +39,7 @@ exports.User = new Schema({
 
 exports.Event = new Schema({
   type: String,
-  class: String,
+  bootClass: String,
   name: String,
   timestamp: Number,
   day: Number, // number from 0 - 6 indicating day of week (Monday is 0)

@@ -44,7 +44,7 @@
       day: e.day,
       block: e.block,
       description: e.description,
-      "class": e["class"],
+      bootClass: e.bootClass,
       owner: e.owner || self.uid
     });
     newEvent.save(cb);
