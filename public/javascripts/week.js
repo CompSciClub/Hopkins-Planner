@@ -71,7 +71,7 @@ $(document).ready(function(){
 	  currentEventLoc = [eventDate.day , block, -1];
     });
   // event popovers
-  $(".event").popover({html: false, trigger: "hover"});
+  $(".event").popover({html: true, trigger: "hover"});
 
   $(".eventCheck").click(checkboxClicked);
 
