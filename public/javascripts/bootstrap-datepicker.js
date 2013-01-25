@@ -170,7 +170,7 @@
           if (!this.highlightWeek){
             html.push('<tr>');
           } else {
-            if (prevMonth.valueOf() <= currentDate && prevMonth.valueOf() + 604800000 >= currentDate){
+            if (prevMonth.valueOf() <= currentDate && prevMonth.valueOf() + 604800000 > currentDate){
               html.push("<tr class='active'>");
             } else {
               html.push("<tr>");
