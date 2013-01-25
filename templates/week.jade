@@ -71,7 +71,7 @@ block content
             th.weekend.block(colspan="2") 
               | Weekend #{date.getMonth() + 1}/#{date.getDate()}
               - date = addDay(date)
-              | - #{date.getMonth() + 1}/#{date.getDate()}
+              |  - #{date.getMonth() + 1}/#{date.getDate()}
           for period in week
             tr
               each block, day in period
