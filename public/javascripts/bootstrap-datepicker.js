@@ -33,6 +33,7 @@
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on') : false;
     this.perm = options.perm;
+    this.highlightWeek = options.highlightWeek;
 		
 		if (this.isInput) {
 			this.element.on({
@@ -152,6 +153,7 @@
 				year = d.getFullYear(),
 				month = d.getMonth(),
 				currentDate = this.date.valueOf();
+
 			this.picker.find('.datepicker-days th:eq(1)')
 						.text(DPGlobal.dates.months[month]+' '+year);
 			var prevMonth = new Date(year, month-1, 28,0,0,0,0),
@@ -165,7 +167,15 @@
 			var clsName;
 			while(prevMonth.valueOf() < nextMonth) {
 				if (prevMonth.getDay() == this.weekStart) {
-					html.push('<tr>');
+          if (!this.highlightWeek){
+            html.push('<tr>');
+          } else {
+            if (prevMonth.valueOf() <= currentDate && prevMonth.valueOf() + 604800000 >= currentDate){
+              html.push("<tr class='active'>");
+            } else {
+              html.push("<tr>");
+            }
+          }
 				}
 				clsName = '';
 				if (prevMonth.getMonth() < month) {
@@ -174,7 +184,9 @@
 					clsName += ' new';
 				}
 				if (prevMonth.valueOf() == currentDate) {
-					clsName += ' active';
+          if (!this.highlightWeek){
+            clsName += ' active';
+          }
 				}
 				html.push('<td class="day'+clsName+'">'+prevMonth.getDate() + '</td>');
 				if (prevMonth.getDay() == this.weekEnd) {

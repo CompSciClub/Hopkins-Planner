@@ -447,7 +447,7 @@ function removeEventNode(id){
 setupDatepicker = function(){
   var now = new Date(monday);
   $("#datepicker").attr("data-date", now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear());
-  $("#datepicker").datepicker({perm: true, weekStart: 1, autoSize: false}).on("changeDate", changeWeek);
+  $("#datepicker").datepicker({perm: true, highlightWeek: true, weekStart: 1, autoSize: false}).on("changeDate", changeWeek);
 };
 
 changeWeek = function(ev){

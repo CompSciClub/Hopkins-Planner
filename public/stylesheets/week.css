@@ -169,3 +169,61 @@ font-family:"Arial Verdana",sans-serif;
 #eventCreatorModal{
   width: 500px;
 }
+
+.datepicker tr.active{
+  background-color: #0044cc;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-image: -webkit-linear-gradient(top, rgb(0, 136, 204), rgb(0, 68, 204));
+  background-repeat: repeat-x;
+}
+
+.datepicker tr:hover{
+  background: #eeeeee; cursor: pointer; 
+}
+
+.datepicker tr.active :first-child, .datepicker tr:hover :first-child{
+  -webkit-border-top-radius: 4px !important;
+  -moz-border-top-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+.datepicker tr.active :last-child, .datepicker tr:hover :last-child{
+  -webkit-border-bottom-radius: 4px !important;
+  -moz-border-bottom-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.datepicker tr.active td, .datepicker tr:hover td{
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+
+}
+
+.datepicker tr.active:hover{
+  background-color: #006dcc;
+  background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
+  background-image: -ms-linear-gradient(top, #0088cc, #0044cc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
+  background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
+  background-image: -o-linear-gradient(top, #0088cc, #0044cc);
+  background-image: linear-gradient(top, #0088cc, #0044cc);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
+  border-color: #0044cc #0044cc #002a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.datepicker td:hover{
+  background: none !important;
+}
+
+.datepicker tr.active td{
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
