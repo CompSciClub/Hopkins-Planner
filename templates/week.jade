@@ -3,9 +3,9 @@ extends layout
 block scripts
   script(type="text/javascript")
     var monday = #{date.getTime()},
-        blocks = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(blocks))}")),
+        blocks = !{JSON.stringify(blocks)},
         weekOffset = #{offset},
-        events = JSON.parse(decodeURIComponent("#{encodeURIComponent(JSON.stringify(events))}"));
+        events = !{JSON.stringify(events)};
   script(type="text/javascript", src="/javascripts/bootstrap-datepicker.js")
   script(type="text/javascript", src="/javascripts/index.js")
   <script src="/javascripts/week.js"></script>
