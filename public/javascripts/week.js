@@ -287,16 +287,16 @@ function createEventModal(modalType, block, thisEvent){
     classesToday = [];
 	
 	var mainTableRows = $("#CalendarTable tr");
-	for (var i = 1; i < mainTableRows.length; i++){
-    var output = $(mainTableRows[i]).children("td")[eventDate.day];
-    output = $(output).attr("class").split(" ")[0];
-    classesToday.push(output);
-    if (eventDate.day == 5){
-			classesToday = ["Saturday"];
-		} else if (eventDate.day == 6){
-			classesToday = ["Sunday"];
-		} else if (block === "H"){
-    }
+	if (eventDate.day == 5){
+	    classesToday = ["Saturday"];
+	} else if (eventDate.day == 6){
+	    classesToday = ["Sunday"];
+	} else {
+	    for (var i = 1; i < mainTableRows.length; i++){
+		var output = $(mainTableRows[i]).children("td")[eventDate.day];
+	    	output = $(output).attr("class").split(" ")[0];
+	    	classesToday.push(output);
+	    }
 	}
 	
     /* Populate the block selector */
