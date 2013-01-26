@@ -14,13 +14,13 @@ $(document).ready(function(){
     });
   });*/
 
-  $("#signUp_btn").click(function(){
+  /*$("#signUp_btn").click(function(){
     $("#accountModal").modal({
       keyboard: true,
       backdrop: true,
       show: true
     });
-  });
+  });*/
 
 });
 

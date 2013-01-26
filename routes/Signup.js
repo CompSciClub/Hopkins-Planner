@@ -1,56 +1,58 @@
 (function(){
   "use strict";
-  var _ = require("underscore");
+  var _   = require("underscore"),
+      qs  = require("querystring"),
+      url = require("url");
 
   var dispatch, handler,
-      handleGet, handlePost;
+      handleGet;
 
   var ControllerClass = require("../controllers/Signup.js");
 
   handleGet = function(req, res, next){
+    var mode  = req.query["openid.mode"];
+    if (mode === "cancel"){
+      return req.redirect("/");
+    }
+
+    var email = req.query["openid.ext1.value.email"];
+    var id    = qs.parse(url.parse(req.query["openid.claimed_id"]).query).id;
+
+    var name = req.query["openid.ext1.value.firstname"] + " " + req.query["openid.ext1.value.lastname"];
+
+    var is_teacher = (new RegExp(/[a-zA-Z0-9._-]+@hopkins\.edu$/).test(email));
     var control = new ControllerClass();
 
-    var params = {
-      flash: req.flash(),
-      loggedIn: req.session.valid, // have to fix with middleware
-      name: req.session.displayName // ugh
-    };
-    control.renderView(res, params, {});
-  };
-
-  handlePost = function(req, res, next){
-    var pass       = req.body.password,
-        email      = req.body.email,
-        name       = req.body.name,
-        is_teacher = (req.body.is_teacher === "on") ? true : false;
-    var control = new ControllerClass();
-
-    control.createUser(email, pass, name, is_teacher, function(err, user){
+    control.createUser(email, id, name, is_teacher, function(err, user){
       if (err){
-        if (err.type === undefined){ // this is a bad way to check for this
-          req.flash("error", "That email is already being used");
-          req.flash("errorContainer", "#accountModal");
-          req.flash("errorEmail", "error");
-        } else if (err.errors.email){
-          req.flash("error", "Please try again with a valid email address");
-          req.flash("errorContainer", "#accountModal");
-          req.flash("errorEmail", "error");
-        } else if (err.errors.password) {
-          req.flash("error", "Password can not be empty");
-          req.flash("errorContainer", "#accountModal");
-          req.flash("errorPass", "error");
+        console.log("user creation error", err);
+        if (_.has(err, "code")){
+          if (err.code === 11000){
+            console.log("sending to login", err, email);
+            return res.redirect("/login?" + qs.stringify(req.query));
+          }
         }
-        return res.redirect("/signup");
+
+        if (_.has(err, "errors") && err.errors.email){ // this is a bad way to check for an already in-use email
+          console.log("sending to signup error");
+          req.flash("error", "Please try again with your Hopkins Google account");
+          return res.redirect("/signup_error");
+        } else {
+          return next(500);
+        }
       }
+
+      console.log("user created");
 
       req.session.valid       = true;
       req.session.userId      = user._id;
       req.session.displayName = user.name;
+      console.log("sending to setup");
       res.redirect(req.body.redirect || "/setup");
     });
   };
 
-  dispatch = {GET: handleGet, POST: handlePost};
+  dispatch = {GET: handleGet};
   handler  = function(req, res, next){
     if (_.has(dispatch, req.method)){
       return dispatch[req.method](req, res, next);

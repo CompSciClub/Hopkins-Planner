@@ -9,20 +9,6 @@
       handleGet, handlePost;
 
   handleGet = function(req, res, next){
-    if (req.session.valid){ // need to figure out a better way to handle this in auth middleware
-      return res.redirect("back");
-    }
-
-    var control = new ControllerClass();
-    var params = {
-      name: req.session.displayName,
-      loggedIn: false,
-      flash: req.flash()
-    };
-    control.renderView(res, params, {});
-  };
-
-  handlePost = function(req, res, next){
     var control = new ControllerClass();
     var email = req.body.email;
     var password = req.body.password;
@@ -51,7 +37,7 @@
     });
   };
 
-  dispatch = {GET: handleGet, POST: handlePost};
+  dispatch = {GET: handleGet};
   handler  = function(req, res, next){
     if (_.has(dispatch, req.method)){
       return dispatch[req.method](req, res, next);

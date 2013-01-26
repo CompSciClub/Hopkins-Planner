@@ -41,7 +41,7 @@
 
     user.save(function(err){
       cb(err, user);
-      emailHelper.sendEmail("verficiation@hopkinsplanner.com", user.email, "Email Verification", "views/emails/verify.jade", {url: process.env.URL || "localhost:3000" , token: token}); // have to replace config vars
+      //emailHelper.sendEmail("verficiation@hopkinsplanner.com", user.email, "Email Verification", "views/emails/verify.jade", {url: process.env.URL || "localhost:3000" , token: token}); // have to replace config vars
     });
   };
 
