@@ -27,7 +27,7 @@
           return cb({type: "new"});
         }
 
-        if (Crypto.SHA256(id + user.salt) === user.googleId){
+        if (Crypto.SHA256(id + user.salt) === user.password){
           return cb(null, user);
         } else {
           return cb({type: "error"});

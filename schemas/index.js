@@ -24,7 +24,6 @@ var Schema = mongoose.Schema,
 exports.User = new Schema({
   email     : {type: String, validate: [validateEmail, 'an email is required'], index: { unique: true }},
   password  : {type: String, validate: [validatePresenceOf, 'a password is required']},
-  googleId  : {type: String},
   name: {type: String, validate: [validatePresenceOf, 'a name is required']},
   salt: {type: String},
   is_teacher: Boolean,
