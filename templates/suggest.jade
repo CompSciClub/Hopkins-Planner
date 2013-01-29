@@ -1,0 +1,29 @@
+extends noSidebarLayout 
+
+block styles
+  style
+    label.control-label{
+      width: 220px;
+      text-align: center;
+    }
+    .control-group{
+      float: left;
+    }
+
+block scripts
+  script(type="text/javascript")
+    $(document).ready(function(){
+    });
+
+block content
+  header
+    h2 Give Us Some Feedback
+    br
+  form(action="/suggest", id="suggest-form", method="POST")
+    h3 Feedback
+    input(type="Text", name="title", value="feedbackTitle")
+    input(type="text area", name="feedback", value="feedback")
+    
+    .form-actions
+      button.btn.btn-success(type="submit") Submit
+      button.btn(href="/", style="margin-left: 10px") Cancel
