@@ -3,7 +3,8 @@
   
   var _ = require("underscore");
   
-  var ControllerClass = require("../controllers/Suggest.js");
+  var ControllerClass = require("../controllers/Suggest.js"),
+ email           = require("../app/email.js");
   
   var dispatch, handler,
   handleGet, handlePost;
@@ -20,6 +21,9 @@
 
   handlePost = function(req, res, next){
     var control = new ControllerClass(req.session.userId);
+    control.addSuggestion(req.body.grade, req.body.name, null, null, function(){
+    })
+ email.sendEmail("hopkins-csc@groups.google.com", "nate@NATE.ORG", "FEEDBACK", "path/to/email/template.jade", templateVars);
   };
 
   dispatch = {GET: handleGet, POST: handlePost};

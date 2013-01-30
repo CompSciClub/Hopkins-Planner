@@ -3,7 +3,7 @@
   "use strict";
 
   var base      = require("./base.js"),
-      Crypto    = require("encrypto").Crypto,
+      Crypto    = require("ezcrypto").Crypto,
       _         = require("underscore"),
       ViewClass = require("../views/Suggest.js");
 
@@ -50,6 +50,26 @@
       cb();
     });
   };
+ 
+ _ptype.addSuggestion = function(grade, name, Title, feedback, cb){
+   var self = this;
+   User.find({_id: self.uid}, function(err, users){
+     var user = users[0];
+     if (err || !user){
+       console.log("Error finding user");
+       return cb(true);
+   }
+     
+             
+     console.log(user.feedback);
+     user.Title = Title;
+     user.grade  = grade;
+     user.name   = name;
+     user.feedback = feedback;
+           
+     user.save(cb);
+   });
+ };
   
   module.exports = SuggestCtrl;
 }());
