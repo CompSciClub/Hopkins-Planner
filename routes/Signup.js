@@ -25,7 +25,6 @@
 
     control.createUser(email, id, name, is_teacher, function(err, user){
       if (err){
-        console.log("user creation error", err);
         if (_.has(err, "code")){
           if (err.code === 11000){
             console.log("sending to login", err, email);
