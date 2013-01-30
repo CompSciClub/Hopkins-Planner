@@ -1,0 +1,41 @@
+extends noSidebarLayout 
+
+block styles
+  style
+    label.control-label{
+      width: 220px;
+      text-align: center;
+    }
+    .control-group{
+      float: left;
+    }
+
+block scripts
+  script(type="text/javascript")
+    $(document).ready(function(){
+    });
+
+block content
+  header
+    br
+    h2 Give Us Some Feedback
+    br
+  form(action="/suggest", id="suggest-form", method="POST")
+    h3
+    input.input-block-level#eventNameInput(type="Text", value="Title")
+    br
+    br
+    textarea.input-block-level#modalDescriptionBox(type="Text", value="feedback", rows="10") Feedback
+    
+    .form-actions
+      button.btn.btn-success(type="submit") Submit
+      button.btn(href="/", style="margin-left: 10px;") Cancel
+
+
+    br
+    br
+    br
+    br
+    h3 Thanks For Your Input!
+    p
+    | We'll do our best to take it into consideration.

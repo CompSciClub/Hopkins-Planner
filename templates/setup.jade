@@ -21,6 +21,7 @@ block scripts
 
 block content
   header
+    br
     h2 Preferences
     br
   form.form-horizontal(action="/setup", method="POST")
@@ -31,7 +32,7 @@ block content
           .control-group
             label.control-label(for="aBlock") A block:
             .controls
-              input.input-large.block_input(type="Text", name="aBlock", value="#{blocks.A || ""}")
+              input.block_input(type="Text", name="aBlock", value="#{blocks.A || ""}")
           .control-group
             label.control-label(for="bBlock") B block:
             .controls

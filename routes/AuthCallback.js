@@ -26,7 +26,7 @@
     
     controller.loginUser(mode, email, id, function(err, user){
       if (err){
-            console.log("sign in error", err);
+        console.log("error logging in user", err);
         switch (err.type){
           case "cancel":
             res.redirect("/");
