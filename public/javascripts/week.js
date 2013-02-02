@@ -313,8 +313,8 @@ function createEventModal(modalType, block, thisEvent){
     $(".eventBlock").html(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
       if (modalType == "edit") {
-        $("#eventNameInput").val(thisEvent.name);
-        $("#modalDescriptionBox").val(thisEvent.description);
+        $("#eventNameInput").val($("<div>" + thisEvent.name + "</div>").text());
+        $("#modalDescriptionBox").val($("<div>" + thisEvent.description + "</div>").text());
         var bootClasses = getBootClasses();
         var x = $.inArray(thisEvent.bootClass, bootClasses);
         var radios = $('input[name=modalRadio1]:radio');
