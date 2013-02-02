@@ -89,7 +89,7 @@ block content
                     each eventObj in events[realDay][block]
                       - var done = (eventObj.done) ? "done" : "";
                       .label.success.event(class="#{eventObj.bootClass} #{done}", eventId = eventObj._id, style="height: 20px", rel="popover", data-content="#{escapeHtml(eventObj.description)}", data-original-title="#{escapeHtml(eventObj.name)}")
-                        .eventText #{escapeHtml(eventObj.name)}
+                        .eventText #{eventObj.name}
                         if eventObj.done
                           input.eventCheck(type="checkbox", checked="checked")
                         else

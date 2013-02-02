@@ -30,7 +30,7 @@
         if (Crypto.SHA256(id + user.salt) === user.password){
           return cb(null, user);
         } else {
-          return cb({type: "error"});
+          return cb({type: "invalid"});
         }
       });
     }

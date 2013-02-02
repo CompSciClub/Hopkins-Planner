@@ -16,8 +16,9 @@
     var controller = new ControllerClass();
 
     if (!_.has(req.query, "openid.mode") || !_.has(req.query, "openid.ext1.value.email") || !_.has(req.query, "openid.claimed_id")){
-      var callback = (req.connection.encrypted ? "https" : "http") + "://" + req.headers.host + "/login";
-      return res.redirect('https://www.google.com/accounts/o8/ud?openid.ns=http://specs.openid.net/auth/2.0&openid.return_to=' + callback + '&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.ns.ax=http://openid.net/srv/ax/1.0&openid.ax.mode=fetch_request&openid.ax.type.email=http://axschema.org/contact/email&openid.ax.type.firstname=http://axschema.org/namePerson/first&openid.ax.type.lastname=http://axschema.org/namePerson/last&openid.ax.required=email,firstname,lastname');
+      var realm    = (req.connection.encrypted ? "https" : "http") + "://" + req.headers.host;
+      var callback = realm + "/login";
+      return res.redirect('https://www.google.com/accounts/o8/ud?openid.ns=http://specs.openid.net/auth/2.0&openid.return_to=' + callback + '&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.ns.ax=http://openid.net/srv/ax/1.0&openid.ax.mode=fetch_request&openid.ax.type.email=http://axschema.org/contact/email&openid.ax.type.firstname=http://axschema.org/namePerson/first&openid.ax.type.lastname=http://axschema.org/namePerson/last&openid.ax.required=email,firstname,lastname&openid.realm=' + realm);
     }
 
     var mode  = req.query["openid.mode"];
@@ -36,6 +37,9 @@
             break;
           case "new":
             res.redirect("/signup?" + qs.stringify(req.query));
+            break;
+          case "invalid":
+            next(401);
             break;
           default:
             next(500);

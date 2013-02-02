@@ -15,7 +15,7 @@
 
   var URL = process.env.URL || "localhost:3000"; // UGH globals
 
-  var app        = module.exports = express.createServer();
+  var app        = module.exports = express.createServer(), errorHandler;
   var mongoURI   = process.env.MONGOLAB_URI || "mongodb://127.0.0.1/planner";
   mongoose.connect(mongoURI);
 
@@ -30,6 +30,7 @@
       app.use(express.session( {store: new MongoStore({db: mongoose.connection.db}), cookie: {httpOnly: true, maxAge: 604800000}, secret: process.env.secret || "The computer science club will rise again... and reclaim B204" }));
       app.use(express["static"](__dirname + '/public'));
       app.use(app.router);
+      app.use(errorHandler);
     });
     app.configure('development', function(){
       app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -82,8 +83,25 @@
     console.log("starting server on port", process.env.PORT);
     app.listen(process.env.PORT || 3000);
     console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
   });
+
   process.on("uncaughtException", function(err){
     console.trace(err);
   });
+
+  errorHandler = function(err, req, res, next){
+    var routes = {
+      401: "401.jade",
+      500: "errors/500.jade",
+      404: "404.jade"
+    };
+
+    if (_.has(routes, err)){
+      var params = {title: "Error: " + err, loggedIn: req.session.valid, name: req.session.displayName};
+      res.render(routes[err], params);
+    } else {
+      next(err);
+    }
+  };
 }());

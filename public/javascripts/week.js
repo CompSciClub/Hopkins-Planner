@@ -178,8 +178,8 @@ function createEvent(newOrOld){
   newEvent.bootClass   = ""
   if (newOrOld == "old"){
     newEvent._id = eventDate._id;
-	removeEventNode(newEvent._id);
-	removeEvents(currentEventLoc[0],currentEventLoc[1],currentEventLoc[2]);
+    removeEventNode(newEvent._id);
+    removeEvents(currentEventLoc[0],currentEventLoc[1],currentEventLoc[2]);
   }
   if (newEvent.description === "Description here"){
     newEvent.description = "No description";
@@ -210,7 +210,7 @@ function createEvent(newOrOld){
         newEvent._id = eventDate._id;
         // now add the element to the UI
           // TODO re-style these event boxes
-          $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
+          $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + escapeHtml(newEvent.name) + '</div><input type="checkbox" class="eventCheck"></div>');
           $(".eventCheck").unbind("click", checkboxClicked);
           $(".eventCheck").click(checkboxClicked);
           $(".event").popover({html: false, trigger: "hover"});

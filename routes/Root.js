@@ -15,13 +15,14 @@
     console.log("headers", req.headers);
 
     var control = new ControllerClass();
-    var callbackBase = (req.connection.encrypted ? "https" : "http") + "://" + req.headers.host;
+    var realm   = (req.connection.encrypted ? "https" : "http") + "://" + req.headers.host;
 
     var params = {
       loggedIn: false, // replace once auth check works
       flash: req.flash(),
-      loginCallback: callbackBase  + "/login",
-      signupCallback: callbackBase + "/signup"
+      realm: realm,
+      loginCallback: realm  + "/login",
+      signupCallback: realm + "/signup"
     };
 
     control.renderView(res, params, {});
