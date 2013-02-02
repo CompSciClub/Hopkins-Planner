@@ -1,6 +1,6 @@
 {
   "name": "hopkins-planner",
-  "version": "0.0.56-4",
+  "version": "0.0.57",
   "private": true,
   "engines": {
     "node": "0.8.x"
