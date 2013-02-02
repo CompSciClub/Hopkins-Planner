@@ -14,26 +14,22 @@
   _ptype       = AuthController.prototype = base.getProto("std");
   _ptype._name = "AuthCallback";
 
-  _ptype.loginUser = function(mode, email, id, cb){
-    if (mode === "cancel"){
-      return cb({type: "cancel"}); // the user cancelled the request
-    } else {
-      User.findOne({email: email}, function(err, user){
-        if (err){
-          return cb({type: "db"});
-        }
+  _ptype.loginUser = function(email, id, cb){
+    User.findOne({email: email}, function(err, user){
+      if (err){
+        return cb({type: "db"});
+      }
 
-        if (_.isUndefined(user) || _.isNull(user)){
-          return cb({type: "new"});
-        }
+      if (_.isUndefined(user) || _.isNull(user)){
+        return cb({type: "new"});
+      }
 
-        if (Crypto.SHA256(id + user.salt) === user.password){
-          return cb(null, user);
-        } else {
-          return cb({type: "invalid"});
-        }
-      });
-    }
+      if (Crypto.SHA256(id + user.salt) === user.password){
+        return cb(null, user);
+      } else {
+        return cb({type: "invalid"});
+      }
+    });
   };
 
   module.exports = AuthController;

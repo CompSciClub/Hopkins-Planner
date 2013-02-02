@@ -4,7 +4,6 @@
   var Routes = {
     Root: require("./Root"),
     Weekly: require("./Weekly"),
-    Signup: require("./Signup"),
     Logout: require("./Logout"),
     Setup: require("./Setup"),
     SignupFailure: require("./SignupFailure"),
@@ -16,7 +15,6 @@
   // route, function, mongo, auth level, methods
   // auth level: 0 = not required, 1 = required, 2 = teacher, 3 = superuser
   var routeList = [
-    ["/signup",          Routes.Signup,         1, 0, ["get"                  ]],
     ["/",                Routes.Root,           0, 0, ["get"                  ]],
     ["/weekly/:offset?", Routes.Weekly,         1, 1, ["get"                  ]],
     ["/login",           Routes.AuthCallback,   1, 0, ["get"                  ]],

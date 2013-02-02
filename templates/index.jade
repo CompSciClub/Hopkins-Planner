@@ -33,9 +33,9 @@ block content
                 br
                 input.span8.password_input(type='password', name='password', placeholder='Password')
                 input#login_btn.btn.btn-primary.span4(type='submit', value='Login')
-            a.btn.btn-primary(href="https://www.google.com/accounts/o8/ud?openid.ns=http://specs.openid.net/auth/2.0&openid.return_to=#{loginCallback}&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.ns.ax=http://openid.net/srv/ax/1.0&openid.ax.mode=fetch_request&openid.ax.type.email=http://axschema.org/contact/email&openid.ax.type.firstname=http://axschema.org/namePerson/first&openid.ax.type.lastname=http://axschema.org/namePerson/last&openid.ax.required=email,firstname,lastname&openid.realm=#{realm}") Login with your Hopkins Account
+            a.btn.btn-primary(href="/login") Login with your Hopkins Account
           h3  Don't have an account yet?
-          a#signUp_btn.btn.btn-success(href='https://www.google.com/accounts/o8/ud?openid.ns=http://specs.openid.net/auth/2.0&openid.return_to=#{signupCallback}&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.ns.ax=http://openid.net/srv/ax/1.0&openid.ax.mode=fetch_request&openid.ax.type.email=http://axschema.org/contact/email&openid.ax.type.firstname=http://axschema.org/namePerson/first&openid.ax.type.lastname=http://axschema.org/namePerson/last&openid.ax.required=email,firstname,lastname&openid.realm=#{realm}', type='submit') Sign Up with your Hopkins Account
+          a#signUp_btn.btn.btn-success(href='/login', type='submit') Sign Up with your Hopkins Account
           a#learnmore.btn.btn-primary(style="margin-top: 10px", href='#more', data-toggle="modal", data-target="#learnMore_modal", type='button', value='Learn More') Learn More
   // Page 2
   #learnMore_modal.modal.hide.fade.in.page-one(role="dialog")

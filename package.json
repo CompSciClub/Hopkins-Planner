@@ -1,6 +1,6 @@
 {
   "name": "hopkins-planner",
-  "version": "0.0.57",
+  "version": "0.0.6",
   "private": true,
   "engines": {
     "node": "0.8.x"
@@ -12,6 +12,7 @@
     "ezcrypto": ">=0.0.3",
     "nodemailer": ">=0.2.4",
     "underscore": "1.4.x",
+    "openid": "0.4.2",
     "async": "0.1.x",
     "connect-mongodb": "1.1.x",
     "mongodb": "1.1.7"
