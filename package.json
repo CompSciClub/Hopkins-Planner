@@ -1,14 +1,14 @@
 {
   "name": "hopkins-planner",
-  "version": "0.0.60",
+  "version": "0.0.60-1",
   "private": true,
-  "engines": {
-    "node": "0.8.x"
-  },
   "domains": [
     "hopkinsplanner.com",
     "www.hopkinsplanner.com"
   ],
+  "engines": {
+    "node": "0.8.x"
+  },
   "dependencies": {
     "express": "2.5.1",
     "mongoose": ">=3.2.1",

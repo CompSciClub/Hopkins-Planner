@@ -78,20 +78,21 @@ block content
                 option(value="11") 11th
                 option(value="12") 12th
              
-        h3 Emails
-        fieldset  
-          .control-group
-            label.control-label(for="emailPrefs") Email Me:
-            .controls
-              label.checkbox
-                input#nightly.checkbox(type="checkbox", name="nightly") 
-                | With nightly reminders about tomorrow.
-              label.checkbox
-                input#weekly.checkbox(type="checkbox", name="weekly")
-                | With weekly reminders about my upcoming week.
-              label.checkbox
-                input#important.checkbox(type="checkbox", name="important")
-                | For important events such as tests, quizzes, and projects.
+        //
+          h3 Emails
+          fieldset  
+            .control-group
+              label.control-label(for="emailPrefs") Email Me:
+              .controls
+                label.checkbox
+                  input#nightly.checkbox(type="checkbox", name="nightly") 
+                  | With nightly reminders about tomorrow.
+                label.checkbox
+                  input#weekly.checkbox(type="checkbox", name="weekly")
+                  | With weekly reminders about my upcoming week.
+                label.checkbox
+                  input#important.checkbox(type="checkbox", name="important")
+                  | For important events such as tests, quizzes, and projects.
 
         .form-actions
           button.btn.btn-success(type="submit") Save
