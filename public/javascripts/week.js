@@ -88,12 +88,12 @@ $(document).ready(function(){
     closeDialog();
   });
   $("#blockSelect").change(function(){
-    $(".eventBlock").html($(this).val()); // change the block in the time string when they select a new block
+    $(".eventBlock").html(blocks[$(this).val()]); // change the block in the time string when they select a new block
   });
   $("#saveButton").click(function(){
     var i = 0;
 	  for (i = 0; i < classesToday.length; i++){
-		if (blocks[classesToday[i]] == $("#blockSelect").val()){
+		if (classesToday[i] == $("#blockSelect").val()){
 			break;
 		}
 	  }
@@ -304,12 +304,12 @@ function createEventModal(modalType, block, thisEvent){
     $("#blockSelect").html(''); // clear the list
     for (blockName in blocks){
       if (blockName != "_id" && $.inArray(blockName, classesToday) != -1)
-        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
+        $("#blockSelect").append("<option value='" +blockName+ "'>"+blocks[blockName]+"</option>");// add options
     }
 
     // add in other blocks
     /* Set the block selector to the current block */
-    $("#blockSelect").val(blocks[block]);
+    $("#blockSelect").val(block);
     $(".eventBlock").html(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
       if (modalType == "edit") {
