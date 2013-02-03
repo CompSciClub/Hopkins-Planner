@@ -18,11 +18,7 @@
     var realm   = (req.connection.encrypted ? "https" : "http") + "://" + req.headers.host;
 
     var params = {
-      loggedIn: false, // replace once auth check works
-      flash: req.flash(),
-      realm: realm,
-      loginCallback: realm  + "/login",
-      signupCallback: realm + "/signup"
+      flash: req.flash()
     };
 
     control.renderView(res, params, {});

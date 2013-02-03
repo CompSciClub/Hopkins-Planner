@@ -9,7 +9,8 @@
     SignupFailure: require("./SignupFailure"),
     Event: require("./Event"),
     AuthCallback: require("./AuthCallback"),
-    Suggest: require("./Suggest")
+    Suggest: require("./Suggest"),
+    Holiday: require("./Holiday")
   };
 
   // route, function, mongo, auth level, methods
@@ -22,7 +23,8 @@
     ['/setup',           Routes.Setup,          1, 1, ["get", "post"          ]],
     ["/event/:eventId?", Routes.Event,          1, 1, [       "post", "delete"]],
     ["/signup_error",    Routes.SignupFailure,  0, 0, ["get"                  ]],
-    ["/suggest",	     Routes.Suggest,	    0, 1, ["get", "post"	      ]]
+    ["/suggest",         Routes.Suggest,        0, 1, ["get", "post"          ]],
+    ["/holiday",         Routes.Holiday,        3, 1, ["get", "post"          ]]
     //["/createClass",     Routes.Class,        1, 2, [       "post"          ]]
   ];
   exports.list = routeList;

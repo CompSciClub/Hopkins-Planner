@@ -80,7 +80,9 @@
                   req.session.valid       = true;
                   req.session.userId      = user._id;
                   req.session.displayName = user.name;
+                  req.session.admin       = user.admin;
                   console.log("sending to setup");
+
                   res.redirect(req.body.redirect || "/setup");
                   }
                 });
