@@ -109,7 +109,8 @@ header .inner{
   padding-right: 5px;
 }
 
-.footer .links a:first-child{
-  border-left: 1px solid #e5e5e5;
-  padding-left: 5px;
+.footer .links a:last-child{
+  border: none;
+  margin-right: 0;
+  padding-right: 0;
 }

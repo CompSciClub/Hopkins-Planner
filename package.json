@@ -1,6 +1,6 @@
 {
   "name": "hopkins-planner",
-  "version": "0.0.60-10",
+  "version": "0.0.61",
   "private": true,
   "domains": [
     "hopkinsplanner.com",
