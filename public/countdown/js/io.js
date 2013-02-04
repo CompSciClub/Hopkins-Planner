@@ -850,7 +850,7 @@ if (!window.requestAnimationFrame) {
    */
    
    
-  var countdownTo = new Date(2013, 1, 8, 10, 56, 0, 0).getTime();
+  var countdownTo = new Date(2013, 1, 4, 8, 10, 0, 0).getTime();
 
   /**
    * Buckets for the Digits.

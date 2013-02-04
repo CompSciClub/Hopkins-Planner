@@ -4,10 +4,14 @@
 
   var base      = require("./base.js"),
       Crypto    = require("ezcrypto").Crypto,
+      fs        = require("fs"),
       _         = require("underscore"),
+      email     = require("../app/email.js"),
       ViewClass = require("../views/Suggest.js");
 
-  var SuggestCtrl, _ptype;
+  var SuggestCtrl, _ptype,
+
+  suggestTemplate = fs.readFileSync(__dirname + "/../templates/emails/suggest.jade", "utf8");
 
   SuggestCtrl = function(uid){
     this.payload = {
@@ -51,24 +55,8 @@
     });
   };
  
- _ptype.addSuggestion = function(grade, name, Title, feedback, cb){
-   var self = this;
-   User.find({_id: self.uid}, function(err, users){
-     var user = users[0];
-     if (err || !user){
-       console.log("Error finding user");
-       return cb(true);
-   }
-     
-             
-     console.log(user.feedback);
-     user.Title = Title;
-     user.grade  = grade;
-     user.name   = name;
-     user.feedback = feedback;
-           
-     user.save(cb);
-   });
+ _ptype.addSuggestion = function(name, title, feedback, cb){
+   email.sendEmail("hopkins-csc@googlegroups.com", "jteplitz602@gmail.com", "Feedback - " + title, suggestTemplate, {title: title, name: name, feedback: feedback}, cb);
  };
   
   module.exports = SuggestCtrl;
