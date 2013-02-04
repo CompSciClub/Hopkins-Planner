@@ -11,7 +11,8 @@
   handleGet = function(req, res, next){
     var params = {
       flash: req.flash(),
-      name: req.session.displayName
+      name: req.session.displayName,
+      done: false
     };
     
     var control = new ControllerClass(req.session.userId);
@@ -21,7 +22,12 @@
   handlePost = function(req, res, next){
     var control = new ControllerClass(req.session.userId);
     control.addSuggestion(req.session.displayName, req.body.title, req.body.feedback, function(){
-      res.redirect("/suggest/success");
+      var params = {
+        flash: req.flash(),
+        name: req.session.displayName,
+        done: true
+      };
+      control.renderView(res, params, {});
     });
   };
 

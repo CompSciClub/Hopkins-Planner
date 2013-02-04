@@ -4,7 +4,7 @@
       nodemailer = require("nodemailer"),
       jade       = require("jade");
 
-  exports.sendEmail= function(sendaddress, emailaddress, subject, template, vars) {
+  exports.sendEmail= function(sendaddress, emailaddress, subject, template, vars, cb) {
     var jadeTemplate = jade.compile(template.toString("utf8"));
     var html = jadeTemplate(vars);
     nodemailer.SMTP = {
@@ -23,11 +23,7 @@
         subject: subject,
         html: html
       }, function(error, success){
-        if (!success){
-          console.log("Error sending message", error);
-        } else {
-          console.log("Message sent");
-        }
+        cb(!success, error);
       });
   };
 }());

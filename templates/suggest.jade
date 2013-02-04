@@ -11,28 +11,36 @@ block styles
     }
 
 block scripts
-  script(type="text/javascript")
-    $(document).ready(function(){
-    });
 
 block content
-  header
-    br
-    h2 What's on your mind?
-    br
-  form(action="/suggest", id="suggest-form", method="POST")
-    h3
-    .row
-      .span9
-        input.input-block-level#eventNameInput(type="Text", placeholder="Title", name="title")
-        textarea.input-block-level#modalDescriptionBox(type="Text", placeholder="Feedback", name="feedback", rows="10")
-    
-        .form-actions
-          button.btn.btn-success(type="submit") Submit
-          button.btn(href="/", style="margin-left: 10px;") Cancel
+  if !done
+    header
+      br
+      h2 What's on your mind?
+      br
+    form(action="/suggest", id="suggest-form", method="POST")
+      h3
+      .row
+        .span9
+          input.input-block-level#eventNameInput(type="Text", placeholder="Title", name="title")
+          textarea.input-block-level#modalDescriptionBox(type="Text", placeholder="Feedback", name="feedback", rows="10")
+      
+          .form-actions
+            button.btn.btn-success(type="submit") Submit
+            button.btn(href="/", style="margin-left: 10px;") Cancel
 
 
-      .span3
-        h3 Thanks For Your Input!
-        p
-          | We're always working to make your planner even better.
+        .span3
+          h3 Thanks For Your Input!
+          p
+            | We're always working to make your planner even better.
+
+  else
+    header
+      br
+      h2 Thank You
+      br
+    p
+      | We're reading your thoughts as fast as we get 'em. We'll do our best to listen. Thank's for using the planner!
+      br
+      a(href="/") Go Home
