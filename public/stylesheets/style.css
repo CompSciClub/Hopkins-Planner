@@ -102,3 +102,14 @@ header .inner{
   padding: 35px 0 36px;
   border-top: 1px solid #e5e5e5;
 }
+
+.footer .links a{
+  border-right: 1px solid #e5e5e5;
+  margin-right: 5px;
+  padding-right: 5px;
+}
+
+.footer .links a:first-child{
+  border-left: 1px solid #e5e5e5;
+  padding-left: 5px;
+}
