@@ -15,10 +15,17 @@ block styles
 
 
 block sidebar
+  h4
+    | Week of #{date.getMonth() + 1}/#{date.getDate()}: 
+    if weekType === "gray"
+      | Gray Week
+    else
+      | Maroon Week
   a.btn.arrow-left(href="/weekly/#{offset - 1}")
     i.icon-arrow-left
   a.btn.arrow-right(href="/weekly/#{offset + 1}", style="margin-left: 5px")
     i.icon-arrow-right
+
 
   script(type="text/javascript")
     var width = document.width

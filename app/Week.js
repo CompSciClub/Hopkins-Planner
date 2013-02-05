@@ -23,7 +23,8 @@
       ["F", "G", "Activities", "G", "G"],
       ["H", "H", "After School", "H", "H"]
     ];
-    var week = (getWeek(date) === "maroon") ? maroonWeek.slice(0) : grayWeek;
+    var weekType = getWeek(date);
+    var week =  (weekType === "maroon") ? maroonWeek.slice(0) : grayWeek;
     Holiday.find({timestamp: {$gte: date.getTime(), $lte: date.getTime() + 604800000}}, function(err, holidays){
       if (err){
         console.log("error getting holidays", err);
@@ -46,7 +47,7 @@
         }
       }
       console.log(week);
-      callback(week);
+      callback(week, weekType);
     });
   };
   getWeek = function(date){

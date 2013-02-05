@@ -70,12 +70,13 @@
         blocks.Activities = "Activities";
         blocks.Sunday     = "Sunday";
       
-        Week.getWeekStructure(date, function(week){
+        Week.getWeekStructure(date, function(week, weekType){
           var params = {
             week: week,
             events: eventsObj,
             blocks: blocks,
             date: date,
+            weekType: weekType,
             //ugh
             escapeHtml: escapeHtml,
             addDay: addDay
