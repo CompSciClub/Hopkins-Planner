@@ -29,23 +29,24 @@ html
     block styles
       
   body
-    block header
-      .navbar.navbar-fixed-top
-        .navbar-inner
-          .container
-            if !loggedIn
-              a.brand(href="/") Hopkins Planner
-            else
-              a.brand(href="/") #{name}'s Planner
-            .nav-collapse
-              ul.nav
-                if loggedIn
-                  li
-                    a(href="/suggest") Feedback
-                  li
-                    a(href="/setup") Preferences
-                  li
-                    a(href="/logout") Logout
+    if title != "Hopkins Planner"
+      block header
+        .navbar.navbar-fixed-top
+          .navbar-inner
+            .container
+              if !loggedIn
+                a.brand(href="/") Hopkins Planner
+              else
+                a.brand(href="/") #{name}'s Planner
+              .nav-collapse
+                ul.nav
+                  if loggedIn
+                    li
+                      a(href="/suggest") Feedback
+                    li
+                      a(href="/setup") Preferences
+                    li
+                      a(href="/logout") Logout
     .container
       block content
       .push
