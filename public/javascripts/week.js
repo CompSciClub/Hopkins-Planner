@@ -3,7 +3,7 @@
 var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
     checkThisDate,
-    getWeek,
+    getWeek, getMonday,
     changeWeek;
 
 $(window).load(function(){
@@ -503,7 +503,7 @@ changeWeek = function(ev){
 };
 
 checkThisDate = function(date){
-   var week = getWeek(date);
+   var week = getWeek(getMonday(date));
 
    var day = (date.getDay() + 6) % 7, daySchedule = [];
    for (var i = 0; i < week.length; i++){
@@ -517,7 +517,17 @@ checkThisDate = function(date){
 
 
 getWeek = function(date){
-  return (Math.round(((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - 1356998400) / 604800000)) % 2) ? maroonWeek: grayWeek;
+  return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? grayWeek : maroonWeek;
+};
+
+getMonday = function(date){
+  // we need to use Monday's timestamp because it identifies the week
+  date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
+  date.setHours(0, 0, 0, 0);
+  // set it to to the beginning of monday EST
+  date.setUTCHours(5, 0, 0, 0);
+
+  return date;
 };
 
 var maroonWeek = [
