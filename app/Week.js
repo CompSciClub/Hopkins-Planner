@@ -56,13 +56,14 @@
 
   // given a date object, this reutrns the beginning of monday
   exports.getMonday = function(date){
+    console.log("today", date);
     // we need to use Monday's timestamp because it identifies the week
     date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
+    console.log("monday", date);
+    date.setHours(0, 0, 0, 0);
     // set it to to the beginning of monday EST
-    date.setUTCHours(5);
-    date.setUTCMinutes(0);
-    date.setUTCSeconds(0);
-    date.setUTCMilliseconds(0);
+    date.setUTCHours(5, 0, 0, 0);
+    console.log("monday", date);
 
     return date;
   };

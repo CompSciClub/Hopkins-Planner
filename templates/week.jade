@@ -107,17 +107,15 @@ block content
         h3
           input#eventNameInput.xlarge(type="text", value="Event Name")
           br
-          small#eventDate
-            span.eventBlock
+          small#eventDate.row-fluid
+            select.span5#blockSelect(name="normalSelect")
             |  on 
-            span.eventDate
+            input.span5.dateinput(type="text", data-date-format="mm/dd/yyyy")
 
       .modal-body
         form
           .row-fluid
             .span6
-              #blockSelectorContainer
-                select#blockSelect(name="normalSelect")
                 br
                 br
                 textarea#modalDescriptionBox Description here

@@ -2,6 +2,8 @@
 
 var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
+    checkThisDate,
+    getWeek,
     changeWeek;
 
 $(window).load(function(){
@@ -62,9 +64,9 @@ $(document).ready(function(){
 
     // get the date and information
     var date = new Date(monday + (getChildIndex(this) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
-        eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
-        eventDate.day  = getChildIndex(this);
-        eventDate.node = this; // store the current element so we can put the event box in later
+    eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
+    eventDate.day  = getChildIndex(this);
+    eventDate.node = this; // store the current element so we can put the event box in later
 
       modalTypeVar = "new"; // set the edit type to new;
       createEventModal("new", block, e);
@@ -88,7 +90,7 @@ $(document).ready(function(){
     closeDialog();
   });
   $("#blockSelect").change(function(){
-    $(".eventBlock").html(blocks[$(this).val()]); // change the block in the time string when they select a new block
+    //$(".eventBlock").html(blocks[$(this).val()]); // change the block in the time string when they select a new block
   });
   $("#saveButton").click(function(){
     var i = 0;
@@ -280,7 +282,7 @@ function setDarkColor(color){
 function createEventModal(modalType, block, thisEvent){
   // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventDate").html(eventDate.string);
+    //$(".eventDate").html(eventDate.string);
 
     //populateOptions();
   
@@ -310,7 +312,7 @@ function createEventModal(modalType, block, thisEvent){
     // add in other blocks
     /* Set the block selector to the current block */
     $("#blockSelect").val(block);
-    $(".eventBlock").html(blocks[block]);
+    //$(".eventBlock").html(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
       if (modalType == "edit") {
         $("#eventNameInput").val($("<div>" + thisEvent.name + "</div>").text());
@@ -329,6 +331,16 @@ function createEventModal(modalType, block, thisEvent){
       keyboard: true,
       backdrop: "static"
     });  
+
+    var eventDate_obj = new Date(eventDate.timestamp);
+    $("#eventDate .dateinput").val((eventDate_obj.getMonth() + 1) + "/" + eventDate_obj.getDate() + "/" + eventDate_obj.getFullYear());
+    $("#eventDate .dateinput").datepicker({perm: false, highlightWeek: false, styles: {"z-index": 1100}, disableDates: checkThisDate});
+    $("#eventDate .dateinput").datepicker("setValue", eventDate_obj);
+
+    $("#eventDate .dateinput").datepicker("update").on("changeDate", function(e){
+      eventDate.timestamp = e.date.getTime();
+      eventDate.date      = (e.date.getDay() + 6) % 7;
+    });
 
     $("#eventCreatorModal").modal("show");
     
@@ -489,3 +501,38 @@ changeWeek = function(ev){
   var appendage = window.location.protocol + "//" + window.location.host + "/weekly/" + String(toWeek + weekOffset);
   window.location.href = appendage;
 };
+
+checkThisDate = function(date){
+   var week = getWeek(date);
+
+   var day = (date.getDay() + 6) % 7, daySchedule = [];
+   for (var i = 0; i < week.length; i++){
+     if (week[i][day] === eventDate.block){
+       return true;
+     }
+   }
+
+   return false;
+};
+
+
+getWeek = function(date){
+  return (Math.round(((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - 1356998400) / 604800000)) % 2) ? maroonWeek: grayWeek;
+};
+
+var maroonWeek = [
+  ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
+  ["C", "C", "B", "C", "A"],
+  ["D", "D", "E", "D", "C"],
+  ["E", "F", "F", "E", "F"],
+  ["F", "G", "Activities", "G", "G"],
+  ["G", "H", "After School", "H", "H"]
+];
+var grayWeek = [
+  ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
+  ["C", "C", "B", "C", "A"],
+  ["D", "D", "E", "D", "D"],
+  ["E", "E", "F", "E", "F"],
+  ["F", "G", "Activities", "G", "G"],
+  ["H", "H", "After School", "H", "H"]
+];
