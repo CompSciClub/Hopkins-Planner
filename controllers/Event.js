@@ -45,7 +45,8 @@
       block: e.block,
       description: e.description,
       bootClass: e.bootClass,
-      owner: e.owner || self.uid
+      owner: e.owner || self.uid,
+	  color: e.color
     });
     newEvent.save(cb);
   };

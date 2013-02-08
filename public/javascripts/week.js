@@ -12,7 +12,7 @@ $(window).load(function(){
   $(".row-fluid").children(".span2").append('<div id="datepicker2" style="display:none" class="input-append date" id="dp3" data-date="'+ ds +'" data-date-format="mm/dd/yyyy"><input style="width:80%" size="16" type="text" value="'+ ds +'" readonly>				<span class="add-on"><i class="icon-calendar"></i></span>			  </div>');
   setupDatepicker();
   $("#datepicker").datepicker("show");
-  placeDatePicker()
+  placeDatePicker();
 });
 
 $(document).ready(function(){
@@ -177,6 +177,7 @@ function createEvent(newOrOld){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
+  newEvent.color	   = rgb2hex($("#pickANewBootClass").css("background-color"));
   newEvent.bootClass   = ""
   if (newOrOld == "old"){
     newEvent._id = eventDate._id;
@@ -191,7 +192,11 @@ function createEvent(newOrOld){
   var bootClasses = getBootClasses();
   for (var i = 0; i < radios.length; i++){
     if (radios[i].checked){
-      newEvent.bootClass += bootClasses[i];
+	  if (i < bootClasses.length){
+	      newEvent.bootClass += bootClasses[i];
+	  } else {
+	      newEvent.bootClass += $("#pickANewBootClass").val();
+	  }
     }
   }
   
@@ -282,6 +287,9 @@ function setDarkColor(color){
 /** Modal Stuff */
 
 function createEventModal(modalType, block, thisEvent){
+  $('#newBootClass').colourPicker({
+    title:    false
+  });
   // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
     //$(".eventDate").html(eventDate.string);
@@ -302,6 +310,9 @@ function createEventModal(modalType, block, thisEvent){
         $("#modalDescriptionBox").val($("<div>" + thisEvent.description + "</div>").text());
         var bootClasses = getBootClasses();
         var x = $.inArray(thisEvent.bootClass, bootClasses);
+		if (x < 0){
+			x = bootClasses.length; // this should fix the "cannot set checked of undefined" errors
+		}
         var radios = $('input[name=modalRadio1]:radio');
         radios[x].checked="true";
         $("#deleteButton").show();
@@ -327,6 +338,16 @@ function createEventModal(modalType, block, thisEvent){
       $("#blockSelect").val(block);
     });
 
+	$("#pickANewBootClass").focus(function(){
+        var radios = $('input[name=modalRadio1]:radio');
+		radios[5].checked = "true";
+    })
+	
+	if (radios[bootClasses.length].checked){
+		$("#pickANewBootClass").val(thisEvent.bootClass);
+		$("#pickANewBootClass").css("background-color",thisEvent.color);
+	}
+	
     $("#eventCreatorModal").modal("show");
     
 }
@@ -553,3 +574,16 @@ var grayWeek = [
   ["F", "G", "Activities", "G", "G"],
   ["H", "H", "After School", "H", "H"]
 ];
+
+var hexDigits = new Array
+        ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
+
+//Function to convert hex format to a rgb color
+function rgb2hex(rgb) {
+ rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function hex(x) {
+  return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+}
