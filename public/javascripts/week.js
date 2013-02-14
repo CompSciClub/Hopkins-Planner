@@ -186,15 +186,17 @@ function createEvent(newOrOld){
   if (newEvent.description === "Description here"){
     newEvent.description = "No description";
   }
-  
+
   var radios = $('input[name=modalRadio1]:radio'); 
   var bootClasses = getBootClasses();
   for (var i = 0; i < radios.length; i++){
     if (radios[i].checked){
 	  if (i < bootClasses.length){
 	      newEvent.bootClass += bootClasses[i];
+        newEvent.color = undefined; // ARGH. This is not a good way to deal with colors, but we have a bug on production
 	  } else {
 	      newEvent.bootClass += $("#pickANewBootClass").val();
+        newEvent.bootClass = "other"
 	  }
     }
   }
