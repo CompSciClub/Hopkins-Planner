@@ -3,7 +3,7 @@
 var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
     checkThisDate,
-    getWeek, getMonday, setClassesToday,
+    getWeek, getMonday, setClassesToday, updateBlockSelector, updateBlock,
     changeWeek;
 
 $(window).load(function(){
@@ -93,18 +93,17 @@ $(document).ready(function(){
     //$(".eventBlock").html(blocks[$(this).val()]); // change the block in the time string when they select a new block
   });
   $("#saveButton").click(function(){
-    var i = 0;
-	  for (i = 0; i < classesToday.length; i++){
-      if (classesToday[i] == $("#blockSelect").val()){
-        break;
-      }
-	  }
-	  eventDate.block = classesToday[i];
-	  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+      updateBlock();
       createEvent(modalTypeVar);
   });
   $("#deleteButton").click(function(){
     deleteEvent();
+  });
+
+  $("#blockSelect").change(function(){
+    eventDate.block = $("#blockSelect").val();
+    $("#eventDate .dateinput").datepicker("update");
+    updateBlock();
   });
 
   // if the input box has default text, select all of it to easily replace sample text
@@ -217,7 +216,7 @@ function createEvent(newOrOld){
         $(".eventCheck").unbind("click", checkboxClicked);
         $(".eventCheck").click(checkboxClicked);
         $(".event").popover({html: false, trigger: "hover"});
-        addToEvents(currentEventLoc[0], newEvent.block, newEvent);
+        addToEvents(eventDate.day, newEvent.block, newEvent);
       }
           closeDialog();
     }
@@ -288,8 +287,9 @@ function createEventModal(modalType, block, thisEvent){
 
     //populateOptions();
   
+    classesToday = setClassesToday(); // set this days class schedule
     /* Populate the block selector */
-    classesToday = setClassesToday();
+    updateBlockSelector();
 	
 
     // add in other blocks
@@ -317,14 +317,15 @@ function createEventModal(modalType, block, thisEvent){
 
     var eventDate_obj = new Date(eventDate.timestamp);
     $("#eventDate .dateinput").val((eventDate_obj.getMonth() + 1) + "/" + eventDate_obj.getDate() + "/" + eventDate_obj.getFullYear());
-    $("#eventDate .dateinput").datepicker({perm: false, highlightWeek: false, styles: {"z-index": 1100}, disableDates: checkThisDate});
+    $("#eventDate .dateinput").datepicker({weekStart: 1, perm: false, highlightWeek: false, styles: {"z-index": 1100}, disableDates: checkThisDate});
     $("#eventDate .dateinput").datepicker("setValue", eventDate_obj);
 
     $("#eventDate .dateinput").datepicker("update").on("changeDate", function(e){
       eventDate.timestamp = e.date.getTime();
       eventDate.day       = (e.date.getDay() + 6) % 7;
-      classesToday = setClassesToday();
-      $("#blockSelect").val(block);
+      classesToday        = setFutureClasses(e.date);
+      updateBlockSelector();
+      $("#blockSelect").val(eventDate.block);
     });
 
     $("#eventCreatorModal").modal("show");
@@ -412,8 +413,8 @@ function getEvents(day,block,index){
 		return events[day][block][index];
 	}
 	catch (err){
-		console.log("there is no event at ["+day+"]["+block+"]["+index+"]")
-		console.log(err);
+		/*console.log("there is no event at ["+day+"]["+block+"]["+index+"]")
+		console.log(err);*/
 	}
 }
 function addToEvents(day, block, event){
@@ -430,11 +431,10 @@ function addToEvents(day, block, event){
 	console.log(event, " pushed to ", day, block);
 }
 function removeEvents(day, block, index){
-	console.log(day, block, index);
 	try{
 		Array.prototype.splice.call(events[day][block],index,1); // a convoluted way to remove an event
 	}catch (err){
-		console.log(events[day][block][index]);
+		//console.log(events[day][block][index]);
 	}
 }
 function removeEventNode(id){
@@ -490,7 +490,7 @@ changeWeek = function(ev){
 checkThisDate = function(date){
    var week = getWeek(getMonday(date));
 
-   var day = (date.getDay() + 6) % 7, daySchedule = [];
+   var day = (date.getDay() + 6) % 7;
    for (var i = 0; i < week.length; i++){
      if (week[i][day] === eventDate.block){
        return true;
@@ -498,6 +498,17 @@ checkThisDate = function(date){
    }
 
    return false;
+};
+
+setFutureClasses = function(date){
+   var week = getWeek(getMonday(date));
+
+   var day = (date.getDay() + 6) % 7, daySchedule = [];
+   for (var i = 0; i < week.length; i++){
+     daySchedule.push(week[i][day]);
+   }
+
+   return daySchedule;
 };
 
 
@@ -529,13 +540,27 @@ setClassesToday = function(){
 	    	classesToday.push(output);
 	    }
 	}
+
+  return classesToday;
+}
+
+updateBlock = function(){
+  for (var i = 0; i < classesToday.length; i++){
+    if (classesToday[i] == $("#blockSelect").val()){
+      break;
+    }
+  }
+  eventDate.block = classesToday[i];
+  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+};
+
+updateBlockSelector = function(){
   $("#blockSelect").html(''); // clear the list
   for (blockName in blocks){
     if (blockName != "_id" && $.inArray(blockName, classesToday) != -1)
       $("#blockSelect").append("<option value='" +blockName+ "'>"+blocks[blockName]+"</option>");// add options
   }
-  return classesToday;
-}
+};
 
 var maroonWeek = [
   ["A", "B", "A", "A", "B", "Saturday", "Sunday"],

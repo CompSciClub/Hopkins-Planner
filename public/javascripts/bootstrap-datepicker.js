@@ -204,7 +204,6 @@
 				}
         var dayDate = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate());
         if (this.disableDates && !this.disableDates(dayDate)){
-          console.log("disabled", dayDate);
           clsName += " disabled";
         }
 				html.push('<td class="day'+clsName+'">'+prevMonth.getDate() + '</td>');
@@ -284,9 +283,11 @@
 							}
 							var year = this.viewDate.getFullYear();
 							this.viewDate = new Date(year, month, day,0,0,0,0);
-              if (this.disableDates && !this.disableDates(this.viewDate)){
-                this.viewDate = this.date;
-                return;
+              if (this.disableDates){
+                if (target.hasClass("disabled")){
+                  this.viewDate = this.date;
+                  return;
+                }
               }
 							this.date = new Date(year, month, day,0,0,0,0);
 							this.fill();
