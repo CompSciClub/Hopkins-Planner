@@ -44,6 +44,7 @@ exports.Event = new Schema({
   timestamp: Number,
   day: Number, // number from 0 - 6 indicating day of week (Monday is 0)
   block: String,
+  color: String,
   description: String,
   owner: ObjectId,
   event_id: ObjectId,

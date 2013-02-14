@@ -24,12 +24,13 @@
       for (var prop in newEvent){
         if (newEvent.hasOwnProperty(prop)){
           if (newEvent[prop] !== null){
+            console.log("saving", prop);
             e[prop] = newEvent[prop];
           }
         }
       }
 
-      console.log("saving", e);
+      console.log("saving", e.color);
 
       e.save(cb);
     });
@@ -46,7 +47,7 @@
       description: e.description,
       bootClass: e.bootClass,
       owner: e.owner || self.uid,
-	  color: e.color
+      color: e.color
     });
     newEvent.save(cb);
   };

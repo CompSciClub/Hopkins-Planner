@@ -16,6 +16,7 @@
       day         : req.body.day           || null,
       block       : req.body.block         || null,
       description : req.body.description   || null,
+      color       : req.body.color         || null,
       bootClass   : req.body.bootClass     || null
     };
 
