@@ -59,19 +59,19 @@ td.Sunday.block{
   zoom: 1;
   filter: aplha(opactiy = 40);
 }
-.event.test{
+.event[data-bootClass=test]{
   background-color: #A62424;
 }
-.event.hw{
+.event[data-bootClass=hw]{
   background-color: #242DA6;
 }
-.event.quiz{
+.event[data-bootClass=quiz]{
   background-color: #731308;
 }
-.event.project{
+.event[data-bootClass=project]{
   background-color: #4B89DB;
 }
-.event.reminder{
+.event[data-bootClass=reminder]{
   background-color: #997777;
 }
 
@@ -156,6 +156,7 @@ font-family:"Arial Verdana",sans-serif;
 
 #eventType input{
   margin-top: 0 !important;
+  color: #ffffff !important;
 }
 
 #blockSelectorContainer textarea{
@@ -231,8 +232,8 @@ font-family:"Arial Verdana",sans-serif;
 .datepicker td.disabled{
   color: #999999;
 }
-.datepicker td.disabled:hover{
-  color: #999999;
+.datepicker td.disabled:hover{    
+  color: #999999; 	
   background: none !important;
   cursor: default;
 }
