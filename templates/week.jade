@@ -98,7 +98,7 @@ block content
                     each eventObj in events[realDay][block]
                       - var done = (eventObj.done) ? "done" : "";
                       - var backgroundString;
-                      if (typeof(eventObj.color) === "undefined")
+                      if (eventObj.bootClass !== "other")
                         - backgroundString = "";
                       else
                         - backgroundString = "background-color: " + eventObj.color + ";";
