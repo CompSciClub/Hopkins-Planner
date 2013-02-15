@@ -196,7 +196,7 @@ function createEvent(newOrOld){
         newEvent.color = undefined; // ARGH. This is not a good way to deal with colors, but we have a bug on production
 	  } else {
 	      newEvent.bootClass += $("#pickANewBootClass").val();
-        newEvent.bootClass = "other"
+        newEvent.bootClass = "Other"
 	  }
     }
   }
