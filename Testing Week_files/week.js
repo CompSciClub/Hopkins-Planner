@@ -2,18 +2,22 @@
 
 var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
+    checkThisDate,
+    getWeek, getMonday, setClassesToday, updateBlockSelector, updateBlock,
     changeWeek;
+	eventDate = getCurrentDateString(new Date(monday));
+	todaysDate = new Date();
+	eventDate.day = (todaysDate.getDay()+6) % 7;
+	eventDate.day = 1; //JUST FOR TESTING::::DELETE THIS LINE
+	console.log(eventDate.day);
 
-eventDate = getCurrentDateString(new Date(monday));
-eventDate.day = 1;
-	
 $(window).load(function(){
   var now = new Date(monday);
   var ds = now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear()
-  $(".row-fluid").children(".span2").append('<div id="datepicker2" style="display:none" class="input-append date" id="dp3" data-date="'+ ds +'" data-date-format="mm/dd/yyyy"><input style="width:100px" size="16" type="text" value="'+ ds +'" readonly>				<span class="add-on"><i class="icon-calendar"></i></span>			  </div>');
+  $(".row-fluid").children(".span2").append('<div id="datepicker2" style="display:none" class="input-append date" id="dp3" data-date="'+ ds +'" data-date-format="mm/dd/yyyy"><input style="width:80%" size="16" type="text" value="'+ ds +'" readonly>				<span class="add-on"><i class="icon-calendar"></i></span>			  </div>');
   setupDatepicker();
   $("#datepicker").datepicker("show");
-  placeDatePicker()
+  placeDatePicker();
 });
 
 $(document).ready(function(){
@@ -42,8 +46,6 @@ $(document).ready(function(){
   /** for Mobile screen */
   updateMobileScreen();
   
-  
-  
   /** EVENT HANDLERS: */
   $("#CalendarTable td").hover(
     /* mouseenter */
@@ -70,16 +72,16 @@ $(document).ready(function(){
 
     // get the date and information
     var date = new Date(monday + (getChildIndex(this) * 24 * 60 * 60 * 1000)); // get the current date by adding the number of milliseconds since monday.
-        eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
-        eventDate.day  = getChildIndex(this);
-        eventDate.node = this; // store the current element so we can put the event box in later
+    eventDate      = getCurrentDateString(date); // since only one event is created at a time, just use a date global
+    eventDate.day  = getChildIndex(this);
+    eventDate.node = this; // store the current element so we can put the event box in later
 
       modalTypeVar = "new"; // set the edit type to new;
       createEventModal("new", block, e);
 	  currentEventLoc = [eventDate.day , block, -1];
     });
   // event popovers
-  $(".event").popover({html: false, trigger: "hover"});
+  $(".event").popover({html: true, trigger: "hover"});
 
   $(".eventCheck").click(checkboxClicked);
 
@@ -96,21 +98,20 @@ $(document).ready(function(){
     closeDialog();
   });
   $("#blockSelect").change(function(){
-    $(".eventBlock").html($(this).val()); // change the block in the time string when they select a new block
+    //$(".eventBlock").html(blocks[$(this).val()]); // change the block in the time string when they select a new block
   });
   $("#saveButton").click(function(){
-    var i = 0;
-	  for (i = 0; i < classesToday.length; i++){
-		if (blocks[classesToday[i]] == $("#blockSelect").val()){
-			break;
-		}
-	  }
-	  eventDate.block = classesToday[i];
-	  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+      updateBlock();
       createEvent(modalTypeVar);
   });
   $("#deleteButton").click(function(){
     deleteEvent();
+  });
+
+  $("#blockSelect").change(function(){
+    eventDate.block = $("#blockSelect").val();
+    $("#eventDate .dateinput").datepicker("update");
+    updateBlock();
   });
 
   // if the input box has default text, select all of it to easily replace sample text
@@ -122,7 +123,7 @@ $(document).ready(function(){
 });
 
 function mobileTDClick(event){
-    var block = getClassesToday(eventDate.day)[$("#singleDay tbody").children("tr").children("td").index(this)]; // figure out which block the event is
+    var block = setClassesToday(eventDate.day)[$("#singleDay tbody").children("tr").children("td").index(this)]; // figure out which block the event is
 	var weekNum = $("#singleDay tbody").children("tr").children("td").index(this); 
 	eventDate.node = $($("#CalendarTable tbody tr")[weekNum + 1]).children("td")[eventDate.day-1]; // store the current element so we can put the event box in later
 	console.log(eventDate.node);
@@ -132,8 +133,8 @@ function mobileTDClick(event){
 }
 
 function updateMobileScreen(){
-  $("#singleDay thead td center").html(eventDate.string);
-  var ct = getClassesToday(eventDate.day-1);
+  $("#singleDay thead td center").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+  var ct = setClassesToday(eventDate.day-1);
   var j = 1;
   console.log(ct)
   for (blockName in blocks){
@@ -143,11 +144,21 @@ function updateMobileScreen(){
 		j += 1;
 	  }
   }
+  if (ct.length == 1){
+	console.log("sup");
+	$("#mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").hide();
+	$("#mobileBlock1").css("border-bottom-width", "1px");
+	$("#mobileBlock1").css("border-bottom-style", "solid");
+	$("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
+  } else {
+	$("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
+  }
 }
 
 $(window).resize(placeDatePicker);
 
 function placeDatePicker(){
+	$("#eventCreatorModal .modal-body").css("max-height", ($(window).height()-275));
 	var width = $(window).width();
 	console.log(width)
 	if (width < 1360){
@@ -183,16 +194,18 @@ function editEvent(node){
   var blockNode = $(node).parent("td")[0];
   getEventInfo(blockNode);
   var block = $(blockNode).attr('class').split(" ")[0];
+
   if (getEvents(eventDate.day,block,getChildIndex(node)-1)){
-	var thisEvent = getEvents(eventDate.day,block,getChildIndex(node)-1);
-	console.log("this Event found");
+    var thisEvent = getEvents(eventDate.day,block,getChildIndex(node)-1);
+    console.log("this Event found");
   } else {
-	console.log("this Event NOT found");
-	var thisEvent = {};
-	thisEvent.description = $(node).attr("data-content");
-	thisEvent.name = $(node).attr("data-original-title");
-	thisEvent.bootClass = $(node).attr("class").split(" ")[2];
+    console.log("this Event NOT found");
+    var thisEvent = {};
+    thisEvent.description = $(node).attr("data-content");
+    thisEvent.name = $(node).attr("data-original-title");
+    thisEvent.bootClass = $(node).attr("class").split(" ")[2];
   }
+
   thisEvent.node = node;
   currentEventLoc = [eventDate.day, block, getChildIndex(node)-1];
   eventDate._id = thisEvent._id;
@@ -205,21 +218,28 @@ function createEvent(newOrOld){
   var newEvent         = eventDate;
   newEvent.name        = $("#eventNameInput").val();
   newEvent.description = $("#modalDescriptionBox").val();
+  newEvent.color	   = rgb2hex($("#pickANewBootClass").css("background-color"));
   newEvent.bootClass   = ""
   if (newOrOld == "old"){
     newEvent._id = eventDate._id;
-	removeEventNode(newEvent._id);
-	removeEvents(currentEventLoc[0],currentEventLoc[1],currentEventLoc[2]);
+    removeEventNode(newEvent._id);
+    removeEvents(currentEventLoc[0],currentEventLoc[1],currentEventLoc[2]);
   }
   if (newEvent.description === "Description here"){
     newEvent.description = "No description";
   }
-  
+
   var radios = $('input[name=modalRadio1]:radio'); 
   var bootClasses = getBootClasses();
   for (var i = 0; i < radios.length; i++){
     if (radios[i].checked){
-      newEvent.bootClass += bootClasses[i];
+	  if (i < bootClasses.length){
+	      newEvent.bootClass += bootClasses[i];
+        newEvent.color = undefined; // ARGH. This is not a good way to deal with colors, but we have a bug on production
+	  } else {
+	      newEvent.bootClass += $("#pickANewBootClass").val();
+        newEvent.bootClass = "other"
+	  }
     }
   }
   
@@ -233,21 +253,37 @@ function createEvent(newOrOld){
     data: newEvent,
     failure: function(err){
       console.log(err);
-      error(err);
+      //error(err);
     },
     success: function(data){
+      if (eventDate.timestamp >= monday && eventDate.timestamp < monday + 604800000){
         eventDate._id = data.event._id;
         newEvent._id = eventDate._id;
         // now add the element to the UI
-          // TODO re-style these event boxes
-          $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success '+newEvent.bootClass+' event" style="height:20px" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + newEvent.name + '</div><input type="checkbox" class="eventCheck"></div>');
-          $(".eventCheck").unbind("click", checkboxClicked);
-          $(".eventCheck").click(checkboxClicked);
-          $(".event").popover({html: false, trigger: "hover"});
-          addToEvents(currentEventLoc[0], newEvent.block, newEvent);
+        // TODO re-style these event boxes
+        $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success event" data-bootClass="'+newEvent.bootClass+'" style="height:20px; background-color: '+newEvent.color+'" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + escapeHtml(newEvent.name) + '</div><input type="checkbox" class="eventCheck"></div>');
+        $(".eventCheck").unbind("click", checkboxClicked);
+        $(".eventCheck").click(checkboxClicked);
+        $(".event").popover({html: false, trigger: "hover"});
+        addToEvents(eventDate.day, newEvent.block, newEvent);
+      }
           closeDialog();
     }
   });
+  //FOR MATT'S PURPOSES. DO NOT COMMIT FROM HERE UNTIL %%%%%%%%
+	if (eventDate.timestamp >= monday && eventDate.timestamp < monday + 604800000){
+        eventDate._id = Math.floor(Math.random() * (8000000 + 1)) + 10000000;
+        newEvent._id = eventDate._id;
+        // now add the element to the UI
+        // TODO re-style these event boxes
+        $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success event" data-bootClass="'+newEvent.bootClass+'" style="height:20px; background-color: '+newEvent.color+'" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + escapeHtml(newEvent.name) + '</div><input type="checkbox" class="eventCheck"></div>');
+        $(".eventCheck").unbind("click", checkboxClicked);
+        $(".eventCheck").click(checkboxClicked);
+        $(".event").popover({html: false, trigger: "hover"});
+        addToEvents(eventDate.day, newEvent.block, newEvent);
+      }
+          closeDialog();
+	// %%%%%%%%
 }
 
 function deleteEvent(node){ // sends a "DELETE" ajax request, deletes event visually
@@ -308,34 +344,33 @@ function setDarkColor(color){
 /** Modal Stuff */
 
 function createEventModal(modalType, block, thisEvent){
+  $('#newBootClass').colourPicker({
+    title:    false
+  });
   // inject the date 
     // TODO add times. Kinda a pain in the ass with the way the schedule works, also we can't do this until we know what grade the user is in
-    $(".eventDate").html(eventDate.string);
+    //$(".eventDate").html(eventDate.string);
 
     //populateOptions();
   
-    classesToday = [];
-	
-	classesToday = getClassesToday(eventDate.day-1);
-	
+    classesToday = setClassesToday(); // set this days class schedule
     /* Populate the block selector */
-
-    $("#blockSelect").html(''); // clear the list
-    for (blockName in blocks){
-      if (blockName != "_id" && $.inArray(blockName, classesToday) != -1)
-        $("#blockSelect").append("<option>"+blocks[blockName]+"</option>");// add options
-    }
+    updateBlockSelector();
+	
 
     // add in other blocks
     /* Set the block selector to the current block */
-    $("#blockSelect").val(blocks[block]);
-    $(".eventBlock").html(blocks[block]);
+    $("#blockSelect").val(block);
+    //$(".eventBlock").html(blocks[block]);
     eventDate.block = block; // convert block to number and add block info to the eventDate object
       if (modalType == "edit") {
-        $("#eventNameInput").val(thisEvent.name);
-        $("#modalDescriptionBox").val(thisEvent.description);
+        $("#eventNameInput").val($("<div>" + thisEvent.name + "</div>").text());
+        $("#modalDescriptionBox").val($("<div>" + thisEvent.description + "</div>").text());
         var bootClasses = getBootClasses();
         var x = $.inArray(thisEvent.bootClass, bootClasses);
+		if (x < 0){
+			x = bootClasses.length; // this should fix the "cannot set checked of undefined" errors
+		}
         var radios = $('input[name=modalRadio1]:radio');
         radios[x].checked="true";
         $("#deleteButton").show();
@@ -349,6 +384,29 @@ function createEventModal(modalType, block, thisEvent){
       backdrop: "static"
     });  
 
+    var eventDate_obj = new Date(eventDate.timestamp);
+    $("#eventDate .dateinput").val((eventDate_obj.getMonth() + 1) + "/" + eventDate_obj.getDate() + "/" + eventDate_obj.getFullYear());
+    $("#eventDate .dateinput").datepicker({weekStart: 1, perm: false, highlightWeek: false, styles: {"z-index": 1100}, disableDates: checkThisDate});
+    $("#eventDate .dateinput").datepicker("setValue", eventDate_obj);
+
+    $("#eventDate .dateinput").datepicker("update").on("changeDate", function(e){
+      eventDate.timestamp = e.date.getTime();
+      eventDate.day       = (e.date.getDay() + 6) % 7;
+      classesToday        = setFutureClasses(e.date);
+      updateBlockSelector();
+      $("#blockSelect").val(eventDate.block);
+    });
+
+	$("#pickANewBootClass").focus(function(){
+        var radios = $('input[name=modalRadio1]:radio');
+		radios[5].checked = "true";
+    })
+	
+	if (radios[bootClasses.length].checked){
+		$("#pickANewBootClass").val(thisEvent.bootClass);
+		$("#pickANewBootClass").css("background-color",thisEvent.color);
+	}
+	
     $("#eventCreatorModal").modal("show");
     
 }
@@ -434,8 +492,8 @@ function getEvents(day,block,index){
 		return events[day][block][index];
 	}
 	catch (err){
-		console.log("there is no event at ["+day+"]["+block+"]["+index+"]")
-		console.log(err);
+		/*console.log("there is no event at ["+day+"]["+block+"]["+index+"]")
+		console.log(err);*/
 	}
 }
 function addToEvents(day, block, event){
@@ -452,11 +510,10 @@ function addToEvents(day, block, event){
 	console.log(event, " pushed to ", day, block);
 }
 function removeEvents(day, block, index){
-	console.log(day, block, index);
 	try{
 		Array.prototype.splice.call(events[day][block],index,1); // a convoluted way to remove an event
 	}catch (err){
-		console.log(events[day][block][index]);
+		//console.log(events[day][block][index]);
 	}
 }
 function removeEventNode(id){
@@ -466,24 +523,8 @@ function removeEventNode(id){
 setupDatepicker = function(){
   var now = new Date(monday);
   $("#datepicker").attr("data-date", now.getMonth() + 1 + "/" + now.getDate() + "/" + now.getFullYear());
-  $("#datepicker").datepicker({perm: true, weekStart: 1, autoSize: false}).on("changeDate", changeWeek);
+  $("#datepicker").datepicker({perm: true, highlightWeek: true, weekStart: 1, autoSize: false}).on("changeDate", changeWeek);
 };
-
-function getClassesToday(day){
-	var cltd = []
-	var mainTableRows = $("#CalendarTable tr");
-	for (var i = 1; i < mainTableRows.length; i++){
-		var output = $(mainTableRows[i]).children("td")[day];
-		output = $(output).attr("class").split(" ")[0];
-		cltd.push(output);
-		if (day == 5){
-				cltd = ["Saturday"];
-			} else if (day == 6){
-				cltd = ["Sunday"];
-			}
-	}
-	return cltd;
-}
 
 changeWeek = function(ev){
   var now = new Date(monday);
@@ -524,3 +565,108 @@ changeWeek = function(ev){
   var appendage = window.location.protocol + "//" + window.location.host + "/weekly/" + String(toWeek + weekOffset);
   window.location.href = appendage;
 };
+
+checkThisDate = function(date){
+   var week = getWeek(getMonday(date));
+
+   var day = (date.getDay() + 6) % 7;
+   for (var i = 0; i < week.length; i++){
+     if (week[i][day] === eventDate.block){
+       return true;
+     }
+   }
+
+   return false;
+};
+
+setFutureClasses = function(date){
+   var week = getWeek(getMonday(date));
+
+   var day = (date.getDay() + 6) % 7, daySchedule = [];
+   for (var i = 0; i < week.length; i++){
+     daySchedule.push(week[i][day]);
+   }
+
+   return daySchedule;
+};
+
+
+getWeek = function(date){
+  return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? grayWeek : maroonWeek;
+};
+
+getMonday = function(date){
+  // we need to use Monday's timestamp because it identifies the week
+  date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
+  date.setHours(0, 0, 0, 0);
+  // set it to to the beginning of monday EST
+  date.setUTCHours(5, 0, 0, 0);
+
+  return date;
+};
+
+setClassesToday = function(){
+  var classesToday = [];
+	var mainTableRows = $("#CalendarTable tr");
+	if (eventDate.day == 5){
+	    classesToday = ["Saturday"];
+	} else if (eventDate.day == 6){
+	    classesToday = ["Sunday"];
+	} else {
+	    for (var i = 1; i < mainTableRows.length; i++){
+		var output = $(mainTableRows[i]).children("td")[eventDate.day];
+	    	output = $(output).attr("class").split(" ")[0];
+	    	classesToday.push(output);
+	    }
+	}
+
+  return classesToday;
+}
+
+updateBlock = function(){
+  for (var i = 0; i < classesToday.length; i++){
+    if (classesToday[i] == $("#blockSelect").val()){
+      break;
+    }
+  }
+  eventDate.block = classesToday[i];
+  eventDate.node = $($("#CalendarTable tr")[i+1]).children("td")[eventDate.day];
+};
+
+updateBlockSelector = function(){
+  $("#blockSelect").html(''); // clear the list
+  for (blockName in blocks){
+    if (blockName != "_id" && $.inArray(blockName, classesToday) != -1)
+      $("#blockSelect").append("<option value='" +blockName+ "'>"+blocks[blockName]+"</option>");// add options
+  }
+};
+
+var maroonWeek = [
+  ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
+  ["C", "C", "B", "C", "A"],
+  ["D", "D", "E", "D", "C"],
+  ["E", "F", "F", "E", "F"],
+  ["F", "G", "Activities", "G", "G"],
+  ["G", "H", "After School", "H", "H"]
+];
+var grayWeek = [
+  ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
+  ["C", "C", "B", "C", "A"],
+  ["D", "D", "E", "D", "D"],
+  ["E", "E", "F", "E", "F"],
+  ["F", "G", "Activities", "G", "G"],
+  ["H", "H", "After School", "H", "H"]
+];
+
+var hexDigits = new Array
+        ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
+
+//Function to convert hex format to a rgb color
+function rgb2hex(rgb) {
+ rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function hex(x) {
+  return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+}

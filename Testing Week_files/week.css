@@ -59,19 +59,19 @@ td.Sunday.block{
   zoom: 1;
   filter: aplha(opactiy = 40);
 }
-.event.test{
+.event[data-bootClass=test]{
   background-color: #A62424;
 }
-.event.hw{
+.event[data-bootClass=hw]{
   background-color: #242DA6;
 }
-.event.quiz{
+.event[data-bootClass=quiz]{
   background-color: #731308;
 }
-.event.project{
+.event[data-bootClass=project]{
   background-color: #4B89DB;
 }
-.event.reminder{
+.event[data-bootClass=reminder]{
   background-color: #997777;
 }
 
@@ -143,7 +143,9 @@ font-family:"Arial Verdana",sans-serif;
   #eventNameInput{
 	width: 75% !important;
   }
-
+  #modalDescriptionBox {
+	width:90%
+  }
 }
 
 #datepicker{
@@ -166,16 +168,81 @@ font-family:"Arial Verdana",sans-serif;
 
 #eventType input{
   margin-top: 0 !important;
+  color: #ffffff !important;
+  margin-right: 5px;
 }
 
 #blockSelectorContainer textarea{
   width: 90%;
 }
 
-#eventType input{
-  margin-right: 5px;
-}
-
 #eventCreatorModal{
   width: 500px;
+}
+
+.datepicker.highlightWeek tr.active{
+  background-color: #0044cc;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-image: -webkit-linear-gradient(top, rgb(0, 136, 204), rgb(0, 68, 204));
+  background-repeat: repeat-x;
+}
+
+.datepicker.highlightWeek tr:hover{
+  background: #eeeeee; cursor: pointer; 
+}
+
+.datepicker.highlightWeek tr.active :first-child, .datepicker tr:hover :first-child{
+  -webkit-border-top-radius: 4px !important;
+  -moz-border-top-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+.datepicker.highlightWeek tr.active :last-child, .datepicker tr:hover :last-child{
+  -webkit-border-bottom-radius: 4px !important;
+  -moz-border-bottom-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.datepicker.highlightWeek tr.active td, .datepicker .highlightWeek tr:hover td{
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+
+}
+
+.datepicker.highlightWeek tr.active:hover{
+  background-color: #006dcc;
+  background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
+  background-image: -ms-linear-gradient(top, #0088cc, #0044cc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
+  background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
+  background-image: -o-linear-gradient(top, #0088cc, #0044cc);
+  background-image: linear-gradient(top, #0088cc, #0044cc);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
+  border-color: #0044cc #0044cc #002a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.datepicker.highlightWeek td:hover{
+  background: none !important;
+}
+
+.datepicker.highlightWeek tr.active td{
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.datepicker td.disabled{
+  color: #999999;
+}
+.datepicker td.disabled:hover{    
+  color: #999999; 	
+  background: none !important;
+  cursor: default;
 }
