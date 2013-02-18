@@ -735,7 +735,7 @@ function hex(x) {
 			if ( swipeLength >= minLength ) {
 				caluculateAngle();
 				determineSwipeDirection();
-				processingRoutine();
+				processingRoutine(event);
 				touchCancel(event); // reset the variables
 			} else {
 				touchCancel(event);
@@ -788,7 +788,7 @@ function hex(x) {
 		}
 	}
 	
-	function processingRoutine() {
+	function processingRoutine(e) {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
 			eventDate.day += 1;
@@ -800,5 +800,6 @@ function hex(x) {
 			updateMobileScreen();
 		} else {
 			touchCancel();
+			$("#singleDay").trigger(e);
 		}
 	}
