@@ -124,7 +124,7 @@ $(document).ready(function(){
 function mobileTDClick(event){
     var block = setClassesToday(eventDate.day)[$("#singleDay tbody").children("tr").children("td").index(this)]; // figure out which block the event is
 	var weekNum = $("#singleDay tbody").children("tr").children("td").index(this); 
-	eventDate.node = $($("#CalendarTable tbody tr")[weekNum + 1]).children("td")[eventDate.day-1]; // store the current element so we can put the event box in later
+	eventDate.node = $($("#CalendarTable tbody tr")[weekNum + 1]).children("td")[eventDate.day]; // store the current element so we can put the event box in later
 	console.log(eventDate.node);
     modalTypeVar = "new"; // set the edit type to new;
 	currentEventLoc = [eventDate.day , block, -1];
