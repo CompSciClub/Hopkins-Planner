@@ -118,6 +118,10 @@ font-family:"Arial Verdana",sans-serif;
   display: none;
 }
 
+#singleDay.event{
+	width:95%;
+}
+
 @media screen and (max-width:480px) {
   #CalendarTable{
     display: none;
