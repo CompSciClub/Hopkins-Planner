@@ -699,7 +699,7 @@ function hex(x) {
 
 	function touchStart(event,passedName) {
 		// disable the standard ability to select the touched object
-		//event.preventDefault();
+		event.preventDefault();
 		// get the total number of fingers touching the screen
 		fingerCount = event.touches.length;
 		// since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
@@ -717,7 +717,7 @@ function hex(x) {
 	}
 
 	function touchMove(event) {
-		//event.preventDefault();
+		event.preventDefault();
 		if ( event.touches.length == 1 ) {
 			curX = event.touches[0].pageX;
 			curY = event.touches[0].pageY;
@@ -727,7 +727,7 @@ function hex(x) {
 	}
 	
 	function touchEnd(event) {
-		//event.preventDefault();
+		event.preventDefault();
 		// check to see if more than one finger was used and that there is an ending coordinate
 		if ( fingerCount == 1 && curX != 0 ) {
 			// use the Distance Formula to determine the length of the swipe
@@ -775,13 +775,13 @@ function hex(x) {
 	function determineSwipeDirection(event) {
 		if ( (swipeAngle <= 45) && (swipeAngle >= 0) ) {
 			swipeDirection = 'left';
-			event.preventDefault();
+			//event.preventDefault();
 		} else if ( (swipeAngle <= 360) && (swipeAngle >= 315) ) {
 			swipeDirection = 'left';
-			event.preventDefault();
+			//event.preventDefault();
 		} else if ( (swipeAngle >= 135) && (swipeAngle <= 225) ) {
 			swipeDirection = 'right';
-			event.preventDefault();
+			//event.preventDefault();
 		} else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
 			swipeDirection = 'down';
 		} else {
