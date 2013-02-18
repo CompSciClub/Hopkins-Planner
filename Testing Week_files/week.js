@@ -156,7 +156,7 @@ function updateMobileScreen(){
 	$("#mobileBlock1").css("border-bottom-style", "solid");
 	$("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
   } else {
-	if (ct.length == 4){
+	if (ct.length == 5){
 		$("#mobileBlock6").hide();
 		$("#mobileBlock5").css("border-bottom-width", "1px");
 		$("#mobileBlock5").css("border-bottom-style", "solid");
