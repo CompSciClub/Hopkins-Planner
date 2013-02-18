@@ -696,6 +696,8 @@ function hex(x) {
 	// make sure its ID is passed in the event call placed in the element declaration, like:
 	// <div id="picture-frame" ontouchstart="touchStart(event,'picture-frame');"  ontouchend="touchEnd(event);" ontouchmove="touchMove(event);" ontouchcancel="touchCancel(event);">
 
+	var touchEv = [];
+	
 	function touchStart(event,passedName) {
 		// disable the standard ability to select the touched object
 		event.preventDefault();
@@ -713,6 +715,7 @@ function hex(x) {
 			// more than one finger touched so cancel
 			touchCancel(event);
 		}
+		touchEv.push(event);
 	}
 
 	function touchMove(event) {
@@ -723,6 +726,7 @@ function hex(x) {
 		} else {
 			touchCancel(event);
 		}
+		touchEv.push(event);
 	}
 	
 	function touchEnd(event) {
@@ -743,6 +747,7 @@ function hex(x) {
 		} else {
 			touchCancel(event);
 		}
+		touchEv.push(event);
 	}
 
 	function touchCancel(event) {
@@ -788,7 +793,7 @@ function hex(x) {
 		}
 	}
 	
-	function processingRoutine(e) {
+	function processingRoutine() {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
 			eventDate.day += 1;
@@ -800,6 +805,8 @@ function hex(x) {
 			updateMobileScreen();
 		} else {
 			touchCancel();
-			$("#singleDay").trigger(e);
+			$("#singleDay").trigger(touchEv[0]);
+			$("#singleDay").trigger(touchEv[1]);
+			$("#singleDay").trigger(touchEv[2]);
 		}
 	}
