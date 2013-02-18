@@ -102,6 +102,7 @@ $(document).ready(function(){
   $("#saveButton").click(function(){
       updateBlock();
       createEvent(modalTypeVar);
+	  updateMobileScreen();
   });
   $("#deleteButton").click(function(){
     deleteEvent();
