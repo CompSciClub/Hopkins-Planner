@@ -735,7 +735,7 @@ function hex(x) {
 			// if the user swiped more than the minimum length, perform the appropriate action
 			if ( swipeLength >= minLength ) {
 				caluculateAngle();
-				determineSwipeDirection(event);
+				determineSwipeDirection();
 				processingRoutine();
 				touchCancel(event); // reset the variables
 			} else {
@@ -772,7 +772,7 @@ function hex(x) {
 		if ( swipeAngle < 0 ) { swipeAngle =  360 - Math.abs(swipeAngle); }
 	}
 	
-	function determineSwipeDirection(event) {
+	function determineSwipeDirection() {
 		if ( (swipeAngle <= 45) && (swipeAngle >= 0) ) {
 			swipeDirection = 'left';
 			//event.preventDefault();
