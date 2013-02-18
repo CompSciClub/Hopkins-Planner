@@ -796,5 +796,7 @@ function hex(x) {
 			eventDate.day += 6;
 			eventDate.day = eventDate.day % 7;
 			updateMobileScreen();
+		} else {
+			touchCancel();
 		}
 	}
