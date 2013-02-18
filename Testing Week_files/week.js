@@ -789,16 +789,11 @@ function hex(x) {
 	function processingRoutine() {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
-			// REPLACE WITH YOUR ROUTINES
-			swipedElement.style.backgroundColor = 'orange';
+			eventDate.day += 1;
+			eventDate.day = eventDate.day % 7;
+			updateMobileScreen();
 		} else if ( swipeDirection == 'right' ) {
-			// REPLACE WITH YOUR ROUTINES
-			swipedElement.style.backgroundColor = 'green';
-		} else if ( swipeDirection == 'up' ) {
-			// REPLACE WITH YOUR ROUTINES
-			swipedElement.style.backgroundColor = 'maroon';
-		} else if ( swipeDirection == 'down' ) {
-			// REPLACE WITH YOUR ROUTINES
-			swipedElement.style.backgroundColor = 'purple';
+			eventDate.day += 6;
+			eventDate.day = eventDate.day % 7;
+			updateMobileScreen();
 		}
-	}
