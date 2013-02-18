@@ -135,6 +135,9 @@ function mobileTDClick(event){
 function updateMobileScreen(){
   $("#singleDay thead td center").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
   var ct = setClassesToday(eventDate.day-1);
+  if (ct[5] == "After") {
+	ct.pop();
+  }
   var j = 1;
   console.log(ct)
   for (blockName in blocks){
@@ -153,7 +156,14 @@ function updateMobileScreen(){
 	$("#mobileBlock1").css("border-bottom-style", "solid");
 	$("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
   } else {
-	$("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
+	if (ct.length == 4){
+		$("#mobileBlock6").hide();
+		$("#mobileBlock5").css("border-bottom-width", "1px");
+		$("#mobileBlock5").css("border-bottom-style", "solid");
+		$("#mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
+	} else {
+		$("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
+	}
   }
 }
 
