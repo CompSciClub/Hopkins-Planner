@@ -8,7 +8,6 @@ var eventDate,  // Date info for the event currently being created
 	eventDate = getCurrentDateString(new Date(monday));
 	todaysDate = new Date();
 	eventDate.day = (todaysDate.getDay()+6) % 7;
-	eventDate.day = 1; //JUST FOR TESTING::::DELETE THIS LINE
 	console.log(eventDate.day);
 
 $(window).load(function(){
