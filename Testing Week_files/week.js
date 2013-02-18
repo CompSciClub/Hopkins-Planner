@@ -141,7 +141,7 @@ function updateMobileScreen(){
         $("#mobileBlock" + j + '').html(blocks[blockName]);
 		$("#mobileBlock" + j + '').click(mobileTDClick);
 		var nodesFromMainCalendar = $($("#CalendarTable tbody tr")[j]).children("td")[eventDate.day].children;
-		$("#mobileBlock" + j + '').append(nodesFromMainCalendar);
+		$("#mobileBlock" + j + '').append(nodesFromMainCalendar.clone());
 		j += 1;
 	  }
   }
