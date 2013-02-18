@@ -118,7 +118,7 @@ font-family:"Arial Verdana",sans-serif;
   display: none;
 }
 
-#singleDay.event{
+#singleDay .event{
 	width:95%;
 }
 
