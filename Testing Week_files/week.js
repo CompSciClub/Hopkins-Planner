@@ -735,8 +735,8 @@ function hex(x) {
 			// if the user swiped more than the minimum length, perform the appropriate action
 			if ( swipeLength >= minLength ) {
 				caluculateAngle();
-				determineSwipeDirection();
-				processingRoutine(event);
+				determineSwipeDirection(event);
+				processingRoutine();
 				touchCancel(event); // reset the variables
 			} else {
 				touchCancel(event);
@@ -772,13 +772,16 @@ function hex(x) {
 		if ( swipeAngle < 0 ) { swipeAngle =  360 - Math.abs(swipeAngle); }
 	}
 	
-	function determineSwipeDirection() {
+	function determineSwipeDirection(event) {
 		if ( (swipeAngle <= 45) && (swipeAngle >= 0) ) {
 			swipeDirection = 'left';
+			event.preventDefault();
 		} else if ( (swipeAngle <= 360) && (swipeAngle >= 315) ) {
 			swipeDirection = 'left';
+			event.preventDefault();
 		} else if ( (swipeAngle >= 135) && (swipeAngle <= 225) ) {
 			swipeDirection = 'right';
+			event.preventDefault();
 		} else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
 			swipeDirection = 'down';
 		} else {
@@ -786,8 +789,7 @@ function hex(x) {
 		}
 	}
 	
-	function processingRoutine(event) {
-		event.preventDefault();
+	function processingRoutine() {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
 			eventDate.day += 1;
