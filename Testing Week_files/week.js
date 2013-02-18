@@ -700,7 +700,7 @@ function hex(x) {
 	
 	function touchStart(event,passedName) {
 		// disable the standard ability to select the touched object
-		event.preventDefault();
+		//event.preventDefault();
 		// get the total number of fingers touching the screen
 		fingerCount = event.touches.length;
 		// since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
@@ -730,7 +730,7 @@ function hex(x) {
 	}
 	
 	function touchEnd(event) {
-		event.preventDefault();
+		//event.preventDefault();
 		// check to see if more than one finger was used and that there is an ending coordinate
 		if ( fingerCount == 1 && curX != 0 ) {
 			// use the Distance Formula to determine the length of the swipe
@@ -805,8 +805,5 @@ function hex(x) {
 			updateMobileScreen();
 		} else {
 			touchCancel();
-			$("#singleDay").trigger(touchEv[0]);
-			$("#singleDay").trigger(touchEv[1]);
-			$("#singleDay").trigger(touchEv[2]);
 		}
 	}
