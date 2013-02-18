@@ -797,3 +797,4 @@ function hex(x) {
 			eventDate.day = eventDate.day % 7;
 			updateMobileScreen();
 		}
+	}
