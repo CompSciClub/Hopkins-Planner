@@ -710,8 +710,10 @@ function hex(x) {
 	// <div id="picture-frame" ontouchstart="touchStart(event,'picture-frame');"  ontouchend="touchEnd(event);" ontouchmove="touchMove(event);" ontouchcancel="touchCancel(event);">
 
 	var touchEv = [];
+	var initialWindowScroll;
 	
 	function touchStart(event,passedName) {
+		initialWindowScroll = $(document).scrollTop();
 		touchEv = [];
 		// disable the standard ability to select the touched object
 		//event.preventDefault();
@@ -739,6 +741,8 @@ function hex(x) {
 		if ( event.touches.length == 1 ) {
 			curX = event.touches[0].pageX;
 			curY = event.touches[0].pageY;
+			calculateAngle();
+			determineSwipeDirection();
 		} else {
 			touchCancel(event);
 		}
@@ -757,7 +761,7 @@ function hex(x) {
 			if ( swipeLength >= minLength ) {
 				caluculateAngle();
 				determineSwipeDirection();
-				processingRoutine(event);
+				processingRoutine();
 				touchCancel(event); // reset the variables
 			} else {
 				touchCancel(event);
@@ -808,8 +812,10 @@ function hex(x) {
 			//event.preventDefault();
 		} else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
 			swipeDirection = 'down';
+			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX);
 		} else {
 			swipeDirection = 'up';
+			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX);
 		}
 	}
 	
