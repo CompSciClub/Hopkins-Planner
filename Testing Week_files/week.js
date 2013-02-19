@@ -826,7 +826,7 @@ function hex(x) {
 		} else {
 			touchCancel();
 			for (var e in touchEv){
-				$.trigger(e)
+				$("#singleDay").trigger(e)
 			}
 		}
 	}
