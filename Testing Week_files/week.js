@@ -737,12 +737,15 @@ function hex(x) {
 	}
 
 	function touchMove(event) {
-		event.preventDefault();
+		//event.preventDefault();
 		if ( event.touches.length == 1 ) {
 			curX = event.touches[0].pageX;
 			curY = event.touches[0].pageY;
 			caluculateAngle();
 			determineSwipeDirection();
+			if (swipeDirection == 'right' or swipeDirection == 'left'){
+				event.preventDefault();
+			}
 		} else {
 			touchCancel(event);
 		}
@@ -812,10 +815,8 @@ function hex(x) {
 			//event.preventDefault();
 		} else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
 			swipeDirection = 'down';
-			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX));
 		} else {
 			swipeDirection = 'up';
-			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX));
 		}
 	}
 	
