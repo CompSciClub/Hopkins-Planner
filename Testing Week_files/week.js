@@ -743,7 +743,7 @@ function hex(x) {
 			curY = event.touches[0].pageY;
 			caluculateAngle();
 			determineSwipeDirection();
-			if (swipeDirection == 'right' or swipeDirection == 'left'){
+			if (swipeDirection == 'right' || swipeDirection == 'left'){
 				event.preventDefault();
 			}
 		} else {
