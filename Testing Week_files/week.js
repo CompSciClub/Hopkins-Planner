@@ -741,7 +741,7 @@ function hex(x) {
 		if ( event.touches.length == 1 ) {
 			curX = event.touches[0].pageX;
 			curY = event.touches[0].pageY;
-			calculateAngle();
+			caluculateAngle();
 			determineSwipeDirection();
 		} else {
 			touchCancel(event);
