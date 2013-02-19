@@ -812,10 +812,10 @@ function hex(x) {
 			//event.preventDefault();
 		} else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
 			swipeDirection = 'down';
-			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX);
+			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX));
 		} else {
 			swipeDirection = 'up';
-			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX);
+			window.scrollTo($(document).scrollLeft(), initialWindowScroll + (startX-curX));
 		}
 	}
 	
