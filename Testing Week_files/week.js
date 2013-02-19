@@ -729,6 +729,8 @@ function hex(x) {
 			// more than one finger touched so cancel
 			touchCancel(event);
 		}
+		delete event['layerX'];
+		delete event['layerY'];
 		touchEv.push(event);
 	}
 
@@ -740,6 +742,8 @@ function hex(x) {
 		} else {
 			touchCancel(event);
 		}
+		delete event['layerX'];
+		delete event['layerY'];
 		touchEv.push(event);
 	}
 	
@@ -761,6 +765,8 @@ function hex(x) {
 		} else {
 			touchCancel(event);
 		}
+		delete event['layerX'];
+		delete event['layerY'];
 		touchEv.push(event);
 	}
 
@@ -819,5 +825,8 @@ function hex(x) {
 			updateMobileScreen();
 		} else {
 			touchCancel();
+			for (var e in touchEv){
+				$.trigger(e)
+			}
 		}
 	}
