@@ -712,6 +712,7 @@ function hex(x) {
 	var touchEv = [];
 	
 	function touchStart(event,passedName) {
+		touchEv = [];
 		// disable the standard ability to select the touched object
 		//event.preventDefault();
 		// get the total number of fingers touching the screen
