@@ -1,9 +1,9 @@
 /* Week.js */
+/*Global scheduleUtils*/
 
 var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
-    checkThisDate,
-    getWeek, getMonday, setClassesToday, updateBlockSelector, updateBlock,
+    checkThisDate, getWeek, getMonday, setClassesToday, updateBlockSelector, updateBlock,
     changeWeek;
 
 $(window).load(function(){
@@ -510,21 +510,9 @@ changeWeek = function(ev){
   window.location.href = appendage;
 };
 
-checkThisDate = function(date){
-   var week = getWeek(getMonday(date));
-
-   var day = (date.getDay() + 6) % 7;
-   for (var i = 0; i < week.length; i++){
-     if (week[i][day] === eventDate.block){
-       return true;
-     }
-   }
-
-   return false;
-};
 
 setFutureClasses = function(date){
-   var week = getWeek(getMonday(date));
+   var week = scheduleUtils.getWeek(scheduleUtils.getMonday(date));
 
    var day = (date.getDay() + 6) % 7, daySchedule = [];
    for (var i = 0; i < week.length; i++){
@@ -534,20 +522,6 @@ setFutureClasses = function(date){
    return daySchedule;
 };
 
-
-getWeek = function(date){
-  return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? grayWeek : maroonWeek;
-};
-
-getMonday = function(date){
-  // we need to use Monday's timestamp because it identifies the week
-  date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
-  date.setHours(0, 0, 0, 0);
-  // set it to to the beginning of monday EST
-  date.setUTCHours(5, 0, 0, 0);
-
-  return date;
-};
 
 setClassesToday = function(){
   var classesToday = [];
@@ -585,22 +559,11 @@ updateBlockSelector = function(){
   }
 };
 
-var maroonWeek = [
-  ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
-  ["C", "C", "B", "C", "A"],
-  ["D", "D", "E", "D", "C"],
-  ["E", "F", "F", "E", "F"],
-  ["F", "G", "Activities", "G", "G"],
-  ["G", "H", "After School", "H", "H"]
-];
-var grayWeek = [
-  ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
-  ["C", "C", "B", "C", "A"],
-  ["D", "D", "E", "D", "D"],
-  ["E", "E", "F", "E", "F"],
-  ["F", "G", "Activities", "G", "G"],
-  ["H", "H", "After School", "H", "H"]
-];
+// a wrapper to pass the block info to the scheduleUtils function
+checkThisDate = function(date){
+  return scheduleUtils.checkThisDate(eventDate.block, date);
+};
+
 
 var hexDigits = new Array
         ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
