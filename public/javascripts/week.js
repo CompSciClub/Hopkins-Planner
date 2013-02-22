@@ -4,7 +4,12 @@
 var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
     checkThisDate, getWeek, getMonday, setClassesToday, updateBlockSelector, updateBlock,
-    changeWeek;
+    changeWeek,
+
+    eventDate = getCurrentDateString(new Date(monday)),
+    todaysDate = new Date();
+
+    eventDate.day = (todaysDate.getDay()+6) % 7;
 
 $(window).load(function(){
   var now = new Date(monday);
@@ -37,6 +42,9 @@ $(document).ready(function(){
 
   modalTypeVar = "new"; // whether editing (old) or creating (new). New by default
   currentEventLoc = [];
+
+  /** for Mobile screen */
+  updateMobileScreen();
   
   /** EVENT HANDLERS: */
   $("#CalendarTable td").hover(
@@ -95,6 +103,7 @@ $(document).ready(function(){
   $("#saveButton").click(function(){
       updateBlock();
       createEvent(modalTypeVar);
+      updateMobileScreen();
   });
   $("#deleteButton").click(function(){
     deleteEvent();
@@ -114,9 +123,57 @@ $(document).ready(function(){
   });
 });
 
+function mobileTDClick(event){
+    var block = setClassesToday(eventDate.day)[$("#singleDay tbody").children("tr").children("td").index(this)]; // figure out which block the event is
+	var weekNum = $("#singleDay tbody").children("tr").children("td").index(this); 
+	eventDate.node = $($("#CalendarTable tbody tr")[weekNum + 1]).children("td")[eventDate.day]; // store the current element so we can put the event box in later
+	console.log(eventDate.node);
+    modalTypeVar = "new"; // set the edit type to new;
+	currentEventLoc = [eventDate.day , block, -1];
+    createEventModal("new", block, event);
+}
+
+function updateMobileScreen(){
+  $("#singleDay thead td center").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+  var ct = setClassesToday(eventDate.day-1);
+  if (ct[5] == "After") {
+	ct.pop();
+  }
+  var j = 1;
+  console.log(ct)
+  for (blockName in blocks){
+      if ($.inArray(blockName, ct) != -1){
+        $("#mobileBlock" + j + '').html(blocks[blockName]);
+		$("#mobileBlock" + j + '').click(mobileTDClick);
+		var nodesFromMainCalendar = $($("#CalendarTable tbody tr")[j]).children("td")[eventDate.day].children;
+		$("#mobileBlock" + j + '').append($(nodesFromMainCalendar).clone());
+		j += 1;
+	  }
+  }
+  if (ct.length == 1){
+	console.log("sup");
+	$("#mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").hide();
+	$("#mobileBlock1").css("border-bottom-width", "1px");
+	$("#mobileBlock1").css("border-bottom-style", "solid");
+	$("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
+  } else {
+	if (ct.length == 5){
+		$("#mobileBlock6").hide();
+		$("#mobileBlock5").css("border-bottom-width", "1px");
+		$("#mobileBlock5").css("border-bottom-style", "solid");
+		$("#mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
+	} else {
+		$("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
+	}
+  }
+}
+
+$(window).resize(placeDatePicker);
+
 $(window).resize(placeDatePicker);
 
 function placeDatePicker(){
+	$("#eventCreatorModal .modal-body").css("max-height", ($(window).height()-275));
 	var width = $(window).width();
 	console.log(width)
 	if (width < 1360){
@@ -211,7 +268,7 @@ function createEvent(newOrOld){
     data: newEvent,
     failure: function(err){
       console.log(err);
-      error(err);
+      //error(err);
     },
     success: function(data){
       if (eventDate.timestamp >= monday && eventDate.timestamp < monday + 604800000){
@@ -577,3 +634,159 @@ function rgb2hex(rgb) {
 function hex(x) {
   return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
 }
+
+
+// TOUCH-EVENTS SINGLE-FINGER SWIPE-SENSING JAVASCRIPT // Can we put these somewhere else? It's getting a little crowded in here...
+	// Courtesy of PADILICIOUS.COM and MACOSXAUTOMATION.COM
+	
+	// this script can be used with one or more page elements to perform actions based on them being swiped with a single finger
+
+	var triggerElementID = null; // this variable is used to identity the triggering element
+	var fingerCount = 0;
+	var startX = 0;
+	var startY = 0;
+	var curX = 0;
+	var curY = 0;
+	var deltaX = 0;
+	var deltaY = 0;
+	var horzDiff = 0;
+	var vertDiff = 0;
+	var minLength = 72; // the shortest distance the user may swipe
+	var swipeLength = 0;
+	var swipeAngle = null;
+	var swipeDirection = null;
+	
+	// The 4 Touch Event Handlers
+	
+	// NOTE: the touchStart handler should also receive the ID of the triggering element
+	// make sure its ID is passed in the event call placed in the element declaration, like:
+	// <div id="picture-frame" ontouchstart="touchStart(event,'picture-frame');"  ontouchend="touchEnd(event);" ontouchmove="touchMove(event);" ontouchcancel="touchCancel(event);">
+
+	var touchEv = [];
+	var initialWindowScroll;
+	
+	function touchStart(event,passedName) {
+		initialWindowScroll = $(document).scrollTop();
+		touchEv = [];
+		// disable the standard ability to select the touched object
+		//event.preventDefault();
+		// get the total number of fingers touching the screen
+		fingerCount = event.touches.length;
+		// since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
+		// check that only one finger was used
+		if ( fingerCount == 1 ) {
+			// get the coordinates of the touch
+			startX = event.touches[0].pageX;
+			startY = event.touches[0].pageY;
+			// store the triggering element ID
+			triggerElementID = passedName;
+		} else {
+			// more than one finger touched so cancel
+			touchCancel(event);
+		}
+		delete event['layerX'];
+		delete event['layerY'];
+		touchEv.push(event);
+	}
+
+	function touchMove(event) {
+		//event.preventDefault();
+		if ( event.touches.length == 1 ) {
+			curX = event.touches[0].pageX;
+			curY = event.touches[0].pageY;
+			caluculateAngle();
+			determineSwipeDirection();
+			if (swipeDirection == 'right' || swipeDirection == 'left'){
+				event.preventDefault();
+			}
+		} else {
+			touchCancel(event);
+		}
+		delete event['layerX'];
+		delete event['layerY'];
+		touchEv.push(event);
+	}
+	
+	function touchEnd(event) {
+		//event.preventDefault();
+		// check to see if more than one finger was used and that there is an ending coordinate
+		if ( fingerCount == 1 && curX != 0 ) {
+			// use the Distance Formula to determine the length of the swipe
+			swipeLength = Math.round(Math.sqrt(Math.pow(curX - startX,2) + Math.pow(curY - startY,2)));
+			// if the user swiped more than the minimum length, perform the appropriate action
+			if ( swipeLength >= minLength ) {
+				caluculateAngle();
+				determineSwipeDirection();
+				processingRoutine();
+				touchCancel(event); // reset the variables
+			} else {
+				touchCancel(event);
+			}	
+		} else {
+			touchCancel(event);
+		}
+		delete event['layerX'];
+		delete event['layerY'];
+		touchEv.push(event);
+	}
+
+	function touchCancel(event) {
+		// reset the variables back to default values
+		fingerCount = 0;
+		startX = 0;
+		startY = 0;
+		curX = 0;
+		curY = 0;
+		deltaX = 0;
+		deltaY = 0;
+		horzDiff = 0;
+		vertDiff = 0;
+		swipeLength = 0;
+		swipeAngle = null;
+		swipeDirection = null;
+		triggerElementID = null;
+	}
+	
+	function caluculateAngle() {
+		var X = startX-curX;
+		var Y = curY-startY;
+		var Z = Math.round(Math.sqrt(Math.pow(X,2)+Math.pow(Y,2))); //the distance - rounded - in pixels
+		var r = Math.atan2(Y,X); //angle in radians (Cartesian system)
+		swipeAngle = Math.round(r*180/Math.PI); //angle in degrees
+		if ( swipeAngle < 0 ) { swipeAngle =  360 - Math.abs(swipeAngle); }
+	}
+	
+	function determineSwipeDirection() {
+		if ( (swipeAngle <= 45) && (swipeAngle >= 0) ) {
+			swipeDirection = 'left';
+			//event.preventDefault();
+		} else if ( (swipeAngle <= 360) && (swipeAngle >= 315) ) {
+			swipeDirection = 'left';
+			//event.preventDefault();
+		} else if ( (swipeAngle >= 135) && (swipeAngle <= 225) ) {
+			swipeDirection = 'right';
+			//event.preventDefault();
+		} else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
+			swipeDirection = 'down';
+		} else {
+			swipeDirection = 'up';
+		}
+	}
+	
+	function processingRoutine() {
+		var swipedElement = document.getElementById(triggerElementID);
+		if ( swipeDirection == 'left' ) {
+			eventDate.day += 1;
+			eventDate.day = eventDate.day % 7;
+			updateMobileScreen();
+		} else if ( swipeDirection == 'right' ) {
+			eventDate.day += 6;
+			eventDate.day = eventDate.day % 7;
+			updateMobileScreen();
+		} else {
+			touchCancel();
+			for (var e in touchEv){
+				$("#singleDay").trigger(e)
+			}
+		}
+	}

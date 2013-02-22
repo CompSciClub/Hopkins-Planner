@@ -118,6 +118,10 @@ font-family:"Arial Verdana",sans-serif;
   display: none;
 }
 
+#singleDay .event{
+	width:95%;
+}
+
 @media screen and (max-width:480px) {
   #CalendarTable{
     display: none;
@@ -133,6 +137,18 @@ font-family:"Arial Verdana",sans-serif;
   }
   .btn ui-link{
     display: none;
+  }
+  #eventCreatorModal{
+    width: 85% !important;
+  }
+  #blockSelect{
+	width: 75% !important;
+  }
+  #eventNameInput{
+	width: 75% !important;
+  }
+  #modalDescriptionBox {
+	width:90%
   }
 }
 
@@ -157,14 +173,11 @@ font-family:"Arial Verdana",sans-serif;
 #eventType input{
   margin-top: 0 !important;
   color: #ffffff !important;
+  margin-right: 5px;
 }
 
 #blockSelectorContainer textarea{
   width: 90%;
-}
-
-#eventType input{
-  margin-right: 5px;
 }
 
 #eventCreatorModal{
