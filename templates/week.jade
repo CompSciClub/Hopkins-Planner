@@ -38,23 +38,23 @@ block sidebar
 block content
   .content
     center
-      table(id="singleDay", class="table table-bordered", style="width:100% !important")
+      table(id="singleDay", class="table table-bordered", style="width:100% !important", ontouchstart="touchStart(event,'swipeBox');",  ontouchend="touchEnd(event);", ontouchmove="touchMove(event);", ontouchcancel="touchCancel(event);")
         thead
           td.head
             center 12/25
           tbody
            tr.block1
-              td Block 1
+              td#mobileBlock1 Block 1
            tr.block
-              td Block 2
+              td#mobileBlock2 Block 2
            tr.block1
-              td Block 3
+              td#mobileBlock3 Block 3
            tr.block
-              td Block 4
+              td#mobileBlock4 Block 4
            tr.block1 
-              td Block 5
+              td#mobileBlock5 Block 5
            tr.block 
-              td Block 6
+              td#mobileBlock6 Block 6
 
     center
       table(id="CalendarTable", class="table table-bordered", style="width:100% !important")
