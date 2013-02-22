@@ -152,17 +152,17 @@ function updateMobileScreen(){
   $("#singleDay thead td center").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
   var ct = setClassesToday(eventDate.day-1);
   if (ct[5] == "After") {
-	ct.pop();
+    ct.pop();
   }
   var j = 1;
   console.log(ct)
   for (blockName in blocks){
       if ($.inArray(blockName, ct) != -1){
         $("#mobileBlock" + j + '').html(blocks[blockName]);
-		$("#mobileBlock" + j + '').click(mobileTDClick);
-		var nodesFromMainCalendar = $($("#CalendarTable tbody tr")[j]).children("td")[eventDate.day].children;
-		$("#mobileBlock" + j + '').append($(nodesFromMainCalendar).clone());
-		j += 1;
+        $("#mobileBlock" + j + '').click(mobileTDClick);
+        var nodesFromMainCalendar = $($("#CalendarTable tbody tr")[j]).children("td")[eventDate.day].children;
+        $("#mobileBlock" + j + '').append($(nodesFromMainCalendar).clone());
+        j += 1;
 	  }
   }
   if (ct.length == 1){
@@ -171,14 +171,14 @@ function updateMobileScreen(){
     $("#mobileBlock1").css("border-bottom-style", "solid");
     $("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
   } else {
-	if (ct.length == 5){
-		$("#mobileBlock6").hide();
-		$("#mobileBlock5").css("border-bottom-width", "1px");
-		$("#mobileBlock5").css("border-bottom-style", "solid");
-		$("#mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
-	} else {
-		$("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
-	}
+    if (ct.length == 5){
+      $("#mobileBlock6").hide();
+      $("#mobileBlock5").css("border-bottom-width", "1px");
+      $("#mobileBlock5").css("border-bottom-style", "solid");
+      $("#mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
+    } else {
+      $("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
+    }
   }
 
   // set the date input
@@ -796,16 +796,18 @@ function hex(x) {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
 			eventDate.day += 1;
-			eventDate.day = (eventDate.day + 6) % 7;
-			updateMobileScreen();
+      selectedDate = new Date(selectedDate.getTime() + 86400000);
 		} else if ( swipeDirection == 'right' ) {
 			eventDate.day += 6;
-			eventDate.day = (eventDate.day + 6) % 7;
-			updateMobileScreen();
+      selectedDate = new Date(selectedDate.getTime() - 86400000);
 		} else {
 			touchCancel();
 			for (var e in touchEv){
 				$("#singleDay").trigger(e)
 			}
+      return;
 		}
+
+    eventDate.day = eventDate.day % 7;
+    updateMobileScreen();
 	}
