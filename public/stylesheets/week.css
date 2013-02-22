@@ -1,4 +1,4 @@
-/* Week.css */
+/*Week.css */
 
 /*#CalendarTable td.A.block{background-color: #7b576b;}
 #CalendarTable td.B.block{background-color: #ffff73;}
@@ -122,6 +122,10 @@ font-family:"Arial Verdana",sans-serif;
 	width:95%;
 }
 
+#mobileDatepicker{
+  display: none;
+}
+
 @media screen and (max-width:480px) {
   #CalendarTable{
     display: none;
@@ -150,15 +154,29 @@ font-family:"Arial Verdana",sans-serif;
   #modalDescriptionBox {
 	width:90%
   }
+
+  #datepicker, #datepicker2{
+    display: none !important;
+  }
+
+  #mobileDatepicker{
+    display: block;
+    margin-top: 0 !important;
+  }
+
+  .container-fluid{
+    margin-top: 0;
+  }
 }
 
-#datepicker{
+#datepicker, #mobileDatepicker{
   text-align: center;
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
   width: 224px;
 }
+
 
 .datepicker.dropdown-menu{
   -webkit-box-shadow: none;

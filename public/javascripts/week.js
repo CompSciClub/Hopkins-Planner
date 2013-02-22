@@ -7,7 +7,8 @@ var eventDate,  // Date info for the event currently being created
     changeWeek,
 
     eventDate = getCurrentDateString(new Date(monday)),
-    todaysDate = new Date();
+    todaysDate = new Date(),
+    selectedDate = todaysDate;
 
     eventDate.day = (todaysDate.getDay()+6) % 7;
 
@@ -115,6 +116,20 @@ $(document).ready(function(){
     updateBlock();
   });
 
+  $("#mobileDatepicker").change(function(){
+    console.log(this);
+    var date = new Date($(this).val());
+    selectedDate = new Date(date.getTime() + 86400000); // the days are off by one
+
+    if (scheduleUtils.getMonday(new Date()).getTime() !== scheduleUtils.getMonday(selectedDate).getTime()){
+      // switch weeks
+      console.log("new week");
+    } else {
+      eventDate.day = (selectedDate.getDay() + 6) % 7;
+      updateMobileScreen();
+    }
+  });
+
   // if the input box has default text, select all of it to easily replace sample text
   $("input[value=\"Event Name\"], textarea").click(function(){
     if (($(this).attr('id')=="modalDescriptionBox" && $(this).val()=="Description here") || ($(this).attr('id')=="eventNameInput" && $(this).val()=="Event Name")){
@@ -151,11 +166,10 @@ function updateMobileScreen(){
 	  }
   }
   if (ct.length == 1){
-	console.log("sup");
-	$("#mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").hide();
-	$("#mobileBlock1").css("border-bottom-width", "1px");
-	$("#mobileBlock1").css("border-bottom-style", "solid");
-	$("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
+    $("#mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").hide();
+    $("#mobileBlock1").css("border-bottom-width", "1px");
+    $("#mobileBlock1").css("border-bottom-style", "solid");
+    $("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
   } else {
 	if (ct.length == 5){
 		$("#mobileBlock6").hide();
@@ -166,6 +180,11 @@ function updateMobileScreen(){
 		$("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
 	}
   }
+
+  // set the date input
+  var dateString = selectedDate.getFullYear() + "-" + String("0" + (selectedDate.getMonth() + 1)).slice(-2) + "-" + selectedDate.getDate();
+
+  $("#mobileDatepicker").val(dateString);
 }
 
 $(window).resize(placeDatePicker);
@@ -777,11 +796,11 @@ function hex(x) {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
 			eventDate.day += 1;
-			eventDate.day = eventDate.day % 7;
+			eventDate.day = (eventDate.day + 6) % 7;
 			updateMobileScreen();
 		} else if ( swipeDirection == 'right' ) {
 			eventDate.day += 6;
-			eventDate.day = eventDate.day % 7;
+			eventDate.day = (eventDate.day + 6) % 7;
 			updateMobileScreen();
 		} else {
 			touchCancel();
