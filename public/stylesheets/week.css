@@ -114,11 +114,11 @@ font-family:"Arial Verdana",sans-serif;
   table-layout: fixed;
 }
 
-#singleDay{
+#singleDay, #newSingleDay{
   display: none;
 }
 
-#singleDay .event{
+#singleDay .event, #newSingleDay .event{
 	width:95%;
 }
 
@@ -126,12 +126,21 @@ font-family:"Arial Verdana",sans-serif;
   display: none;
 }
 
+#nextDay, #lastDay{
+  display: none;
+}
+
 @media screen and (max-width:480px) {
   #CalendarTable{
     display: none;
   }
-  #singleDay{
+
+  #singleDayContainer{
+  }
+  #singleDay, #newSingleDay{
     display: table;
+    width: auto !important;
+    min-width: 280px;
   }
   .btn.arrow-right{
     display: none;
@@ -154,6 +163,29 @@ font-family:"Arial Verdana",sans-serif;
   #modalDescriptionBox {
 	width:90%
   }
+  #lastDay{
+    display: block;
+    width: 14px;
+    float: left;
+  }
+  #nextDay{
+    display: block;
+    width: 14px;
+    float: left;
+  }
+  #date{
+    text-align: center;
+    float: left;
+    margin: 5px;
+  }
+  #singleDayContainer td.head{
+    width: 100%;
+  }
+  #singleDayContainer .buttonWrapper{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
 
   #datepicker, #datepicker2{
     display: none !important;

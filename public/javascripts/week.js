@@ -45,7 +45,7 @@ $(document).ready(function(){
   currentEventLoc = [];
 
   /** for Mobile screen */
-  updateMobileScreen();
+  updateMobileScreen(false);
   
   /** EVENT HANDLERS: */
   $("#CalendarTable td").hover(
@@ -104,7 +104,7 @@ $(document).ready(function(){
   $("#saveButton").click(function(){
       updateBlock();
       createEvent(modalTypeVar);
-      updateMobileScreen();
+      updateMobileScreen(false);
   });
   $("#deleteButton").click(function(){
     deleteEvent();
@@ -126,7 +126,7 @@ $(document).ready(function(){
       console.log("new week");
     } else {
       eventDate.day = (selectedDate.getDay() + 6) % 7;
-      updateMobileScreen();
+      updateMobileScreen(true);
     }
   });
 
@@ -135,6 +135,14 @@ $(document).ready(function(){
     if (($(this).attr('id')=="modalDescriptionBox" && $(this).val()=="Description here") || ($(this).attr('id')=="eventNameInput" && $(this).val()=="Event Name")){
       $(this).select();
     }
+  });
+
+  $("#nextDay").click(function(){
+    incrementDay(1);
+  });
+
+  $("#lastDay").click(function(){
+    incrementDay(-1);
   });
 });
 
@@ -148,36 +156,43 @@ function mobileTDClick(event){
     createEventModal("new", block, event);
 }
 
-function updateMobileScreen(){
-  $("#singleDay thead td center").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+function updateMobileScreen(animate){
+  var newDay_node;
+  if (animate){
+    newDay_node = $("#singleDay tbody").clone();
+    newDay_node = $(newDay_node);
+  } else {
+    newDay_node = $("#singleDay tbody");
+  }
+
+
   var ct = setClassesToday(eventDate.day-1);
   if (ct[5] == "After") {
     ct.pop();
   }
   var j = 1;
-  console.log(ct)
   for (blockName in blocks){
       if ($.inArray(blockName, ct) != -1){
-        $("#mobileBlock" + j + '').html(blocks[blockName]);
-        $("#mobileBlock" + j + '').click(mobileTDClick);
+        newDay_node.find(".mobileBlock" + j + '').html(blocks[blockName]);
+        newDay_node.find(".mobileBlock" + j + '').click(mobileTDClick);
         var nodesFromMainCalendar = $($("#CalendarTable tbody tr")[j]).children("td")[eventDate.day].children;
-        $("#mobileBlock" + j + '').append($(nodesFromMainCalendar).clone());
+        newDay_node.find(".mobileBlock" + j + '').append($(nodesFromMainCalendar).clone());
         j += 1;
 	  }
   }
   if (ct.length == 1){
-    $("#mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").hide();
-    $("#mobileBlock1").css("border-bottom-width", "1px");
-    $("#mobileBlock1").css("border-bottom-style", "solid");
-    $("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
+    newDay_node.find(".mobileBlock2, .mobileBlock3, .mobileBlock4, .mobileBlock5, .mobileBlock6").hide();
+    newDay_node.find(".mobileBlock1").css("border-bottom-width", "1px");
+    newDay_node.find(".mobileBlock1").css("border-bottom-style", "solid");
+    newDay_node.find(".mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
   } else {
     if (ct.length == 5){
-      $("#mobileBlock6").hide();
-      $("#mobileBlock5").css("border-bottom-width", "1px");
-      $("#mobileBlock5").css("border-bottom-style", "solid");
-      $("#mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
+      newDay_node.find(".mobileBlock6").hide();
+      newDay_node.find(".mobileBlock5").css("border-bottom-width", "1px");
+      newDay_node.find(".mobileBlock5").css("border-bottom-style", "solid");
+      newDay_node.find(".mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
     } else {
-      $("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
+      $(".mobileBlock1, .mobileBlock2, .mobileBlock3, .mobileBlock4, .mobileBlock5, .mobileBlock6").show();
     }
   }
 
@@ -185,6 +200,26 @@ function updateMobileScreen(){
   var dateString = selectedDate.getFullYear() + "-" + String("0" + (selectedDate.getMonth() + 1)).slice(-2) + "-" + selectedDate.getDate();
 
   $("#mobileDatepicker").val(dateString);
+
+  // animate
+  if (animate){
+    $("#singleDay").css("float", "left");
+    $("#singleDayContainer table tbody").append(newDay_node.children());
+    $("#singleDayContainer").animate({
+      scrollLeft: 320
+    }, {
+      complete: function(){
+        $("#date").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+        var width = 100 + $("#date").width();
+        $("td.head .buttonWrapper").css("width", width + "px");
+      },
+      duration: 400
+    });
+  } else {
+      $("#date").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+      var width = 100 + $("#date").width();
+      $("td.head .buttonWrapper").css("width", width + "px");
+  }
 }
 
 $(window).resize(placeDatePicker);
@@ -809,5 +844,20 @@ function hex(x) {
 		}
 
     eventDate.day = eventDate.day % 7;
-    updateMobileScreen();
+    updateMobileScreen(true);
 	}
+
+  
+  // incrememnts the day. If direciton is positive it goes 1 day forward else it goes 1 day backwards
+  function incrementDay(direction){
+    if (direction > 0) {
+      eventDate.day += 1;
+      selectedDate = new Date(selectedDate.getTime() + 86400000);
+    }else{
+      eventDate.day += 6;
+      selectedDate = new Date(selectedDate.getTime() - 86400000);
+    }
+
+    eventDate.day = eventDate.day % 7;
+    updateMobileScreen(true);
+  }
