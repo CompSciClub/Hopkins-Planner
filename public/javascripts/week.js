@@ -202,7 +202,7 @@ function updateMobileScreen(animate){
   }
 
   // set the date input
-  var dateString = selectedDate.getFullYear() + "-" + String("0" + (selectedDate.getMonth() + 1)).slice(-2) + "-" + selectedDate.getDate();
+  var dateString = selectedDate.getFullYear() + "-" + String("0" + (selectedDate.getMonth() + 1)).slice(-2) + "-" + String("0" + selectedDate.getDate()).slice(-2);
 
   $("#mobileDatepicker").val(dateString);
 
@@ -851,11 +851,9 @@ function hex(x) {
 	function processingRoutine() {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
-			eventDate.day += 1;
-      selectedDate = new Date(selectedDate.getTime() + 86400000);
+      incrementDay(1)
 		} else if ( swipeDirection == 'right' ) {
-			eventDate.day += 6;
-      selectedDate = new Date(selectedDate.getTime() - 86400000);
+      incrementDay(-1)
 		} else {
 			touchCancel();
 			for (var e in touchEv){
@@ -863,9 +861,6 @@ function hex(x) {
 			}
       return;
 		}
-
-    eventDate.day = eventDate.day % 7;
-    updateMobileScreen(true);
 	}
 
   
