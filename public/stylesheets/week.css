@@ -199,6 +199,19 @@ font-family:"Arial Verdana",sans-serif;
   .container-fluid{
     margin-top: 0;
   }
+
+  #singleDay{
+    table-layout: fixed;
+  }
+
+  .block td, .block1 td{
+    position: relative;
+    height: 90px;
+  }
+
+  td.scroll{
+    display: none;
+  }
 }
 
 #datepicker, #mobileDatepicker{
