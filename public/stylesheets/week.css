@@ -202,6 +202,7 @@ font-family:"Arial Verdana",sans-serif;
 
   #singleDay{
     table-layout: fixed;
+    overflow: hidden;
   }
 
   .block td, .block1 td{
@@ -209,9 +210,6 @@ font-family:"Arial Verdana",sans-serif;
     height: 90px;
   }
 
-  td.scroll{
-    display: none;
-  }
 }
 
 #datepicker, #mobileDatepicker{
