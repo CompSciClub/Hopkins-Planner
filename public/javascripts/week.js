@@ -227,10 +227,15 @@ function updateMobileScreen(animate){
       left: 20
     }, {
       complete: function(){
-        var elements = $("#singleDay td.scroll");
-        elements.css("position", "inherit");
-        elements.removeClass("scroll");
-        elements.addClass("show");
+        $(this).css("position", "inherit");
+        
+        var scrollElement = $(this).clone();
+        scrollElement.removeClass("show");
+        scrollElement.hide();
+        $(this).parent().append(scrollElement);
+
+        $(this).removeClass("scroll");
+        $(this).addClass("show");
       }
     });
   } else {
@@ -239,8 +244,6 @@ function updateMobileScreen(animate){
       $("td.head .buttonWrapper").css("width", width + "px");
   }
 }
-
-$(window).resize(placeDatePicker);
 
 $(window).resize(placeDatePicker);
 

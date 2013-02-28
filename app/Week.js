@@ -13,7 +13,7 @@
       ["D", "D", "E", "D", "C"],
       ["E", "F", "F", "E", "F"],
       ["F", "G", "Activities", "G", "G"],
-      ["G", "H", "After School", "H", "H"]
+      ["G", "H", "Sports", "H", "H"]
     ];
     var grayWeek = [
       ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
@@ -21,7 +21,7 @@
       ["D", "D", "E", "D", "D"],
       ["E", "E", "F", "E", "F"],
       ["F", "G", "Activities", "G", "G"],
-      ["H", "H", "After School", "H", "H"]
+      ["H", "H", "Sports", "H", "H"]
     ];
     var weekType = getWeek(date);
     var week =  (weekType === "maroon") ? maroonWeek.slice(0) : grayWeek;
