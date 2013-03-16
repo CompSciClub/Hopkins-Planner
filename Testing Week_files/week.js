@@ -1,14 +1,16 @@
 /* Week.js */
+/*Global scheduleUtils*/
 
 var eventDate,  // Date info for the event currently being created
     setupDatepicker, 
-    checkThisDate,
-    getWeek, getMonday, setClassesToday, updateBlockSelector, updateBlock,
-    changeWeek;
-	eventDate = getCurrentDateString(new Date(monday));
-	todaysDate = new Date();
-	eventDate.day = (todaysDate.getDay()+6) % 7;
-	console.log(eventDate.day);
+    checkThisDate, getWeek, getMonday, setClassesToday, updateBlockSelector, updateBlock,
+    changeWeek,
+
+    eventDate = getCurrentDateString(new Date(monday)),
+    todaysDate = new Date(),
+    selectedDate = todaysDate;
+
+    eventDate.day = (todaysDate.getDay()+6) % 7;
 
 $(window).load(function(){
   var now = new Date(monday);
@@ -41,9 +43,9 @@ $(document).ready(function(){
 
   modalTypeVar = "new"; // whether editing (old) or creating (new). New by default
   currentEventLoc = [];
-  
+
   /** for Mobile screen */
-  updateMobileScreen();
+  updateMobileScreen(false);
   
   /** EVENT HANDLERS: */
   $("#CalendarTable td").hover(
@@ -102,7 +104,7 @@ $(document).ready(function(){
   $("#saveButton").click(function(){
       updateBlock();
       createEvent(modalTypeVar);
-	  updateMobileScreen();
+      updateMobileScreen(false);
   });
   $("#deleteButton").click(function(){
     deleteEvent();
@@ -114,11 +116,33 @@ $(document).ready(function(){
     updateBlock();
   });
 
+  $("#mobileDatepicker").change(function(){
+    console.log(this);
+    var date = new Date($(this).val());
+    selectedDate = new Date(date.getTime() + 86400000); // the days are off by one
+
+    if (scheduleUtils.getMonday(new Date()).getTime() !== scheduleUtils.getMonday(selectedDate).getTime()){
+      // switch weeks
+      console.log("new week");
+    } else {
+      eventDate.day = (selectedDate.getDay() + 6) % 7;
+      updateMobileScreen(true);
+    }
+  });
+
   // if the input box has default text, select all of it to easily replace sample text
   $("input[value=\"Event Name\"], textarea").click(function(){
     if (($(this).attr('id')=="modalDescriptionBox" && $(this).val()=="Description here") || ($(this).attr('id')=="eventNameInput" && $(this).val()=="Event Name")){
       $(this).select();
     }
+  });
+
+  $("#nextDay").click(function(){
+    incrementDay(1);
+  });
+
+  $("#lastDay").click(function(){
+    incrementDay(-1);
   });
 });
 
@@ -132,38 +156,96 @@ function mobileTDClick(event){
     createEventModal("new", block, event);
 }
 
-function updateMobileScreen(){
-  $("#singleDay thead td center").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+function updateMobileScreen(animate){
+  /*var newDay_node;
+  if (animate){
+    newDay_node = $("#singleDay tbody").clone();
+    newDay_node = $(newDay_node);
+  } else {
+    newDay_node = $("#singleDay tbody");
+  }*/
+  var classAppend = "";
+
+  if (animate){
+    classAppend = ".scroll";
+  }
+
+
   var ct = setClassesToday(eventDate.day-1);
   if (ct[5] == "After") {
-	ct.pop();
+    ct.pop();
   }
   var j = 1;
-  console.log(ct)
   for (blockName in blocks){
       if ($.inArray(blockName, ct) != -1){
-        $("#mobileBlock" + j + '').html(blocks[blockName]);
-		$("#mobileBlock" + j + '').click(mobileTDClick);
-		var nodesFromMainCalendar = $($("#CalendarTable tbody tr")[j]).children("td")[eventDate.day].children;
-		$("#mobileBlock" + j + '').append($(nodesFromMainCalendar).clone());
-		j += 1;
+        $(".mobileBlock" + j + classAppend).html(blocks[blockName]);
+        $(".mobileBlock" + j + classAppend).click(mobileTDClick);
+        var nodesFromMainCalendar = $($("#CalendarTable tbody tr")[j]).children("td")[eventDate.day].children;
+        $(".mobileBlock" + j + classAppend).append($(nodesFromMainCalendar).clone());
+        j += 1;
 	  }
   }
   if (ct.length == 1){
-	console.log("sup");
-	$("#mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").hide();
-	$("#mobileBlock1").css("border-bottom-width", "1px");
-	$("#mobileBlock1").css("border-bottom-style", "solid");
-	$("#mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
+    $(".mobileBlock2, .mobileBlock3, .mobileBlock4, .mobileBlock5, .mobileBlock6").hide();
+    $(".mobileBlock1").css("border-bottom-width", "1px");
+    $(".mobileBlock1").css("border-bottom-style", "solid");
+    $(".mobileBlock1").css("border-bottom-color", "rgb(221, 221, 221)");
   } else {
-	if (ct.length == 5){
-		$("#mobileBlock6").hide();
-		$("#mobileBlock5").css("border-bottom-width", "1px");
-		$("#mobileBlock5").css("border-bottom-style", "solid");
-		$("#mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
-	} else {
-		$("#mobileBlock1, #mobileBlock2, #mobileBlock3, #mobileBlock4, #mobileBlock5, #mobileBlock6").show();
-	}
+    if (ct.length == 5){
+      $(".mobileBlock6").hide();
+      $(".mobileBlock5").css("border-bottom-width", "1px");
+      $(".mobileBlock5").css("border-bottom-style", "solid");
+      $(".mobileBlock5").css("border-bottom-color", "rgb(221, 221, 221)");
+    } else {
+      $(".mobileBlock1, .mobileBlock2, .mobileBlock3, .mobileBlock4, .mobileBlock5, .mobileBlock6").show();
+    }
+  }
+
+  // set the date input
+  var dateString = selectedDate.getFullYear() + "-" + String("0" + (selectedDate.getMonth() + 1)).slice(-2) + "-" + String("0" + selectedDate.getDate()).slice(-2);
+
+  $("#mobileDatepicker").val(dateString);
+
+  // animate
+  if (animate){
+    var tds = $("#singleDay tbody td"), scrolls = tds.filter(".scroll"), shows = tds.filter(".show");
+    tds.css("position", "fixed");
+    tds.css("marginTop", "-" + $(window).scrollTop() + "px");
+    scrolls.css("left", $("#singleDay").width() + 30 + "px");
+    scrolls.css("border-bottom", "none");
+    scrolls.show();
+    scrolls.css("width", $("#singleDay").width() + 20 + "px");
+    shows.animate({
+      left: -500
+    }, {
+      complete: function(){
+        $("#date").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+        var width = 100 + $("#date").width();
+        $("td.head .buttonWrapper").css("width", width + "px");
+        shows.remove();
+      },
+      duration: 400
+    });
+    $("#singleDay td.scroll").animate({
+      left: 20
+    }, {
+      complete: function(){
+        $(this).css("position", "inherit");
+        $(this).css("marginTop", "0");
+        
+        var scrollElement = $(this).clone();
+        scrollElement.removeClass("show");
+        scrollElement.hide();
+        $(this).parent().append(scrollElement);
+
+        $(this).removeClass("scroll");
+        $(this).addClass("show");
+      }
+    });
+  } else {
+      $("#date").html(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][eventDate.day]);
+      var width = 100 + $("#date").width();
+      $("td.head .buttonWrapper").css("width", width + "px");
   }
 }
 
@@ -250,7 +332,7 @@ function createEvent(newOrOld){
         newEvent.color = undefined; // ARGH. This is not a good way to deal with colors, but we have a bug on production
 	  } else {
 	      newEvent.bootClass += $("#pickANewBootClass").val();
-        newEvent.bootClass = "other"
+        newEvent.bootClass = "Other"
 	  }
     }
   }
@@ -282,20 +364,6 @@ function createEvent(newOrOld){
           closeDialog();
     }
   });
-  //FOR MATT'S PURPOSES. DO NOT COMMIT FROM HERE UNTIL %%%%%%%%
-	if (eventDate.timestamp >= monday && eventDate.timestamp < monday + 604800000){
-        eventDate._id = Math.floor(Math.random() * (8000000 + 1)) + 10000000;
-        newEvent._id = eventDate._id;
-        // now add the element to the UI
-        // TODO re-style these event boxes
-        $(myNode).append('<div eventid="'+ eventDate._id +'" class="label success event" data-bootClass="'+newEvent.bootClass+'" style="height:20px; background-color: '+newEvent.color+'" rel="popover" data-original-title="' + escapeHtml(newEvent.name) + '"data-content="' + escapeHtml(newEvent.description) +'"><div class="eventText">' + escapeHtml(newEvent.name) + '</div><input type="checkbox" class="eventCheck"></div>');
-        $(".eventCheck").unbind("click", checkboxClicked);
-        $(".eventCheck").click(checkboxClicked);
-        $(".event").popover({html: false, trigger: "hover"});
-        addToEvents(eventDate.day, newEvent.block, newEvent);
-      }
-          closeDialog();
-	// %%%%%%%%
 }
 
 function deleteEvent(node){ // sends a "DELETE" ajax request, deletes event visually
@@ -578,21 +646,9 @@ changeWeek = function(ev){
   window.location.href = appendage;
 };
 
-checkThisDate = function(date){
-   var week = getWeek(getMonday(date));
-
-   var day = (date.getDay() + 6) % 7;
-   for (var i = 0; i < week.length; i++){
-     if (week[i][day] === eventDate.block){
-       return true;
-     }
-   }
-
-   return false;
-};
 
 setFutureClasses = function(date){
-   var week = getWeek(getMonday(date));
+   var week = scheduleUtils.getWeek(scheduleUtils.getMonday(date));
 
    var day = (date.getDay() + 6) % 7, daySchedule = [];
    for (var i = 0; i < week.length; i++){
@@ -602,20 +658,6 @@ setFutureClasses = function(date){
    return daySchedule;
 };
 
-
-getWeek = function(date){
-  return (Math.round(((date.getTime() - 132549840000) / 604800000)) % 2) ? grayWeek : maroonWeek;
-};
-
-getMonday = function(date){
-  // we need to use Monday's timestamp because it identifies the week
-  date = new Date(date.getTime() - ((date.getDay() + 6) % 7) * 24 * 60 * 60 * 1000); // convert to monday
-  date.setHours(0, 0, 0, 0);
-  // set it to to the beginning of monday EST
-  date.setUTCHours(5, 0, 0, 0);
-
-  return date;
-};
 
 setClassesToday = function(){
   var classesToday = [];
@@ -653,22 +695,11 @@ updateBlockSelector = function(){
   }
 };
 
-var maroonWeek = [
-  ["A", "B", "A", "A", "B", "Saturday", "Sunday"],
-  ["C", "C", "B", "C", "A"],
-  ["D", "D", "E", "D", "C"],
-  ["E", "F", "F", "E", "F"],
-  ["F", "G", "Activities", "G", "G"],
-  ["G", "H", "After School", "H", "H"]
-];
-var grayWeek = [
-  ['A', 'B', 'A', 'B', 'B', "Saturday", "Sunday"],
-  ["C", "C", "B", "C", "A"],
-  ["D", "D", "E", "D", "D"],
-  ["E", "E", "F", "E", "F"],
-  ["F", "G", "Activities", "G", "G"],
-  ["H", "H", "After School", "H", "H"]
-];
+// a wrapper to pass the block info to the scheduleUtils function
+checkThisDate = function(date){
+  return scheduleUtils.checkThisDate(eventDate.block, date);
+};
+
 
 var hexDigits = new Array
         ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
@@ -683,7 +714,8 @@ function hex(x) {
   return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
 }
 
-// TOUCH-EVENTS SINGLE-FINGER SWIPE-SENSING JAVASCRIPT
+
+// TOUCH-EVENTS SINGLE-FINGER SWIPE-SENSING JAVASCRIPT // Can we put these somewhere else? It's getting a little crowded in here...
 	// Courtesy of PADILICIOUS.COM and MACOSXAUTOMATION.COM
 	
 	// this script can be used with one or more page elements to perform actions based on them being swiped with a single finger
@@ -823,17 +855,29 @@ function hex(x) {
 	function processingRoutine() {
 		var swipedElement = document.getElementById(triggerElementID);
 		if ( swipeDirection == 'left' ) {
-			eventDate.day += 1;
-			eventDate.day = eventDate.day % 7;
-			updateMobileScreen();
+      incrementDay(1)
 		} else if ( swipeDirection == 'right' ) {
-			eventDate.day += 6;
-			eventDate.day = eventDate.day % 7;
-			updateMobileScreen();
+      incrementDay(-1)
 		} else {
 			touchCancel();
 			for (var e in touchEv){
 				$("#singleDay").trigger(e)
 			}
+      return;
 		}
 	}
+
+  
+  // incrememnts the day. If direciton is positive it goes 1 day forward else it goes 1 day backwards
+  function incrementDay(direction){
+    if (direction > 0) {
+      eventDate.day += 1;
+      selectedDate = new Date(selectedDate.getTime() + 86400000);
+    }else{
+      eventDate.day += 6;
+      selectedDate = new Date(selectedDate.getTime() - 86400000);
+    }
+
+    eventDate.day = eventDate.day % 7;
+    updateMobileScreen(true);
+  }

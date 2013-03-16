@@ -1,4 +1,4 @@
-/* Week.css */
+/*Week.css */
 
 /*#CalendarTable td.A.block{background-color: #7b576b;}
 #CalendarTable td.B.block{background-color: #ffff73;}
@@ -114,20 +114,33 @@ font-family:"Arial Verdana",sans-serif;
   table-layout: fixed;
 }
 
-#singleDay{
+#singleDay, #newSingleDay{
   display: none;
 }
 
-#singleDay .event{
+#singleDay .event, #newSingleDay .event{
 	width:95%;
+}
+
+#mobileDatepicker{
+  display: none;
+}
+
+#nextDay, #lastDay{
+  display: none;
 }
 
 @media screen and (max-width:480px) {
   #CalendarTable{
     display: none;
   }
-  #singleDay{
+
+  #singleDayContainer{
+  }
+  #singleDay, #newSingleDay{
     display: table;
+    width: auto !important;
+    min-width: 280px;
   }
   .btn.arrow-right{
     display: none;
@@ -150,15 +163,62 @@ font-family:"Arial Verdana",sans-serif;
   #modalDescriptionBox {
 	width:90%
   }
+  #lastDay{
+    display: block;
+    width: 14px;
+    float: left;
+  }
+  #nextDay{
+    display: block;
+    width: 14px;
+    float: left;
+  }
+  #date{
+    text-align: center;
+    float: left;
+    margin: 5px;
+  }
+  #singleDayContainer td.head{
+    width: 100%;
+  }
+  #singleDayContainer .buttonWrapper{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  #datepicker, #datepicker2{
+    display: none !important;
+  }
+
+  #mobileDatepicker{
+    display: block;
+    margin-top: 0 !important;
+  }
+
+  .container-fluid{
+    margin-top: 0;
+  }
+
+  #singleDay{
+    table-layout: fixed;
+    overflow: hidden;
+  }
+
+  .block td, .block1 td{
+    position: relative;
+    height: 90px;
+  }
 }
 
-#datepicker{
+#datepicker, #mobileDatepicker{
   text-align: center;
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
   width: 224px;
 }
+
 
 .datepicker.dropdown-menu{
   -webkit-box-shadow: none;
@@ -249,4 +309,8 @@ font-family:"Arial Verdana",sans-serif;
   color: #999999; 	
   background: none !important;
   cursor: default;
+}
+
+col.active{
+  border: 1px solid blue;
 }

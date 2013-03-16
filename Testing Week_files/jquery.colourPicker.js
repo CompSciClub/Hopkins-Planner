@@ -168,7 +168,7 @@ jQuery.fn.colourPicker = function (conf) {
 	return this.each(function () {
 		// Insert icon and input
 		var select	= jQuery(this);
-		var input	= jQuery('<input id="pickANewBootClass" class="input-small" style="background-color:#036400;" type="text" name="' + select.attr('name') + '" value="other" size="6" />').insertAfter(select);
+		var input	= jQuery('<input id="pickANewBootClass" class="input-small" style="background-color:#036400;" type="text" name="' + select.attr('name') + '" value="Other" size="6" />').insertAfter(select);
 		var icon	= $("#pickANewBootClass")//jQuery('<a href="#"><img src="' + config.ico + '" alt="' + config.openTxt + '" /></a>').insertAfter(select);
 		var loc		= '';
 
